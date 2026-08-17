@@ -10,11 +10,26 @@ const MAX_RPM = 9000;
 
 const EXHAUST_PROFILES: Record<
   ExhaustLine,
-  { filterFreq: number; distortion: number; oscType: OscillatorType; gain: number }
+  {
+    filterFreq: number;
+    distortion: number;
+    oscType: OscillatorType;
+    gain: number;
+  }
 > = {
   oem: { filterFreq: 2200, distortion: 0.15, oscType: "sawtooth", gain: 0.22 },
-  titanium: { filterFreq: 3600, distortion: 0.4, oscType: "sawtooth", gain: 0.28 },
-  straight: { filterFreq: 5200, distortion: 0.65, oscType: "square", gain: 0.32 },
+  titanium: {
+    filterFreq: 3600,
+    distortion: 0.4,
+    oscType: "sawtooth",
+    gain: 0.28,
+  },
+  straight: {
+    filterFreq: 5200,
+    distortion: 0.65,
+    oscType: "square",
+    gain: 0.32,
+  },
 };
 
 interface EngineGraph {
@@ -133,9 +148,7 @@ export function useEngineAudio(exhaustLine: ExhaustLine) {
     graph.osc2.frequency.setTargetAtTime(baseFreq * 1.5, ctx.currentTime, 0.02);
 
     const intensity = rpm / MAX_RPM;
-    const targetGain = enabled
-      ? profile.gain * (0.35 + intensity * 0.65)
-      : 0;
+    const targetGain = enabled ? profile.gain * (0.35 + intensity * 0.65) : 0;
     graph.masterGain.gain.setTargetAtTime(targetGain, ctx.currentTime, 0.08);
     graph.noiseGain.gain.setTargetAtTime(
       enabled ? profile.distortion * intensity * 0.5 : 0,

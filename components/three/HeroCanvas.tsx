@@ -1,17 +1,25 @@
 "use client";
 
-import { Suspense, useRef } from "react";
+import { Suspense, useRef, type ReactNode } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import * as THREE from "three";
 import { Studio } from "./Studio";
 import { PorscheModel } from "./PorscheModel";
+import { CinematicEffects } from "./CinematicEffects";
 
-function AutoRotate({ children }: { children: React.ReactNode }) {
+/** Slow turntable with a gentle pointer-driven tilt. */
+function Turntable({ children }: { children: ReactNode }) {
   const group = useRef<THREE.Group>(null);
-  useFrame((_, delta) => {
-    if (group.current) group.current.rotation.y += delta * 0.18;
+
+  useFrame(({ pointer }, delta) => {
+    if (!group.current) return;
+    group.current.rotation.y += delta * 0.16;
+
+    const goalTilt = pointer.y * 0.08;
+    group.current.rotation.x +=
+      (goalTilt - group.current.rotation.x) * (1 - Math.pow(0.01, delta));
   });
+
   return <group ref={group}>{children}</group>;
 }
 
@@ -20,21 +28,18 @@ export function HeroCanvas() {
     <Canvas
       shadows
       dpr={[1, 1.6]}
-      camera={{ position: [4.6, 1.6, 5.2], fov: 30 }}
-      gl={{ antialias: true }}
+      camera={{ position: [4.8, 1.7, 5.4], fov: 30 }}
+      gl={{ antialias: true, toneMapping: THREE.NoToneMapping }}
     >
-      <color attach="background" args={["#030303"]} />
-      <fog attach="fog" args={["#030303", 8, 20]} />
+      <color attach="background" args={["#020202"]} />
+      <fog attach="fog" args={["#020202", 8, 20]} />
       <Suspense fallback={null}>
         <Studio />
-        <AutoRotate>
+        <Turntable>
           <PorscheModel />
-        </AutoRotate>
+        </Turntable>
       </Suspense>
-      <EffectComposer multisampling={4}>
-        <Bloom intensity={0.6} luminanceThreshold={0.3} luminanceSmoothing={0.25} mipmapBlur />
-        <Vignette eskil={false} offset={0.25} darkness={0.95} />
-      </EffectComposer>
+      <CinematicEffects preset="hero" />
     </Canvas>
   );
 }

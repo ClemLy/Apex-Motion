@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #030303;
+  --background: #020202;
   --foreground: #f5f5f5;
 }
 
@@ -20,7 +20,7 @@ body {
 
 ::selection {
   background: #f5f5f5;
-  color: #030303;
+  color: #020202;
 }
 
 ::-webkit-scrollbar {
@@ -28,10 +28,78 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #030303;
+  background: #020202;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #262626;
   border-radius: 999px;
+}
+
+/* The custom ring cursor replaces the native pointer once it has mounted. */
+html[data-custom-cursor="true"],
+html[data-custom-cursor="true"] * {
+  cursor: none;
+}
+
+/*
+ * Global film grain. A tiled SVG turbulence sits above every layer and shifts
+ * on a short loop, which breaks up flat gradients and the "clean screen" look.
+ */
+.grain-overlay {
+  position: fixed;
+  inset: -150%;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.16;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain-shift 0.7s steps(4) infinite;
+  will-change: transform;
+}
+
+@keyframes grain-shift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  25% {
+    transform: translate3d(-3%, 2%, 0);
+  }
+  50% {
+    transform: translate3d(2%, -3%, 0);
+  }
+  75% {
+    transform: translate3d(-2%, -2%, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Faint scanline sweep, borrowed from broadcast motorsport overlays. */
+.scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: 59;
+  pointer-events: none;
+  opacity: 0.35;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(255, 255, 255, 0.014) 3px,
+    transparent 4px
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain-overlay {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

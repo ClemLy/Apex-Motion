@@ -5,24 +5,33 @@ import { Download, Check, Copy } from "lucide-react";
 import { garageBuilds } from "@/lib/garage-data";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
+import { useUISound } from "@/hooks/useUISound";
 import { cn } from "@/utils/cn";
 
 export function CommunityGarage() {
   const { dict } = useLanguage();
+  const playSound = useUISound();
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const handleCopy = async (id: string, code: string) => {
     try {
       await navigator.clipboard.writeText(code);
+      playSound("select");
       setCopiedId(id);
-      setTimeout(() => setCopiedId((current) => (current === id ? null : current)), 1800);
+      setTimeout(
+        () => setCopiedId((current) => (current === id ? null : current)),
+        1800,
+      );
     } catch {
       setCopiedId(null);
     }
   };
 
   return (
-    <section id="garage" className="relative flex flex-col gap-10 px-6 py-28 sm:px-10">
+    <section
+      id="garage"
+      className="relative flex flex-col gap-10 px-6 py-28 sm:px-10"
+    >
       <SectionLabel
         kicker={dict.garage.kicker}
         title={dict.garage.title}
@@ -60,7 +69,8 @@ export function CommunityGarage() {
                 <button
                   type="button"
                   onClick={() => handleCopy(build.id, build.code)}
-                  className="flex flex-1 items-center justify-between gap-2 rounded-lg border border-white/10 px-3 py-2 font-mono text-[11px] text-neutral-300 transition-colors hover:border-white/25"
+                  data-cursor={dict.cursor.copy}
+                  className="flex flex-1 items-center justify-between gap-2 rounded-lg border border-white/10 px-3 py-2 font-mono text-[11px] text-neutral-300 transition-colors duration-300 hover:border-white/25"
                 >
                   {build.code}
                   {copiedId === build.id ? (
@@ -71,7 +81,9 @@ export function CommunityGarage() {
                 </button>
                 <button
                   type="button"
-                  className="flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-[10px] uppercase tracking-[0.2em] text-neutral-300 transition-colors hover:border-white/25"
+                  onClick={() => playSound("tick")}
+                  data-cursor={dict.garage.download}
+                  className="flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-[10px] uppercase tracking-[0.2em] text-neutral-300 transition-colors duration-300 hover:border-white/25"
                   aria-label={dict.garage.download}
                 >
                   <Download className="h-3.5 w-3.5" />

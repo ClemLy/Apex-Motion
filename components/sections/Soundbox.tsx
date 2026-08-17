@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
 import { useAppAudio } from "@/lib/audio/AudioProvider";
 import { useEngineAudio, type ExhaustLine } from "@/hooks/useEngineAudio";
+import { useUISound } from "@/hooks/useUISound";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { cn } from "@/utils/cn";
@@ -34,7 +35,12 @@ function Visualizer({ analyser }: { analyser: AnalyserNode | null }) {
         ctx.fillStyle = "rgba(245,245,245,0.85)";
         data.forEach((value, i) => {
           const barHeight = (value / 255) * height;
-          ctx.fillRect(i * barWidth, height - barHeight, barWidth * 0.7, barHeight);
+          ctx.fillRect(
+            i * barWidth,
+            height - barHeight,
+            barWidth * 0.7,
+            barHeight,
+          );
         });
       }
       raf = requestAnimationFrame(draw);
@@ -49,6 +55,7 @@ function Visualizer({ analyser }: { analyser: AnalyserNode | null }) {
 export function Soundbox() {
   const { dict } = useLanguage();
   const { enabled, toggleEnabled } = useAppAudio();
+  const playSound = useUISound();
   const [line, setLine] = useState<ExhaustLine>("oem");
   const { rpm, setRevving, analyser } = useEngineAudio(line);
 
@@ -73,9 +80,13 @@ export function Soundbox() {
             <button
               key={id}
               type="button"
-              onClick={() => setLine(id)}
+              onClick={() => {
+                playSound("select");
+                setLine(id);
+              }}
+              data-cursor={dict.soundbox.lines[id]}
               className={cn(
-                "rounded-full px-4 py-2 text-[10px] uppercase tracking-[0.2em] transition-colors",
+                "rounded-full px-4 py-2 text-[10px] uppercase tracking-[0.2em] transition-colors duration-300",
                 line === id
                   ? "bg-neutral-50 text-neutral-950"
                   : "text-neutral-400 hover:text-neutral-100",
@@ -124,7 +135,8 @@ export function Soundbox() {
           }}
           onPointerUp={() => setRevving(false)}
           onPointerLeave={() => setRevving(false)}
-          className="select-none rounded-full border border-white/15 bg-neutral-50 px-10 py-4 text-[11px] uppercase tracking-[0.25em] text-neutral-950 transition-transform active:scale-95"
+          data-cursor={dict.cursor.rev}
+          className="select-none rounded-full border border-white/15 bg-neutral-50 px-10 py-4 text-[11px] uppercase tracking-[0.25em] text-neutral-950 shadow-[0_0_40px_-8px_rgba(255,255,255,0.5)] transition-transform duration-300 active:scale-95"
         >
           {dict.soundbox.rev}
         </button>

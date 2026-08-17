@@ -50,11 +50,16 @@ export function Heritage() {
           className="px-6 sm:px-10"
         />
 
-        <div ref={trackRef} className="flex gap-6 px-6 will-change-transform sm:px-10">
+        <div
+          ref={trackRef}
+          data-cursor={dict.cursor.drag}
+          className="flex gap-6 px-6 will-change-transform sm:px-10"
+        >
           {heritageEras.map((era) => (
             <article
               key={era.id}
-              className="relative flex h-[46vh] w-[78vw] flex-none flex-col justify-end overflow-hidden rounded-3xl border border-white/10 p-8 sm:w-[38vw] lg:w-[28vw]"
+              data-cursor={era.model}
+              className="group relative flex h-[46vh] w-[78vw] flex-none flex-col justify-end overflow-hidden rounded-3xl border border-white/10 p-8 transition-colors duration-500 hover:border-white/25 sm:w-[38vw] lg:w-[28vw]"
               style={{
                 backgroundImage:
                   "radial-gradient(circle at 30% 20%, rgba(255,255,255,0.08), transparent 60%), linear-gradient(160deg, #111213 0%, #030303 70%)",

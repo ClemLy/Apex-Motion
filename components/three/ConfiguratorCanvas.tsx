@@ -2,32 +2,28 @@
 
 import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
-import { EffectComposer, Bloom, Vignette, ToneMapping } from "@react-three/postprocessing";
-import { ToneMappingMode } from "postprocessing";
+import * as THREE from "three";
 import { Studio } from "./Studio";
 import { PorscheModel } from "./PorscheModel";
 import { CameraRig } from "./CameraRig";
+import { CinematicEffects } from "./CinematicEffects";
 
 export function ConfiguratorCanvas() {
   return (
     <Canvas
       shadows
       dpr={[1, 1.8]}
-      camera={{ position: [4.2, 1.8, 4.6], fov: 32 }}
-      gl={{ antialias: true }}
+      camera={{ position: [4.6, 1.9, 4.9], fov: 32 }}
+      gl={{ antialias: true, toneMapping: THREE.NoToneMapping }}
     >
-      <color attach="background" args={["#030303"]} />
-      <fog attach="fog" args={["#030303", 9, 22]} />
+      <color attach="background" args={["#020202"]} />
+      <fog attach="fog" args={["#020202", 9, 22]} />
       <Suspense fallback={null}>
         <Studio />
         <PorscheModel />
       </Suspense>
       <CameraRig />
-      <EffectComposer multisampling={4}>
-        <Bloom intensity={0.55} luminanceThreshold={0.35} luminanceSmoothing={0.2} mipmapBlur />
-        <Vignette eskil={false} offset={0.2} darkness={0.9} />
-        <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
-      </EffectComposer>
+      <CinematicEffects preset="studio" />
     </Canvas>
   );
 }

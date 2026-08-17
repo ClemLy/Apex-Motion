@@ -7,6 +7,8 @@ import { ConfiguratorProvider } from "@/lib/configurator/store";
 import { SmoothScrollProvider } from "@/components/layout/SmoothScrollProvider";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { HudFrame } from "@/components/layout/HudFrame";
+import { CustomCursor } from "@/components/ui/CustomCursor";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,6 +37,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <AudioProvider>
             <ConfiguratorProvider>
               <SmoothScrollProvider>
+                <div aria-hidden className="grain-overlay" />
+                <div aria-hidden className="scanlines" />
+                <CustomCursor />
+                <HudFrame />
                 <Navbar />
                 <main className="flex-1">{children}</main>
                 <Footer />

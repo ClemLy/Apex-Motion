@@ -44,17 +44,14 @@ export function ConfiguratorProvider({ children }: { children: ReactNode }) {
       state,
       setPaint: (paintId) => setState((s) => ({ ...s, paintId })),
       toggleWing: () => setState((s) => ({ ...s, wing: !s.wing })),
-      toggleSplitter: () =>
-        setState((s) => ({ ...s, splitter: !s.splitter })),
-      toggleWidebody: () =>
-        setState((s) => ({ ...s, widebody: !s.widebody })),
+      toggleSplitter: () => setState((s) => ({ ...s, splitter: !s.splitter })),
+      toggleWidebody: () => setState((s) => ({ ...s, widebody: !s.widebody })),
       setWheel: (wheelId) => setState((s) => ({ ...s, wheelId })),
       setCaliperColor: (caliperColor) =>
         setState((s) => ({ ...s, caliperColor })),
       setInteriorTrim: (interiorTrim) =>
         setState((s) => ({ ...s, interiorTrim })),
-      toggleRollCage: () =>
-        setState((s) => ({ ...s, rollCage: !s.rollCage })),
+      toggleRollCage: () => setState((s) => ({ ...s, rollCage: !s.rollCage })),
       setCabinView: (cabinView) =>
         setState((s) => ({
           ...s,

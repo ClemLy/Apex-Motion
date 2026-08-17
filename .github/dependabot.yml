@@ -1,0 +1,34 @@
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      # 3D and animation libraries move together, review them as one PR.
+      webgl:
+        patterns:
+          - "three"
+          - "@types/three"
+          - "@react-three/*"
+          - "postprocessing"
+      animation:
+        patterns:
+          - "gsap"
+          - "lenis"
+          - "framer-motion"
+      dev-tooling:
+        patterns:
+          - "eslint*"
+          - "prettier"
+          - "typescript"
+          - "@types/*"
+          - "playwright"
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: monthly
