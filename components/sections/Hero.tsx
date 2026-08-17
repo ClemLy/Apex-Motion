@@ -7,14 +7,31 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight, MoveDown } from "lucide-react";
 import { HeroCanvas } from "@/components/three/HeroCanvas";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
+import { useIntro } from "@/lib/intro/IntroProvider";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function Hero() {
   const { dict } = useLanguage();
+  const { hasEntered } = useIntro();
   const rootRef = useRef<HTMLDivElement>(null);
 
+  // Park the entrance elements in their start state immediately, so nothing
+  // flashes in its final position while the curtain is still pulling apart.
   useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.set(".hero-line", { yPercent: 115, skewY: 5 });
+      gsap.set(".hero-rule", { scaleX: 0 });
+      gsap.set(".hero-fade", { opacity: 0, y: 22 });
+    }, rootRef);
+    return () => ctx.revert();
+  }, []);
+
+  useEffect(() => {
+    // The entrance is choreographed against the preloader curtain, so it only
+    // fires once that has burst open.
+    if (!hasEntered) return;
+
     const ctx = gsap.context(() => {
       const intro = gsap.timeline({ defaults: { ease: "power4.out" } });
 
@@ -53,13 +70,13 @@ export function Hero() {
     }, rootRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [hasEntered]);
 
   return (
     <section
       ref={rootRef}
       id="home"
-      className="relative flex min-h-[100svh] w-full flex-col justify-end overflow-hidden pb-14 pt-32 lg:pb-28"
+      className="relative flex min-h-[100svh] w-full flex-col justify-end overflow-hidden pb-14 pt-32 lg:pb-40"
     >
       <div className="absolute inset-0" data-cursor={dict.cursor.orbit}>
         <HeroCanvas />

@@ -34,6 +34,26 @@ export const dictionaries = {
       sector: "Secteur",
       live: "En direct",
       scroll: "Défiler",
+      coolant: "Liquide de refroidissement",
+      oil: "Pression d'huile",
+      circuit: "Circuit",
+      position: "Position",
+    },
+    preloader: {
+      title: "Séquence de démarrage",
+      enter: "Démarrer",
+      stages: [
+        "Initialisation du système",
+        "Compilation des nuanceurs",
+        "Chargement de la géométrie",
+        "Étalonnage de la soufflerie",
+        "Mise sous tension du moteur",
+      ],
+    },
+    kinetic: {
+      words: ["Précision", "Obsession", "Ingénierie", "Héritage", "Apex"],
+      statement:
+        "Sept décennies de flat-6, condensées dans un moteur de rendu temps réel.",
     },
     hero: {
       kicker: "Évolution flat-6 / édition numérique",
@@ -157,6 +177,26 @@ export const dictionaries = {
       sector: "Sector",
       live: "Live",
       scroll: "Scroll",
+      coolant: "Coolant",
+      oil: "Oil pressure",
+      circuit: "Circuit",
+      position: "Position",
+    },
+    preloader: {
+      title: "Start-up sequence",
+      enter: "Ignition",
+      stages: [
+        "System initialisation",
+        "Compiling shaders",
+        "Loading geometry",
+        "Wind tunnel calibration",
+        "Engine power-up",
+      ],
+    },
+    kinetic: {
+      words: ["Precision", "Obsession", "Engineering", "Heritage", "Apex"],
+      statement:
+        "Seven decades of flat-6, condensed into a real-time render engine.",
     },
     hero: {
       kicker: "Flat-6 evolution / digital edition",

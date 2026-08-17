@@ -9,7 +9,9 @@ import { SmoothScrollProvider } from "@/components/layout/SmoothScrollProvider";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { HudFrame } from "@/components/layout/HudFrame";
+import { Preloader } from "@/components/layout/Preloader";
 import { CustomCursor } from "@/components/ui/CustomCursor";
+import { IntroProvider } from "@/lib/intro/IntroProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,20 +35,23 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       lang="fr"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-[#030303] text-neutral-100">
+      <body className="flex min-h-full flex-col bg-[#020202] text-neutral-100">
         <LanguageProvider>
           <AudioProvider>
-            <ConfiguratorProvider>
-              <SmoothScrollProvider>
-                <div aria-hidden className="grain-overlay" />
-                <div aria-hidden className="scanlines" />
-                <CustomCursor />
-                <HudFrame />
-                <Navbar />
-                <main className="flex-1">{children}</main>
-                <Footer />
-              </SmoothScrollProvider>
-            </ConfiguratorProvider>
+            <IntroProvider>
+              <ConfiguratorProvider>
+                <SmoothScrollProvider>
+                  <Preloader />
+                  <div aria-hidden className="grain-overlay" />
+                  <div aria-hidden className="scanlines" />
+                  <CustomCursor />
+                  <HudFrame />
+                  <Navbar />
+                  <main className="flex-1">{children}</main>
+                  <Footer />
+                </SmoothScrollProvider>
+              </ConfiguratorProvider>
+            </IntroProvider>
           </AudioProvider>
         </LanguageProvider>
       </body>

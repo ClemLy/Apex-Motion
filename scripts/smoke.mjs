@@ -76,8 +76,23 @@ try {
       );
     }
 
-    // Give the WebGL scene and entrance animations a moment to settle.
-    await page.waitForTimeout(2500);
+    // Every route mounts the preloader. Clicking through it is the only way to
+    // reach the real page, and it also exercises the entry sequence itself.
+    try {
+      const gate = page.getByRole("button", { name: /Démarrer|Ignition/ });
+      await gate.waitFor({ state: "visible", timeout: 15_000 });
+      await gate.click();
+    } catch {
+      failures.push(`${route.path}: entry gate never became clickable`);
+    }
+
+    // Let the curtain finish and the WebGL scene settle.
+    await page.waitForTimeout(3500);
+
+    const preloaderGone = (await page.getByRole("dialog").count()) === 0;
+    if (!preloaderGone) {
+      failures.push(`${route.path}: preloader never dismissed`);
+    }
 
     if (route.needsCanvas) {
       const canvasCount = await page.locator("canvas").count();

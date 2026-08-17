@@ -16,7 +16,14 @@ export function CustomCursor() {
   const ringRef = useRef<HTMLDivElement>(null);
   const dotRef = useRef<HTMLDivElement>(null);
   const labelRef = useRef<HTMLSpanElement>(null);
+
+  // Held in a ref so toggling audio does not change this hook's identity and
+  // tear down the pointer listeners mid-session.
   const playSound = useUISound();
+  const playSoundRef = useRef(playSound);
+  useEffect(() => {
+    playSoundRef.current = playSound;
+  }, [playSound]);
 
   useEffect(() => {
     // Pointer-coarse devices (touch) get no custom cursor at all.
@@ -35,6 +42,12 @@ export function CustomCursor() {
     let target: HTMLElement | null = null;
     let rafId = 0;
 
+    // Local state starts at null, so the DOM has to start there too. Otherwise
+    // a re-run inherits a stale label that the `hovered !== target` check can
+    // never clear, because both sides are already null.
+    label.textContent = "";
+    ring.dataset.active = "false";
+
     const onMove = (event: PointerEvent) => {
       pointer.x = event.clientX;
       pointer.y = event.clientY;
@@ -49,7 +62,7 @@ export function CustomCursor() {
         label.textContent = text;
         size.target = target ? RING_ACTIVE : RING_IDLE;
         ring.dataset.active = target ? "true" : "false";
-        if (target) playSound("hover");
+        if (target) playSoundRef.current("hover");
       }
     };
 
@@ -61,6 +74,16 @@ export function CustomCursor() {
     };
 
     const render = () => {
+      // A hovered element can be removed from the page while the pointer sits
+      // still (the preloader button is, on entry). Without this the ring would
+      // stay expanded on a stale label until the next pointer move.
+      if (target && !target.isConnected) {
+        target = null;
+        label.textContent = "";
+        size.target = RING_IDLE;
+        ring.dataset.active = "false";
+      }
+
       // Magnetic pull: bias the ring toward the hovered element's centre.
       let goalX = pointer.x;
       let goalY = pointer.y;
@@ -100,7 +123,7 @@ export function CustomCursor() {
       window.removeEventListener("pointerup", onUp);
       delete document.documentElement.dataset.customCursor;
     };
-  }, [playSound]);
+  }, []);
 
   return (
     <div

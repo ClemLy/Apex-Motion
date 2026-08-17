@@ -21,7 +21,9 @@ Aucun prix. Aucun panier. Uniquement la passion, la précision et le mouvement.
 - [Modules](#modules)
 - [Direction artistique](#direction-artistique)
 - [Couche cinématographique WebGL](#couche-cinématographique-webgl)
-- [Curseur et retours sonores](#curseur-et-retours-sonores)
+- [Séquence d'entrée](#séquence-dentrée)
+- [Curseur et conception sonore](#curseur-et-conception-sonore)
+- [Architecture de performance](#architecture-de-performance)
 - [Internationalisation](#internationalisation)
 - [Intégration et déploiement continus](#intégration-et-déploiement-continus)
 - [Feuille de route](#feuille-de-route)
@@ -68,15 +70,17 @@ apex-motion/
 │   ├── heritage/                # Module 03 - Archives héritage
 │   └── garage/                  # Module 04 - Garage communautaire
 ├── components/
-│   ├── layout/                  # Navbar, Footer, HudFrame, SmoothScrollProvider
+│   ├── layout/                  # Navbar, Footer, Preloader, HudFrame, scroll
 │   ├── ui/                      # CustomCursor, GlassPanel, TelemetryTag, SectionLabel
 │   ├── three/                   # Scène 3D, éclairage animé, caméra, post-traitement
 │   ├── configurator/            # Panneau de configuration temps réel
 │   └── sections/                # Sections de la page d'accueil
-├── hooks/                       # useFPS, useEngineAudio, useUISound
+├── hooks/                       # useFPS, useEngineAudio, useUISound, useRenderGate
 ├── lib/
 │   ├── i18n/                    # Dictionnaires FR/EN et provider de langue
-│   ├── audio/                   # Provider audio global (activation, AudioContext)
+│   ├── audio/                   # Provider audio et conception sonore synthétisée
+│   ├── intro/                   # État de la séquence d'entrée
+│   ├── three/                   # Textures procédurales (carbone, vernis)
 │   ├── configurator/            # État et types du configurateur
 │   ├── heritage-data.ts         # Données des ères Porsche
 │   └── garage-data.ts           # Données des builds communautaires
@@ -174,7 +178,46 @@ L'éclairage combine trois softbox (`rectAreaLight` : clé, remplissage froid, c
 chaud) et un projecteur qui orbite lentement autour de la voiture, de sorte que les reflets
 sur la carrosserie ne sont jamais figés.
 
-## Curseur et retours sonores
+### Réalisme des matériaux
+
+Les reflets qui rendent une peinture crédible ne viennent pas des lampes, mais de ce que la
+peinture voit. La scène fabrique donc son propre environnement : des bandes émissives
+(`Lightformer`) disposées comme un studio photo réel, cuites une seule fois dans une cubemap
+de 256 px, sans aucun téléchargement. Ce sont ces bandes qui produisent la traînée lumineuse
+caractéristique le long du flanc.
+
+S'y ajoutent, dans `lib/three/textures.ts`, deux cartes générées au chargement dans un canvas
+hors écran plutôt que téléchargées :
+
+- une **carte de normales carbone**, tissage sergé 2x2, appliquée aux pièces aéro ;
+- une **carte de normales de vernis** de très faible amplitude, qui reproduit la peau
+  d'orange d'une vraie laque et empêche la carrosserie de ressembler à du plastique moulé.
+
+Les finitions mates reçoivent un vernis diffus, les finitions brillantes un vernis mouillé,
+et la transition entre les deux est interpolée image par image. Les roues possèdent une
+véritable inertie de rotation : changer de jante ou d'étrier les lance et les laisse
+s'arrêter par amortissement angulaire.
+
+### Force G de la caméra
+
+Au-delà du ressort, deux effets donnent le poids : le champ de vision s'élargit avec la
+vitesse, comme l'accélération comprime la perception d'un couloir, et la caméra s'incline
+dans les déplacements latéraux comme un châssis penche dans une épingle. Les deux reviennent
+au neutre à mesure que le ressort se stabilise.
+
+## Séquence d'entrée
+
+Le préchargeur affiche un compteur au dixième de pourcent, une grille technique dont les
+cellules s'allument comme une matrice de capteurs, et les étapes de mise en route. Il
+attend réellement `document.fonts.ready` avant d'atteindre 100 %, la barre plafonnant à
+92 % tant que les polices ne sont pas décodées.
+
+L'entrée est volontairement un clic. C'est le geste que les navigateurs exigent pour
+débloquer l'audio, ce qui permet de faire du démarrage moteur le tout premier son de
+l'expérience. Le rideau s'ouvre alors en deux moitiés et l'animation du Hero est libérée sur
+le même temps, de sorte que les deux mouvements n'en forment qu'un.
+
+## Curseur et conception sonore
 
 Le curseur natif est remplacé par un anneau creux qui interpole vers le pointeur, se dilate
 et s'aimante vers tout élément portant l'attribut `data-cursor`, dont il affiche le libellé
@@ -182,9 +225,30 @@ contextuel. Tout le travail par image est fait en mutation DOM directe : React n
 re-rend jamais sur un déplacement de souris. Le curseur est désactivé sur les pointeurs
 grossiers (tactile).
 
-Chaque bascule, onglet ou sélection déclenche un blip court synthétisé à la volée
-(`hooks/useUISound.ts`). Aucun fichier audio n'est embarqué dans le bundle, et les sons ne
-se déclenchent qu'une fois l'audio activé depuis la navigation.
+`lib/audio/soundDesign.ts` synthétise toutes les réponses tactiles à la volée, sans aucun
+fichier audio dans le bundle. Un clic métallique est construit sur des partiels
+inharmoniques au-dessus d'un souffle filtré, car c'est l'inharmonicité qui fait entendre du
+métal plutôt que du bois. L'engagement lourd (`shift`) superpose un frottement mécanique et
+un coup sourd amorti. Le démarrage enchaîne quelques impulsions de démarreur avant la
+descente résonante en sous-graves. Un compresseur en sortie évite que des sons empilés ne
+saturent.
+
+## Architecture de performance
+
+- **Rendu conditionné à la visibilité** : `hooks/useRenderGate.ts` combine un
+  `IntersectionObserver` et l'état de visibilité de l'onglet. Une scène hors écran passe en
+  `frameloop="never"`, donc à zéro travail GPU, au lieu de calculer des images que personne
+  ne regarde.
+- **Résolution adaptative** : `PerformanceMonitor` abaisse le plafond de `dpr` quand la
+  cadence faiblit et le relève quand elle revient, ce qui préserve la fluidité plutôt que la
+  définition.
+- **Une seule boucle rAF pour le défilement** : GSAP pilote Lenis, au lieu de deux boucles
+  concurrentes. C'est la source habituelle de saccades sur les animations liées au scroll,
+  supprimée par construction.
+- **HUD sans re-rendu** : le tableau de bord écrit directement dans le DOM depuis une boucle
+  unique, un affichage rafraîchi soixante fois par seconde ne coûte donc rien à React.
+- **Mouvement réduit respecté** : `prefers-reduced-motion` désactive l'interpolation de
+  défilement, le grain animé et le rideau d'entrée.
 
 ## Internationalisation
 

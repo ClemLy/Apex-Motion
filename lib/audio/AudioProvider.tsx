@@ -13,6 +13,8 @@ import {
 interface AudioContextValue {
   enabled: boolean;
   toggleEnabled: () => void;
+  /** Explicit set, used by the preloader once the entry click unlocks audio. */
+  setEnabled: (value: boolean) => void;
   getContext: () => AudioContext | null;
 }
 
@@ -45,9 +47,22 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     });
   }, [getContext]);
 
+  const setEnabledExplicit = useCallback(
+    (value: boolean) => {
+      if (value) getContext();
+      setEnabled(value);
+    },
+    [getContext],
+  );
+
   const value = useMemo<AudioContextValue>(
-    () => ({ enabled, toggleEnabled, getContext }),
-    [enabled, toggleEnabled, getContext],
+    () => ({
+      enabled,
+      toggleEnabled,
+      setEnabled: setEnabledExplicit,
+      getContext,
+    }),
+    [enabled, toggleEnabled, setEnabledExplicit, getContext],
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
