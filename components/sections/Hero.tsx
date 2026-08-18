@@ -8,6 +8,7 @@ import { ArrowRight, MoveDown } from "lucide-react";
 import { HeroCanvas } from "@/components/three/HeroCanvas";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
 import { useIntro } from "@/lib/intro/IntroProvider";
+import { GT3RS_CONFIG } from "@/lib/three/carConfigs";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -79,7 +80,7 @@ export function Hero() {
       className="relative flex min-h-[100svh] w-full flex-col justify-end overflow-hidden pb-14 pt-32 lg:pb-40"
     >
       <div className="absolute inset-0" data-cursor={dict.cursor.orbit}>
-        <HeroCanvas />
+        <HeroCanvas car={GT3RS_CONFIG} />
       </div>
 
       {/* Grounds the type without hiding the car. */}

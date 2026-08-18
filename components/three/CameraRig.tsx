@@ -4,17 +4,7 @@ import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { useConfigurator } from "@/lib/configurator/store";
-import type { CameraFocus } from "@/lib/configurator/types";
-
-const FOCUS_PRESETS: Record<
-  CameraFocus,
-  { position: [number, number, number]; target: [number, number, number] }
-> = {
-  exterior: { position: [4.6, 1.9, 4.9], target: [0, 0.55, 0] },
-  rear: { position: [-3.4, 1.35, -4.4], target: [0, 0.62, -1.7] },
-  wheels: { position: [3.1, 0.95, 3.4], target: [0.8, 0.42, 1.15] },
-  cabin: { position: [2.9, 2.85, 2.5], target: [0, 0.75, -0.2] },
-};
+import type { CarConfig } from "@/lib/three/carConfigs";
 
 /**
  * Spring constants.
@@ -60,7 +50,7 @@ function stepSpring(
  * corridor, and the camera rolls into lateral movement like a chassis leaning
  * through a hairpin. Both decay back to neutral as the spring settles.
  */
-export function CameraRig() {
+export function CameraRig({ car }: { car: CarConfig }) {
   const { state } = useConfigurator();
 
   const position = useRef(new THREE.Vector3(4.6, 1.9, 4.9));
@@ -80,7 +70,7 @@ export function CameraRig() {
   useFrame(({ camera, pointer }, delta) => {
     // Guard against long frames (tab restore) destabilising the integrator.
     const dt = Math.min(delta, 1 / 30);
-    const preset = FOCUS_PRESETS[state.focus];
+    const preset = car.cameraPresets[state.focus];
 
     goalPosition.current.set(...preset.position);
     goalTarget.current.set(...preset.target);

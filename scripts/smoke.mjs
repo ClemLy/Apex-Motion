@@ -78,19 +78,30 @@ try {
 
     // Every route mounts the preloader. Clicking through it is the only way to
     // reach the real page, and it also exercises the entry sequence itself.
+    // Timeouts here are generous: a cold, software-rendered CI runner can be
+    // far slower than a dev machine at font loading and shader compilation.
+    let gateClicked = false;
     try {
       const gate = page.getByRole("button", { name: /Démarrer|Ignition/ });
-      await gate.waitFor({ state: "visible", timeout: 15_000 });
+      await gate.waitFor({ state: "visible", timeout: 30_000 });
       await gate.click();
+      gateClicked = true;
     } catch {
       failures.push(`${route.path}: entry gate never became clickable`);
     }
 
-    // Let the curtain finish and the WebGL scene settle.
-    await page.waitForTimeout(3500);
-
-    const preloaderGone = (await page.getByRole("dialog").count()) === 0;
-    if (!preloaderGone) {
+    // Wait for the curtain to actually finish rather than a fixed sleep, so
+    // this scales with how fast the runner really is instead of guessing.
+    if (gateClicked) {
+      const dismissed = await page
+        .getByRole("dialog")
+        .waitFor({ state: "detached", timeout: 20_000 })
+        .then(() => true)
+        .catch(() => false);
+      if (!dismissed) {
+        failures.push(`${route.path}: preloader never dismissed`);
+      }
+    } else {
       failures.push(`${route.path}: preloader never dismissed`);
     }
 

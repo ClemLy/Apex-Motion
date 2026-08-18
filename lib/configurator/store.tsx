@@ -12,20 +12,16 @@ import {
   type CameraFocus,
   type CaliperColor,
   type ConfiguratorState,
-  type WheelId,
+  type WheelFinish,
 } from "./types";
 
 interface ConfiguratorContextValue {
   state: ConfiguratorState;
+  setCar: (carId: string) => void;
   setPaint: (paintId: string) => void;
   toggleWing: () => void;
-  toggleSplitter: () => void;
-  toggleWidebody: () => void;
-  setWheel: (wheelId: WheelId) => void;
+  setWheelFinish: (finish: WheelFinish) => void;
   setCaliperColor: (color: CaliperColor) => void;
-  setInteriorTrim: (trim: ConfiguratorState["interiorTrim"]) => void;
-  toggleRollCage: () => void;
-  setCabinView: (value: boolean) => void;
   setFocus: (focus: CameraFocus) => void;
   reset: () => void;
 }
@@ -42,22 +38,14 @@ export function ConfiguratorProvider({ children }: { children: ReactNode }) {
   const value = useMemo<ConfiguratorContextValue>(
     () => ({
       state,
+      setCar: (carId) =>
+        setState((s) => ({ ...s, carId, focus: "exterior" })),
       setPaint: (paintId) => setState((s) => ({ ...s, paintId })),
       toggleWing: () => setState((s) => ({ ...s, wing: !s.wing })),
-      toggleSplitter: () => setState((s) => ({ ...s, splitter: !s.splitter })),
-      toggleWidebody: () => setState((s) => ({ ...s, widebody: !s.widebody })),
-      setWheel: (wheelId) => setState((s) => ({ ...s, wheelId })),
+      setWheelFinish: (wheelFinish) =>
+        setState((s) => ({ ...s, wheelFinish })),
       setCaliperColor: (caliperColor) =>
         setState((s) => ({ ...s, caliperColor })),
-      setInteriorTrim: (interiorTrim) =>
-        setState((s) => ({ ...s, interiorTrim })),
-      toggleRollCage: () => setState((s) => ({ ...s, rollCage: !s.rollCage })),
-      setCabinView: (cabinView) =>
-        setState((s) => ({
-          ...s,
-          cabinView,
-          focus: cabinView ? "cabin" : "exterior",
-        })),
       setFocus: (focus) => setState((s) => ({ ...s, focus })),
       reset: () => setState(defaultConfiguratorState),
     }),

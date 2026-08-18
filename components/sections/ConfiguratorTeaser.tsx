@@ -8,6 +8,7 @@ import { ArrowUpRight } from "lucide-react";
 import { HeroCanvas } from "@/components/three/HeroCanvas";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
+import { TURBO_930_CONFIG } from "@/lib/three/carConfigs";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -51,13 +52,13 @@ export function ConfiguratorTeaser() {
         className="teaser-reveal group relative block h-[70vh] w-full overflow-hidden rounded-3xl border border-white/10"
       >
         <div className="absolute inset-0">
-          <HeroCanvas />
+          <HeroCanvas car={TURBO_930_CONFIG} />
         </div>
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#030303] via-transparent to-transparent" />
         <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">
           <span className="text-xs uppercase tracking-[0.25em] text-neutral-300">
             {dict.configurator.tabs.paint} / {dict.configurator.tabs.aero} /{" "}
-            {dict.configurator.tabs.wheels} / {dict.configurator.tabs.interior}
+            {dict.configurator.tabs.wheels}
           </span>
           <span className="flex items-center gap-2 rounded-full border border-white/15 bg-black/40 px-4 py-2 text-[10px] uppercase tracking-[0.2em] text-neutral-100 backdrop-blur-xl transition-transform group-hover:scale-105">
             {dict.hero.cta}

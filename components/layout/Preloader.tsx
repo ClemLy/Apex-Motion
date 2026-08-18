@@ -48,9 +48,13 @@ export function Preloader() {
     let rafId = 0;
 
     // Real readiness signal: fonts decoded means the type will not reflow.
+    // `fonts.ready` can hang indefinitely in some sandboxed/headless
+    // environments, so it races against a hard cap — otherwise the entry
+    // gate would never reach 100% and the button would never appear.
     const fontsReady =
       "fonts" in document ? document.fonts.ready : Promise.resolve();
-    void fontsReady.then(() => {
+    const fontsTimeout = new Promise((resolve) => setTimeout(resolve, 4000));
+    void Promise.race([fontsReady, fontsTimeout]).then(() => {
       assetsReady = true;
     });
 

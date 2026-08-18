@@ -43,7 +43,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <SmoothScrollProvider>
                   <Preloader />
                   <div aria-hidden className="grain-overlay" />
-                  <div aria-hidden className="scanlines" />
                   <CustomCursor />
                   <HudFrame />
                   <Navbar />
