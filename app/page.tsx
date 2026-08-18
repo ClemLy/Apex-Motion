@@ -3,7 +3,6 @@ import { KineticStatement } from "@/components/sections/KineticStatement";
 import { ConfiguratorTeaser } from "@/components/sections/ConfiguratorTeaser";
 import { Soundbox } from "@/components/sections/Soundbox";
 import { Heritage } from "@/components/sections/Heritage";
-import { CommunityGarage } from "@/components/sections/CommunityGarage";
 
 export default function Home() {
   return (
@@ -13,7 +12,6 @@ export default function Home() {
       <ConfiguratorTeaser />
       <Soundbox />
       <Heritage />
-      <CommunityGarage />
     </>
   );
 }

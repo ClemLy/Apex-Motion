@@ -69,6 +69,10 @@ export function GltfCar({
         }
       }
 
+      if (config.permanentlyHidden?.includes(object.name)) {
+        object.visible = false;
+      }
+
       if (!(object instanceof THREE.Mesh)) return;
       // Original name is cached on first pass: React StrictMode (and any
       // remount that reuses this same clone) re-runs this effect, and by

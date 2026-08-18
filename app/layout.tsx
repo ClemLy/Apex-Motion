@@ -11,6 +11,7 @@ import { Footer } from "@/components/layout/Footer";
 import { HudFrame } from "@/components/layout/HudFrame";
 import { Preloader } from "@/components/layout/Preloader";
 import { CustomCursor } from "@/components/ui/CustomCursor";
+import { FluidBackground } from "@/components/three/FluidBackground";
 import { IntroProvider } from "@/lib/intro/IntroProvider";
 
 const geistSans = Geist({
@@ -41,6 +42,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <IntroProvider>
               <ConfiguratorProvider>
                 <SmoothScrollProvider>
+                  <FluidBackground />
                   <Preloader />
                   <div aria-hidden className="grain-overlay" />
                   <CustomCursor />

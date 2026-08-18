@@ -5,6 +5,7 @@ import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { useConfigurator } from "@/lib/configurator/store";
 import type { CarConfig } from "@/lib/three/carConfigs";
+import { stepSpring } from "@/lib/three/springs";
 
 /**
  * Spring constants.
@@ -25,22 +26,6 @@ const PARALLAX = 0.55;
 const BASE_FOV = 32;
 const FOV_PUNCH = 5.5;
 const MAX_ROLL = 0.055;
-
-function stepSpring(
-  current: THREE.Vector3,
-  velocity: THREE.Vector3,
-  goal: THREE.Vector3,
-  stiffness: number,
-  damping: number,
-  delta: number,
-  scratch: THREE.Vector3,
-) {
-  // acceleration = stiffness * (goal - current) - damping * velocity
-  scratch.copy(goal).sub(current).multiplyScalar(stiffness);
-  scratch.addScaledVector(velocity, -damping);
-  velocity.addScaledVector(scratch, delta);
-  current.addScaledVector(velocity, delta);
-}
 
 /**
  * Camera choreography with simulated G-force.

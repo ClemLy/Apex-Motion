@@ -25,6 +25,8 @@ export interface CarConfig {
   caliperMaterial?: { match: string; exact?: boolean };
   /** Node names that can be shown/hidden (e.g. the rear wing). */
   toggleNodes?: Record<string, string[]>;
+  /** Node names hidden unconditionally on load (e.g. a duplicate variant left over from a removed toggle). */
+  permanentlyHidden?: string[];
   /** Camera position/target per studio focus preset, tuned to this car's own bbox. */
   cameraPresets: Record<CameraFocus, CameraPreset>;
 }
@@ -47,6 +49,9 @@ export const GT3RS_CONFIG: CarConfig = {
       "TwiXeR_992_gt3rs_right_leg",
     ],
   },
+  // The antichrome exhaust tip variant lost its toggle when dashTrim/exhaust
+  // customization was removed, leaving both variants visible at once.
+  permanentlyHidden: ["TwiXeR_992_exhausttip_3_antichrome"],
   cameraPresets: {
     exterior: { position: [5.7, 2.2, 6.1], target: [0, 0.6, 0] },
     rear: { position: [-4.2, 1.6, -5.4], target: [0, 0.7, -2.1] },

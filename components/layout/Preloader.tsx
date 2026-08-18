@@ -1,6 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type MouseEvent,
+} from "react";
 import { gsap } from "gsap";
 import { useIntro } from "@/lib/intro/IntroProvider";
 import { useAppAudio } from "@/lib/audio/AudioProvider";
@@ -178,12 +184,27 @@ export function Preloader() {
 
   if (finished) return null;
 
+  // The whole screen is the hit target once ready, not just the small
+  // button — a visitor shouldn't have to hunt for a precise click point.
+  // Right-click is accepted too (context menu suppressed), since "any
+  // gesture gets you in" beats a visitor bouncing off a menu they didn't want.
+  const handleScreenClick = () => {
+    if (ready) handleEnter();
+  };
+  const handleScreenContextMenu = (event: MouseEvent) => {
+    if (!ready) return;
+    event.preventDefault();
+    handleEnter();
+  };
+
   return (
     <div
       ref={rootRef}
       className="fixed inset-0 z-[200] overflow-hidden"
       role="dialog"
       aria-label={dict.preloader.title}
+      onClick={handleScreenClick}
+      onContextMenu={handleScreenContextMenu}
     >
       {/* Two solid halves that split apart on exit. */}
       <div className="preloader-half-top absolute inset-x-0 top-0 h-1/2 bg-[#020202]" />
@@ -242,19 +263,25 @@ export function Preloader() {
           </div>
         </div>
 
-        {/* Entry gate. The click also unlocks the AudioContext. */}
-        <div className="mt-14 h-12">
+        {/* Entry gate. The click also unlocks the AudioContext. The parent
+            screen already handles the click/right-click, so this button is
+            the visual focal point rather than the only hit target. */}
+        <div className="mt-14 flex h-16 flex-col items-center gap-3">
           {ready && !dismissed && (
-            <button
-              type="button"
-              onClick={handleEnter}
-              data-cursor={dict.preloader.enter}
-              className="group relative flex items-center gap-4 rounded-full border border-white/20 px-9 py-3.5 text-[11px] uppercase tracking-[0.35em] text-neutral-100 transition-colors duration-300 hover:border-white/60"
-            >
-              <span className="absolute inset-0 animate-ping rounded-full border border-white/20 [animation-duration:2.4s]" />
-              <span className="relative">{dict.preloader.enter}</span>
-              <span className="relative h-1 w-1 rounded-full bg-emerald-400" />
-            </button>
+            <>
+              <button
+                type="button"
+                data-cursor={dict.preloader.enter}
+                className="group relative flex items-center gap-4 rounded-full border border-white/20 px-9 py-3.5 text-[11px] uppercase tracking-[0.35em] text-neutral-100 transition-colors duration-300 hover:border-white/60"
+              >
+                <span className="absolute inset-0 animate-ping rounded-full border border-white/20 [animation-duration:2.4s]" />
+                <span className="relative">{dict.preloader.enter}</span>
+                <span className="relative h-1 w-1 rounded-full bg-emerald-400" />
+              </button>
+              <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-neutral-600">
+                {dict.preloader.hint}
+              </span>
+            </>
           )}
         </div>
       </div>

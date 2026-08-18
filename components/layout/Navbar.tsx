@@ -14,7 +14,6 @@ const links = [
   { href: "/", key: "home" as const },
   { href: "/configurator", key: "configurator" as const },
   { href: "/heritage", key: "heritage" as const },
-  { href: "/garage", key: "garage" as const },
 ];
 
 export function Navbar() {

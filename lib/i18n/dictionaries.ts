@@ -9,7 +9,6 @@ export const dictionaries = {
       configurator: "Studio",
       soundbox: "Sonorité",
       heritage: "Héritage",
-      garage: "Garage",
       audioOn: "Audio activé",
       audioOff: "Audio coupé",
     },
@@ -42,6 +41,7 @@ export const dictionaries = {
     preloader: {
       title: "Séquence de démarrage",
       enter: "Démarrer",
+      hint: "Cliquez n'importe où (ou appuyez sur Espace) pour entrer",
       stages: [
         "Initialisation du système",
         "Compilation des nuanceurs",
@@ -123,16 +123,6 @@ export const dictionaries = {
       subtitle:
         "Sept décennies d'ingénierie flat-6, de la 356 originelle à la GT3 RS moderne.",
     },
-    garage: {
-      kicker: "Module 04 / communauté",
-      title: "GARAGE",
-      titleAccent: "COMMUNAUTAIRE",
-      subtitle:
-        "Configurations partagées par la communauté. Téléchargez les rendus 4K ou copiez le code de configuration.",
-      download: "Rendu 4K",
-      copyCode: "Copier le code",
-      copied: "Copié",
-    },
     footer: {
       disclaimer:
         "APEX // MOTION est un projet indépendant à but non commercial, non affilié à Dr. Ing. h.c. F. Porsche AG.",
@@ -145,7 +135,6 @@ export const dictionaries = {
       configurator: "Studio",
       soundbox: "Sound",
       heritage: "Heritage",
-      garage: "Garage",
       audioOn: "Audio on",
       audioOff: "Audio off",
     },
@@ -178,6 +167,7 @@ export const dictionaries = {
     preloader: {
       title: "Start-up sequence",
       enter: "Ignition",
+      hint: "Click anywhere (or press Space) to enter",
       stages: [
         "System initialisation",
         "Compiling shaders",
@@ -258,16 +248,6 @@ export const dictionaries = {
       title: "HERITAGE",
       subtitle:
         "Seven decades of flat-6 engineering, from the original 356 to the modern GT3 RS.",
-    },
-    garage: {
-      kicker: "Module 04 / community",
-      title: "COMMUNITY",
-      titleAccent: "GARAGE",
-      subtitle:
-        "Builds shared by the community. Download 4K renders or copy the configuration code.",
-      download: "4K render",
-      copyCode: "Copy code",
-      copied: "Copied",
     },
     footer: {
       disclaimer:
