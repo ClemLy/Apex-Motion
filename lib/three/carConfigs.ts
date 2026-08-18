@@ -5,6 +5,13 @@ type CameraPreset = {
   target: [number, number, number];
 };
 
+/** Real-world reference spec, shown only in showroom mode (see isShowroomOnly). */
+export interface CarSpecs {
+  displacement: string;
+  power: string;
+  weight: string;
+}
+
 /** Per-model material/node wiring — each car names its own patterns since both .glb sources use different naming conventions. */
 export interface CarConfig {
   /** Stable key used in configurator state and as the React list key. */
@@ -29,6 +36,8 @@ export interface CarConfig {
   permanentlyHidden?: string[];
   /** Camera position/target per studio focus preset, tuned to this car's own bbox. */
   cameraPresets: Record<CameraFocus, CameraPreset>;
+  /** Real spec numbers, surfaced only for showroom-only cars (see isShowroomOnly). */
+  specs?: CarSpecs;
 }
 
 export const GT3RS_CONFIG: CarConfig = {
@@ -75,8 +84,112 @@ export const TURBO_930_CONFIG: CarConfig = {
   },
 };
 
-export const CARS: CarConfig[] = [GT3RS_CONFIG, TURBO_930_CONFIG];
+export const CAYMAN_GT4_CONFIG: CarConfig = {
+  id: "718-gt4",
+  name: "718 Cayman GT4",
+  years: "2020",
+  url: "/models/porsche-718-gt4.glb",
+  scale: 1,
+  paintMaterials: [{ match: "Porsche_718CaymanGT4_2020Paint_Material" }],
+  wheelMaterial: {
+    match: "Porsche_718CaymanGT4_2020_Wheel1A_3D_3DWheel1A_Material",
+  },
+  // Substring catches both CALIP_1 and CALIP_2, recoloring together.
+  caliperMaterial: { match: "CALIP" },
+  cameraPresets: {
+    exterior: { position: [5.44, 1.77, 5.8], target: [0, 0.49, 0] },
+    rear: { position: [-3.97, 1.29, -5.13], target: [0, 0.55, -1.96] },
+    wheels: { position: [3.61, 0.84, 3.88], target: [0.94, 0.34, 1.29] },
+  },
+};
+
+export const CARRERA_4S_CONFIG: CarConfig = {
+  id: "911-carrera-4s",
+  name: "911 Carrera 4S",
+  years: "2019",
+  url: "/models/porsche-911-carrera-4s.glb",
+  scale: 1,
+  paintMaterials: [{ match: "paint", exact: true }],
+  // No dedicated wheel/caliper material could be identified with confidence
+  // (the closest candidate, "silver", is shared with other trim) — paint-only.
+  cameraPresets: {
+    exterior: { position: [5.53, 1.54, 5.89], target: [0, 0.43, 0] },
+    rear: { position: [-4.03, 1.12, -5.21], target: [0, 0.48, -1.99] },
+    wheels: { position: [3.67, 0.73, 3.94], target: [0.95, 0.29, 1.31] },
+  },
+};
+
+export const PORSCHE_917K_CONFIG: CarConfig = {
+  id: "917k-lm",
+  name: "917K",
+  years: "1970",
+  url: "/models/porsche-917k-lm.glb",
+  scale: 1,
+  // Livery is baked entirely into the texture (neutral [1,1,1] base color) —
+  // recoloring would tint the historic paint scheme itself. Showroom-only.
+  paintMaterials: [],
+  cameraPresets: {
+    exterior: { position: [5.03, 1.33, 5.36], target: [0, 0.37, 0] },
+    rear: { position: [-3.67, 0.97, -4.74], target: [0, 0.42, -1.81] },
+    wheels: { position: [3.34, 0.63, 3.58], target: [0.87, 0.25, 1.19] },
+  },
+  specs: { displacement: "4.5L flat-12", power: "~600 hp", weight: "~800 kg" },
+};
+
+export const SPYDER_918_CONFIG: CarConfig = {
+  id: "918-spyder",
+  name: "918 Spyder",
+  years: "2015",
+  url: "/models/porsche-918-spyder.glb",
+  scale: 1,
+  paintMaterials: [{ match: "Body_Paint_-_GT_Silver_Metalic" }],
+  caliperMaterial: { match: "Caliper" },
+  cameraPresets: {
+    exterior: { position: [5.67, 1.62, 6.05], target: [0, 0.45, 0] },
+    rear: { position: [-4.14, 1.18, -5.35], target: [0, 0.51, -2.05] },
+    wheels: { position: [3.77, 0.77, 4.05], target: [0.98, 0.31, 1.35] },
+  },
+};
+
+export const MISSION_R_CONFIG: CarConfig = {
+  id: "mission-r",
+  name: "Mission R",
+  years: "2021",
+  url: "/models/porsche-mission-r.glb",
+  scale: 1,
+  // Fixed concept livery baked into the texture, same reasoning as the 917K.
+  paintMaterials: [],
+  cameraPresets: {
+    exterior: { position: [5.61, 2.17, 5.98], target: [0, 0.6, 0] },
+    rear: { position: [-4.09, 1.59, -5.29], target: [0, 0.68, -2.02] },
+    wheels: { position: [3.73, 1.03, 4.0], target: [0.97, 0.41, 1.33] },
+  },
+  specs: {
+    displacement: "Dual-motor EV concept",
+    power: "~1073 hp (qualifying mode)",
+    weight: "~1500 kg",
+  },
+};
+
+export const CARS: CarConfig[] = [
+  GT3RS_CONFIG,
+  TURBO_930_CONFIG,
+  CAYMAN_GT4_CONFIG,
+  CARRERA_4S_CONFIG,
+  PORSCHE_917K_CONFIG,
+  SPYDER_918_CONFIG,
+  MISSION_R_CONFIG,
+];
 
 export function getCarConfig(id: string): CarConfig {
   return CARS.find((car) => car.id === id) ?? GT3RS_CONFIG;
+}
+
+/** True when a car has no repaintable/recolorable material at all — its side panel drops the customization tabs for a showroom (camera + spec sheet) view instead. */
+export function isShowroomOnly(car: CarConfig): boolean {
+  return (
+    car.paintMaterials.length === 0 &&
+    !car.wheelMaterial &&
+    !car.caliperMaterial
+  );
 }
