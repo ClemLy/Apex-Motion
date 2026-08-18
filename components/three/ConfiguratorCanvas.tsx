@@ -14,7 +14,7 @@ import { useConfigurator } from "@/lib/configurator/store";
 import { getCarConfig } from "@/lib/three/carConfigs";
 
 export function ConfiguratorCanvas() {
-  const { ref, active } = useRenderGate<HTMLDivElement>();
+  const { ref, active } = useRenderGate<HTMLDivElement>({ eager: true });
   const [dprMax, setDprMax] = useState(1.8);
   const { state } = useConfigurator();
   const car = getCarConfig(state.carId);

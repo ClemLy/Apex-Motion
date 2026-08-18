@@ -37,8 +37,15 @@ const SHOWCASE_PAINT =
  * `ConfiguratorCar`, so whichever car is passed in stays a static, lightweight
  * render (no configurator state, no material overrides beyond the base paint).
  */
-export function HeroCanvas({ car }: { car: CarConfig }) {
-  const { ref, active, mounted } = useRenderGate<HTMLDivElement>();
+export function HeroCanvas({
+  car,
+  eager = false,
+}: {
+  car: CarConfig;
+  /** Pass true only for the instance guaranteed to be the first thing on screen. */
+  eager?: boolean;
+}) {
+  const { ref, active, mounted } = useRenderGate<HTMLDivElement>({ eager });
   // Resolution ceiling drops on weak hardware, so frame rate holds instead.
   const [dprMax, setDprMax] = useState(1.6);
 

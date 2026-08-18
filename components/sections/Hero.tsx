@@ -80,7 +80,7 @@ export function Hero() {
       className="relative flex min-h-[100svh] w-full flex-col justify-end overflow-hidden pb-14 pt-32 lg:pb-40"
     >
       <div className="absolute inset-0" data-cursor={dict.cursor.orbit}>
-        <HeroCanvas car={GT3RS_CONFIG} />
+        <HeroCanvas car={GT3RS_CONFIG} eager />
       </div>
 
       {/* Grounds the type without hiding the car. */}
