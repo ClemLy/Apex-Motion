@@ -97,10 +97,7 @@ export function GltfCar({
         object.material = paintMaterial;
       }
 
-      if (
-        config.wheelMaterial &&
-        matchesMaterial(name, config.wheelMaterial)
-      ) {
+      if (config.wheelMaterial && matchesMaterial(name, config.wheelMaterial)) {
         if (!wheelMaterial) {
           wheelMaterial = new THREE.MeshStandardMaterial({
             roughness: 0.28,

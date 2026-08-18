@@ -1,6 +1,9 @@
 import type { CameraFocus } from "@/lib/configurator/types";
 
-type CameraPreset = { position: [number, number, number]; target: [number, number, number] };
+type CameraPreset = {
+  position: [number, number, number];
+  target: [number, number, number];
+};
 
 /** Per-model material/node wiring — each car names its own patterns since both .glb sources use different naming conventions. */
 export interface CarConfig {

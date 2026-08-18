@@ -61,9 +61,17 @@ export function ConfiguratorPanel() {
       { id: "paint", label: dict.configurator.tabs.paint, focus: "exterior" },
     ];
     if (hasWing) {
-      list.push({ id: "aero", label: dict.configurator.tabs.aero, focus: "rear" });
+      list.push({
+        id: "aero",
+        label: dict.configurator.tabs.aero,
+        focus: "rear",
+      });
     }
-    list.push({ id: "wheels", label: dict.configurator.tabs.wheels, focus: "wheels" });
+    list.push({
+      id: "wheels",
+      label: dict.configurator.tabs.wheels,
+      focus: "wheels",
+    });
     return list;
   }, [dict, hasWing]);
 
@@ -257,7 +265,9 @@ export function ConfiguratorPanel() {
                   </span>
                   <div className="flex gap-3">
                     {(
-                      Object.keys(caliperColors) as (keyof typeof caliperColors)[]
+                      Object.keys(
+                        caliperColors,
+                      ) as (keyof typeof caliperColors)[]
                     ).map((c) => (
                       <button
                         key={c}

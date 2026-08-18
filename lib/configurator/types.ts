@@ -17,17 +17,9 @@ export interface PaintOption {
  * geometry the model doesn't have.
  */
 export type WheelFinish =
-  | "silver"
-  | "satin-black"
-  | "weissach-gold"
-  | "titanium";
+  "silver" | "satin-black" | "weissach-gold" | "titanium";
 export type CaliperColor =
-  | "pccb"
-  | "guards-red"
-  | "black"
-  | "blue"
-  | "silver"
-  | "white";
+  "pccb" | "guards-red" | "black" | "blue" | "silver" | "white";
 
 export type CameraFocus = "exterior" | "rear" | "wheels";
 
@@ -239,7 +231,11 @@ export const paintOptions: PaintOption[] = [
   },
 ];
 
-export const wheelFinishOptions: { id: WheelFinish; label: string; color: string }[] = [
+export const wheelFinishOptions: {
+  id: WheelFinish;
+  label: string;
+  color: string;
+}[] = [
   { id: "silver", label: "Silver", color: "#c7cad0" },
   { id: "satin-black", label: "Satin Black", color: "#1a1a1c" },
   { id: "weissach-gold", label: "Weissach Gold", color: "#8a6a2f" },

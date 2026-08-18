@@ -15,7 +15,13 @@
  */
 import { NodeIO } from "@gltf-transform/core";
 import { ALL_EXTENSIONS } from "@gltf-transform/extensions";
-import { dedup, prune, textureCompress, weld, draco } from "@gltf-transform/functions";
+import {
+  dedup,
+  prune,
+  textureCompress,
+  weld,
+  draco,
+} from "@gltf-transform/functions";
 import draco3d from "draco3dgltf";
 import sharp from "sharp";
 import { mkdir, stat } from "node:fs/promises";

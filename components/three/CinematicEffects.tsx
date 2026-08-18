@@ -1,6 +1,12 @@
 "use client";
 
-import { Bloom, EffectComposer, SMAA, ToneMapping, Vignette } from "@react-three/postprocessing";
+import {
+  Bloom,
+  EffectComposer,
+  SMAA,
+  ToneMapping,
+  Vignette,
+} from "@react-three/postprocessing";
 import { ToneMappingMode } from "postprocessing";
 
 export type EffectsIntensity = "hero" | "studio";

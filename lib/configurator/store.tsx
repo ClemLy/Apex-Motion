@@ -38,12 +38,10 @@ export function ConfiguratorProvider({ children }: { children: ReactNode }) {
   const value = useMemo<ConfiguratorContextValue>(
     () => ({
       state,
-      setCar: (carId) =>
-        setState((s) => ({ ...s, carId, focus: "exterior" })),
+      setCar: (carId) => setState((s) => ({ ...s, carId, focus: "exterior" })),
       setPaint: (paintId) => setState((s) => ({ ...s, paintId })),
       toggleWing: () => setState((s) => ({ ...s, wing: !s.wing })),
-      setWheelFinish: (wheelFinish) =>
-        setState((s) => ({ ...s, wheelFinish })),
+      setWheelFinish: (wheelFinish) => setState((s) => ({ ...s, wheelFinish })),
       setCaliperColor: (caliperColor) =>
         setState((s) => ({ ...s, caliperColor })),
       setFocus: (focus) => setState((s) => ({ ...s, focus })),
