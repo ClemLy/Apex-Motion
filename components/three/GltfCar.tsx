@@ -1,12 +1,26 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+} from "react";
 import { useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import type { CarConfig } from "@/lib/three/carConfigs";
+import { useDebug } from "@/lib/debug/DebugProvider";
 
 useGLTF.setDecoderPath("/draco/");
+
+/** `wireframe` only exists on some Material subclasses, not the base type this codebase otherwise treats materials as. */
+function setWireframe(material: THREE.Material, value: boolean) {
+  if ("wireframe" in material) {
+    (material as THREE.Material & { wireframe: boolean }).wireframe = value;
+  }
+}
 
 function matchesMaterial(
   name: string | undefined,
@@ -36,14 +50,27 @@ interface GltfCarProps {
   hidden?: string[];
 }
 
+export interface GltfCarHandle {
+  /**
+   * Jumps every material straight to the given look — no lerp — and returns
+   * a closure that jumps it straight back. Meant to bracket a single
+   * `gl.render()` call so a one-off frame (e.g. the compare slider's
+   * "before" side) can render a look other than the live one without the
+   * normal easing ever becoming visible on screen.
+   */
+  setInstant: (
+    paint: PaintSpec,
+    wheelColor: string,
+    caliperColor: string,
+    hidden: string[],
+  ) => () => void;
+}
+
 /** Clones the shared .glb scene so multiple canvases don't mutate drei's cache. */
-export function GltfCar({
-  config,
-  paint,
-  wheelColor,
-  caliperColor,
-  hidden,
-}: GltfCarProps) {
+export const GltfCar = forwardRef<GltfCarHandle, GltfCarProps>(function GltfCar(
+  { config, paint, wheelColor, caliperColor, hidden },
+  ref,
+) {
   const { scene } = useGLTF(config.url);
 
   const cloned = useMemo(() => scene.clone(true), [scene]);
@@ -146,6 +173,68 @@ export function GltfCar({
     }
   }, [hidden]);
 
+  // Debug wireframe. `scene.clone(true)` deep-clones the object graph but not
+  // materials — Mesh.copy() shares them by reference — so every mesh this
+  // component never repaints (glass, interior, badges...) still points at
+  // the exact material instance every other clone of this same .glb shares,
+  // including other canvases currently showing the same car. Mutating those
+  // in place would leak wireframe across canvases with debug off; clone them
+  // once per GltfCar instance instead, cached so repeated toggles reuse it.
+  const { enabled: debugEnabled, wireframe: debugWireframe } = useDebug();
+  const debugMaterialClones = useRef(new Map<THREE.Material, THREE.Material>());
+
+  useEffect(() => {
+    if (!debugEnabled) return;
+    const clones = debugMaterialClones.current;
+
+    const applyWireframe = (
+      material: THREE.Material,
+      assign: (next: THREE.Material) => void,
+    ) => {
+      const isOwnMaterial =
+        material === paintMaterialRef.current ||
+        material === wheelMaterialRef.current ||
+        material === caliperMaterialRef.current;
+      if (isOwnMaterial) {
+        setWireframe(material, debugWireframe);
+        return;
+      }
+      let clone = clones.get(material);
+      if (!clone) {
+        clone = material.clone();
+        clones.set(material, clone);
+      }
+      setWireframe(clone, debugWireframe);
+      assign(clone);
+    };
+
+    cloned.traverse((object) => {
+      if (!(object instanceof THREE.Mesh) || !object.material) return;
+      if (Array.isArray(object.material)) {
+        const materials = object.material;
+        materials.forEach((material, index) =>
+          applyWireframe(material, (next) => {
+            materials[index] = next;
+          }),
+        );
+      } else {
+        applyWireframe(object.material, (next) => {
+          object.material = next;
+        });
+      }
+    });
+
+    return () => {
+      const paintMat = paintMaterialRef.current;
+      const wheelMat = wheelMaterialRef.current;
+      const caliperMat = caliperMaterialRef.current;
+      if (paintMat) setWireframe(paintMat, false);
+      if (wheelMat) setWireframe(wheelMat, false);
+      if (caliperMat) setWireframe(caliperMat, false);
+      clones.forEach((clone) => setWireframe(clone, false));
+    };
+  }, [cloned, debugEnabled, debugWireframe]);
+
   const goalColor = useMemo(
     () => (paint ? new THREE.Color(paint.color) : null),
     [paint],
@@ -184,5 +273,92 @@ export function GltfCar({
     }
   });
 
+  useImperativeHandle(
+    ref,
+    () => ({
+      setInstant: (
+        overridePaint,
+        overrideWheelColor,
+        overrideCaliperColor,
+        overrideHidden,
+      ) => {
+        const paintMat = paintMaterialRef.current;
+        const wheelMat = wheelMaterialRef.current;
+        const caliperMat = caliperMaterialRef.current;
+
+        const prevPaint = paintMat
+          ? {
+              color: paintMat.color.clone(),
+              roughness: paintMat.roughness,
+              metalness: paintMat.metalness,
+              clearcoat: paintMat.clearcoat,
+              clearcoatRoughness: paintMat.clearcoatRoughness,
+            }
+          : null;
+        const prevWheelColor = wheelMat ? wheelMat.color.clone() : null;
+        const prevCaliperColor = caliperMat ? caliperMat.color.clone() : null;
+        const prevCaliperEmissive = caliperMat
+          ? caliperMat.emissive.clone()
+          : null;
+        const prevHidden: Record<string, boolean> = {};
+        for (const [key, nodes] of Object.entries(toggleNodesRef.current)) {
+          prevHidden[key] = nodes[0] ? !nodes[0].visible : false;
+        }
+
+        const apply = (
+          paintSpec: PaintSpec,
+          wheel: string,
+          caliper: string,
+          hiddenKeys: string[],
+        ) => {
+          if (paintMat) {
+            paintMat.color.set(paintSpec.color);
+            paintMat.roughness = paintSpec.roughness;
+            paintMat.metalness = paintSpec.metalness;
+            paintMat.clearcoat = paintSpec.clearcoat;
+            paintMat.clearcoatRoughness = paintSpec.clearcoatRoughness;
+          }
+          if (wheelMat) wheelMat.color.set(wheel);
+          if (caliperMat) {
+            caliperMat.color.set(caliper);
+            caliperMat.emissive.set(caliper);
+          }
+          for (const [key, nodes] of Object.entries(toggleNodesRef.current)) {
+            const isHidden = hiddenKeys.includes(key);
+            for (const node of nodes) node.visible = !isHidden;
+          }
+        };
+
+        apply(
+          overridePaint,
+          overrideWheelColor,
+          overrideCaliperColor,
+          overrideHidden,
+        );
+
+        return () => {
+          if (paintMat && prevPaint) {
+            paintMat.color.copy(prevPaint.color);
+            paintMat.roughness = prevPaint.roughness;
+            paintMat.metalness = prevPaint.metalness;
+            paintMat.clearcoat = prevPaint.clearcoat;
+            paintMat.clearcoatRoughness = prevPaint.clearcoatRoughness;
+          }
+          if (wheelMat && prevWheelColor) wheelMat.color.copy(prevWheelColor);
+          if (caliperMat) {
+            if (prevCaliperColor) caliperMat.color.copy(prevCaliperColor);
+            if (prevCaliperEmissive)
+              caliperMat.emissive.copy(prevCaliperEmissive);
+          }
+          for (const [key, nodes] of Object.entries(toggleNodesRef.current)) {
+            const isHidden = prevHidden[key] ?? false;
+            for (const node of nodes) node.visible = !isHidden;
+          }
+        };
+      },
+    }),
+    [],
+  );
+
   return <primitive object={cloned} scale={config.scale} />;
-}
+});

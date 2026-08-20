@@ -4,7 +4,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/lib/i18n/LanguageProvider";
 import { AudioProvider } from "@/lib/audio/AudioProvider";
-import { ConfiguratorProvider } from "@/lib/configurator/store";
 import { SmoothScrollProvider } from "@/components/layout/SmoothScrollProvider";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -13,6 +12,7 @@ import { Preloader } from "@/components/layout/Preloader";
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import { FluidBackground } from "@/components/three/FluidBackground";
 import { IntroProvider } from "@/lib/intro/IntroProvider";
+import { DebugProvider } from "@/lib/debug/DebugProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,8 +39,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className="flex min-h-full flex-col bg-[#020202] text-neutral-100">
         <LanguageProvider>
           <AudioProvider>
-            <IntroProvider>
-              <ConfiguratorProvider>
+            <DebugProvider>
+              <IntroProvider>
                 <SmoothScrollProvider>
                   <FluidBackground />
                   <Preloader />
@@ -51,8 +51,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                   <main className="flex-1">{children}</main>
                   <Footer />
                 </SmoothScrollProvider>
-              </ConfiguratorProvider>
-            </IntroProvider>
+              </IntroProvider>
+            </DebugProvider>
           </AudioProvider>
         </LanguageProvider>
       </body>

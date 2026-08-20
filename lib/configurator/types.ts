@@ -31,6 +31,11 @@ export interface ConfiguratorState {
   wheelFinish: WheelFinish;
   caliperColor: CaliperColor;
   focus: CameraFocus;
+  /** A still frame of the look at the moment "Comparer" was pressed — the
+   * slider's "before" side. Data URL; null when no comparison is active. */
+  compareImage: string | null;
+  /** Full-screen free-orbit view of the current build, replacing the Stage while true. */
+  visualizerOpen: boolean;
 }
 
 export const defaultConfiguratorState: ConfiguratorState = {
@@ -40,6 +45,8 @@ export const defaultConfiguratorState: ConfiguratorState = {
   wheelFinish: "silver",
   caliperColor: "guards-red",
   focus: "exterior",
+  compareImage: null,
+  visualizerOpen: false,
 };
 
 /** Grouped the way Porsche's own configurator does: solid, metallic, satin, then Paint to Sample. */

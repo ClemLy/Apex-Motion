@@ -24,6 +24,7 @@ const FRAGMENT_SHADER = /* glsl */ `
   uniform vec2 uMouse;
   uniform float uScroll;
   uniform vec2 uResolution;
+  uniform float uWipe;
   varying vec2 vUv;
 
   vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
@@ -104,14 +105,26 @@ const FRAGMENT_SHADER = /* glsl */ `
 
     color += white * mouseInfluence * 0.025;
 
+    // Page-transition cover: a brief full-screen pulse independent of
+    // cursor position, driven entirely from JS (see uWipe below) rather
+    // than the mouse-proximity reveal above. Mixes toward the same
+    // noise-lit highlight/prism fields the shader already computes, so it
+    // reads as this same surface intensifying, not a flash layered on top.
+    vec3 wipeColor = mix(white, prism, 0.2 + n * 0.3);
+    color = mix(color, wipeColor, uWipe);
+
     gl_FragColor = vec4(color, 1.0);
   }
 `;
+
+/** Fraction of the wipe's duration at which its cover is fullest — matches app/template.tsx's WIPE_PEAK_AT so the shader pulse and the content fade stay in lockstep. */
+const WIPE_PEAK_AT = 0.35;
 
 function FluidQuad() {
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   const mouse = useRef(new THREE.Vector2(0.5, 0.5));
   const targetMouse = useRef(new THREE.Vector2(0.5, 0.5));
+  const wipe = useRef({ active: false, start: 0, duration: 550 });
   const { size } = useThree();
 
   useEffect(() => {
@@ -125,6 +138,21 @@ function FluidQuad() {
     return () => window.removeEventListener("pointermove", onPointerMove);
   }, []);
 
+  // Triggered by app/template.tsx on every real client-side navigation —
+  // see that file for why a remount-driven event beats watching pathname.
+  useEffect(() => {
+    const onWipe = (event: Event) => {
+      const detail = (event as CustomEvent<{ duration?: number }>).detail;
+      wipe.current = {
+        active: true,
+        start: performance.now(),
+        duration: detail?.duration ?? 550,
+      };
+    };
+    window.addEventListener("apex:page-wipe", onWipe);
+    return () => window.removeEventListener("apex:page-wipe", onWipe);
+  }, []);
+
   useFrame(({ clock }, delta) => {
     const material = materialRef.current;
     if (!material) return;
@@ -136,10 +164,25 @@ function FluidQuad() {
       document.documentElement.scrollHeight - window.innerHeight;
     const scroll = scrollable > 0 ? window.scrollY / scrollable : 0;
 
+    let wipeValue = 0;
+    if (wipe.current.active) {
+      const t =
+        (performance.now() - wipe.current.start) / wipe.current.duration;
+      if (t >= 1) {
+        wipe.current.active = false;
+      } else {
+        wipeValue =
+          t < WIPE_PEAK_AT
+            ? t / WIPE_PEAK_AT
+            : 1 - (t - WIPE_PEAK_AT) / (1 - WIPE_PEAK_AT);
+      }
+    }
+
     material.uniforms.uTime.value = clock.getElapsedTime();
     material.uniforms.uMouse.value.copy(mouse.current);
     material.uniforms.uScroll.value = scroll;
     material.uniforms.uResolution.value.set(size.width, size.height);
+    material.uniforms.uWipe.value = wipeValue;
   });
 
   return (
@@ -154,6 +197,7 @@ function FluidQuad() {
           uMouse: { value: new THREE.Vector2(0.5, 0.5) },
           uScroll: { value: 0 },
           uResolution: { value: new THREE.Vector2(1, 1) },
+          uWipe: { value: 0 },
         }}
         depthTest={false}
         depthWrite={false}

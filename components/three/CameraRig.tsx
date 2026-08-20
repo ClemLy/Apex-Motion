@@ -53,6 +53,13 @@ export function CameraRig({ car }: { car: CarConfig }) {
   const fovOffset = useRef(0);
 
   useFrame(({ camera, pointer }, delta) => {
+    // While a before/after comparison is up, the frozen "before" image was
+    // rendered from wherever the camera sat at capture time — any further
+    // drift (pointer parallax, G-force spring) would desync it from the live
+    // "after" side underneath. Holding position/target still keeps both
+    // pixel-aligned for as long as the slider is open.
+    if (state.compareImage) return;
+
     // Guard against long frames (tab restore) destabilising the integrator.
     const dt = Math.min(delta, 1 / 30);
     const preset = car.cameraPresets[state.focus];

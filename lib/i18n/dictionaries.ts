@@ -109,6 +109,19 @@ export const dictionaries = {
         power: "Puissance",
         weight: "Poids",
       },
+      compare: {
+        button: "Comparer",
+        before: "Avant",
+        after: "Après",
+        exit: "Quitter",
+      },
+      capture: "Capturer",
+      visualizer: {
+        button: "Visualiser",
+        kicker: "Vue libre",
+        close: "Fermer",
+        hint: "Glisser pour orbiter — molette pour zoomer",
+      },
       resetLabel: "Réinitialiser",
       loadingModel: "Chargement du modèle 3D",
     },
@@ -131,6 +144,20 @@ export const dictionaries = {
       title: "HÉRITAGE",
       subtitle:
         "Sept décennies d'ingénierie flat-6, de la 356 originelle à la GT3 RS moderne.",
+      statsKicker: "En chiffres",
+      statsTitle: "L'ARC FLAT-6",
+      stats: {
+        decades: "Décennies de flat-6",
+        power: "Puissance maximale",
+        speed: "Vitesse maximale",
+        models: "Modèles dans le Studio",
+      },
+      fleet: {
+        kicker: "Module 04 / la collection",
+        title: "LE GARAGE",
+        subtitle:
+          "Les sept voitures du Studio, dans l'ordre où l'ingénierie flat-6 les a vues naître.",
+      },
     },
     footer: {
       disclaimer:
@@ -244,6 +271,19 @@ export const dictionaries = {
         power: "Power",
         weight: "Weight",
       },
+      compare: {
+        button: "Compare",
+        before: "Before",
+        after: "After",
+        exit: "Exit",
+      },
+      capture: "Capture",
+      visualizer: {
+        button: "Visualize",
+        kicker: "Free view",
+        close: "Close",
+        hint: "Drag to orbit — scroll to zoom",
+      },
       resetLabel: "Reset",
       loadingModel: "Loading 3D model",
     },
@@ -266,6 +306,20 @@ export const dictionaries = {
       title: "HERITAGE",
       subtitle:
         "Seven decades of flat-6 engineering, from the original 356 to the modern GT3 RS.",
+      statsKicker: "By the numbers",
+      statsTitle: "THE FLAT-6 ARC",
+      stats: {
+        decades: "Decades of flat-6",
+        power: "Peak power",
+        speed: "Top speed",
+        models: "Models in the Studio",
+      },
+      fleet: {
+        kicker: "Module 04 / the collection",
+        title: "THE GARAGE",
+        subtitle:
+          "The Studio's seven cars, in the order flat-6 engineering brought them into being.",
+      },
     },
     footer: {
       disclaimer:

@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useGLTF } from "@react-three/drei";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, RotateCcw } from "lucide-react";
+import { RotateCcw } from "lucide-react";
 import { useConfigurator } from "@/lib/configurator/store";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
 import { useUISound } from "@/hooks/useUISound";
@@ -21,6 +22,8 @@ import {
 } from "@/lib/three/carConfigs";
 import type { dictionaries, Locale } from "@/lib/i18n/dictionaries";
 import { GlassPanel } from "@/components/ui/GlassPanel";
+import { CarSwitcher } from "./CarSwitcher";
+import { ToolsBar } from "./ToolsBar";
 import { cn } from "@/utils/cn";
 
 type Tab = "paint" | "aero" | "wheels";
@@ -37,8 +40,6 @@ export function ConfiguratorPanel() {
   const { dict } = useLanguage();
   const playSound = useUISound();
   const [tab, setTab] = useState<Tab>("paint");
-  const [switcherOpen, setSwitcherOpen] = useState(false);
-  const switcherRef = useRef<HTMLDivElement>(null);
   const {
     state,
     setCar,
@@ -57,17 +58,28 @@ export function ConfiguratorPanel() {
   const hasCalipers = !!car.caliperMaterial;
   const showroomOnly = isShowroomOnly(car);
 
-  // Closes the switcher on an outside click, the standard dropdown contract.
+  // Warms the two neighbouring cars in the chronological order once the
+  // browser is idle, so arriving at either via keyboard/swipe (not just a
+  // hover) still avoids a cold GLTF fetch. Runs once — CARS is static.
   useEffect(() => {
-    if (!switcherOpen) return;
-    const onPointerDown = (event: PointerEvent) => {
-      if (!switcherRef.current?.contains(event.target as Node)) {
-        setSwitcherOpen(false);
-      }
-    };
-    document.addEventListener("pointerdown", onPointerDown);
-    return () => document.removeEventListener("pointerdown", onPointerDown);
-  }, [switcherOpen]);
+    const index = CARS.findIndex((c) => c.id === state.carId);
+    const neighbours = [CARS[index - 1], CARS[index + 1]].filter(
+      (c): c is CarConfig => !!c,
+    );
+    const schedule =
+      typeof requestIdleCallback === "function"
+        ? requestIdleCallback
+        : (cb: () => void) => setTimeout(cb, 200);
+    const cancel =
+      typeof cancelIdleCallback === "function"
+        ? cancelIdleCallback
+        : clearTimeout;
+    const handle = schedule(() => {
+      for (const c of neighbours) useGLTF.preload(c.url);
+    });
+    return () => cancel(handle as never);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const paintGroups = useMemo(
     () =>
@@ -121,91 +133,17 @@ export function ConfiguratorPanel() {
     setFocus(focus);
   };
 
+  // The Visualizer takes over the whole viewport — the panel underneath adds
+  // nothing while it's covered (and duplicates the Capturer button visible
+  // through it), so it's simplest to just not render it either.
+  if (state.visualizerOpen) return null;
+
   return (
-    <GlassPanel className="flex w-full max-w-md flex-col gap-6 p-6">
-      <div ref={switcherRef} className="flex flex-col gap-2">
-        <span className="text-[10px] uppercase tracking-[0.2em] text-neutral-500">
-          {dict.configurator.carSwitcher}
-        </span>
+    <GlassPanel className="flex w-full max-w-md flex-col gap-5 p-6">
+      <CarSwitcher carId={state.carId} onSelect={setCar} />
 
-        <div className="relative">
-          <button
-            type="button"
-            onClick={() => {
-              playSound("select");
-              setSwitcherOpen((open) => !open);
-            }}
-            data-cursor={dict.cursor.toggle}
-            aria-expanded={switcherOpen}
-            className={cn(
-              "flex w-full items-center justify-between rounded-lg border bg-white/5 px-3 py-2.5 text-left transition-colors duration-300",
-              switcherOpen
-                ? "border-neutral-50"
-                : "border-white/10 hover:border-white/25",
-            )}
-          >
-            <span className="flex items-baseline gap-2.5">
-              <span className="text-xs uppercase tracking-wide text-neutral-50">
-                {car.name}
-              </span>
-              <span className="text-[9px] uppercase tracking-wide text-neutral-600">
-                {car.years}
-              </span>
-            </span>
-            <ChevronDown
-              aria-hidden
-              className={cn(
-                "h-3.5 w-3.5 text-neutral-400 transition-transform duration-300",
-                switcherOpen && "rotate-180",
-              )}
-            />
-          </button>
-
-          <AnimatePresence>
-            {switcherOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute inset-x-0 top-full z-30 mt-2 grid grid-cols-2 gap-2 rounded-xl border border-white/10 bg-neutral-950/95 p-2 shadow-2xl shadow-black/60 backdrop-blur-2xl"
-              >
-                {CARS.map((c) => (
-                  <button
-                    key={c.id}
-                    type="button"
-                    onClick={() => {
-                      playSound("select");
-                      if (c.id !== state.carId) setCar(c.id);
-                      setSwitcherOpen(false);
-                    }}
-                    data-cursor={dict.cursor.view}
-                    className={cn(
-                      "flex flex-col items-start gap-0.5 rounded-lg border px-3 py-2 text-left transition-colors duration-300",
-                      state.carId === c.id
-                        ? "border-neutral-50 bg-white/5"
-                        : "border-white/10 hover:border-white/25",
-                    )}
-                  >
-                    <span
-                      className={cn(
-                        "text-xs uppercase tracking-wide",
-                        state.carId === c.id
-                          ? "text-neutral-50"
-                          : "text-neutral-300",
-                      )}
-                    >
-                      {c.name}
-                    </span>
-                    <span className="text-[9px] uppercase tracking-wide text-neutral-600">
-                      {c.years}
-                    </span>
-                  </button>
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+      <div className="border-t border-white/10 pt-4">
+        <ToolsBar />
       </div>
 
       {showroomOnly ? (
@@ -278,6 +216,8 @@ export function ConfiguratorPanel() {
                               setPaint(p.id);
                             }}
                             data-cursor={p.label}
+                            aria-label={p.label}
+                            aria-pressed={state.paintId === p.id}
                             className="group flex flex-col items-center gap-2"
                           >
                             <span
@@ -334,6 +274,8 @@ export function ConfiguratorPanel() {
                               setWheelFinish(w.id);
                             }}
                             data-cursor={w.label}
+                            aria-label={w.label}
+                            aria-pressed={state.wheelFinish === w.id}
                             className="group flex flex-col items-center gap-2"
                           >
                             <span
@@ -378,7 +320,11 @@ export function ConfiguratorPanel() {
                                 : "border-white/15",
                             )}
                             style={{ backgroundColor: caliperColors[c] }}
-                            aria-label={c}
+                            aria-label={c
+                              .split("-")
+                              .map((w) => w[0].toUpperCase() + w.slice(1))
+                              .join(" ")}
+                            aria-pressed={state.caliperColor === c}
                           />
                         ))}
                       </div>

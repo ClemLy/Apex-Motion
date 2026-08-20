@@ -8,8 +8,12 @@ import { Studio } from "./Studio";
 import { GltfCar } from "./GltfCar";
 import { CinematicEffects } from "./CinematicEffects";
 import { useRenderGate } from "@/hooks/useRenderGate";
+import { DebugTriangleReporter } from "./DebugTriangleReporter";
 import { paintOptions } from "@/lib/configurator/types";
 import type { CarConfig } from "@/lib/three/carConfigs";
+
+/** Hero field of view — matches the Canvas's own `camera={{ fov: 30 }}` prop below. */
+const HERO_FOV = 30;
 
 /** Slow turntable with a gentle pointer-driven tilt. */
 function Turntable({ children }: { children: ReactNode }) {
@@ -54,7 +58,10 @@ export function HeroCanvas({
       {mounted && (
         <Canvas
           dpr={[1, dprMax]}
-          camera={{ position: car.cameraPresets.exterior.position, fov: 30 }}
+          camera={{
+            position: car.cameraPresets.exterior.position,
+            fov: HERO_FOV,
+          }}
           gl={{ antialias: false, toneMapping: THREE.NoToneMapping }}
           frameloop={active ? "always" : "never"}
         >
@@ -76,6 +83,7 @@ export function HeroCanvas({
 
           <CinematicEffects preset="hero" />
           <AdaptiveDpr pixelated />
+          <DebugTriangleReporter />
         </Canvas>
       )}
     </div>

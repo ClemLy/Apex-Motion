@@ -26,7 +26,10 @@ export function SectionLabel({
       <span className="text-[10px] uppercase tracking-[0.35em] text-neutral-500">
         {kicker}
       </span>
-      <h2 className="text-4xl font-semibold uppercase leading-[0.95] tracking-tighter text-neutral-50 sm:text-6xl">
+      <h2
+        data-text={title}
+        className="glitch-title text-4xl font-semibold uppercase leading-[0.95] tracking-tighter text-neutral-50 sm:text-6xl"
+      >
         {title}
         {titleAccent ? (
           <span className="block text-neutral-500">{titleAccent}</span>

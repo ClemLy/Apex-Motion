@@ -18,6 +18,15 @@ body {
   font-feature-settings: "ss01" 1;
 }
 
+/* Keyboard-only focus ring — mouse/touch activation never triggers
+   :focus-visible, so this stays invisible for the interactions the custom
+   cursor already covers, and appears exactly when someone needs it. */
+:focus-visible {
+  outline: 2px solid #f5f5f5;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
 ::selection {
   background: #f5f5f5;
   color: #020202;
@@ -51,6 +60,79 @@ html[data-custom-cursor="true"] * {
   opacity: 0.035;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/*
+ * Glitch hover for section titles: two colour-channel copies of the same
+ * text, each clipped to an opposing horizontal band and jittered out of
+ * phase — the classic RGB-split slice look, entirely in CSS. `data-text`
+ * carries the content since a pseudo-element's `content` can't read a
+ * sibling's rendered text.
+ */
+.glitch-title {
+  position: relative;
+}
+
+.glitch-title::before,
+.glitch-title::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.glitch-title:hover::before {
+  opacity: 0.8;
+  color: #ff3b3b;
+  clip-path: inset(0 0 55% 0);
+  animation: glitch-slice-a 0.5s steps(2, end) infinite;
+}
+
+.glitch-title:hover::after {
+  opacity: 0.8;
+  color: #4dd0ff;
+  clip-path: inset(45% 0 0 0);
+  animation: glitch-slice-b 0.5s steps(2, end) infinite reverse;
+}
+
+@keyframes glitch-slice-a {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  20% {
+    transform: translate3d(-3px, -1px, 0);
+  }
+  40% {
+    transform: translate3d(3px, 1px, 0);
+  }
+  60% {
+    transform: translate3d(-2px, 0, 0);
+  }
+  80% {
+    transform: translate3d(2px, -1px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes glitch-slice-b {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  25% {
+    transform: translate3d(3px, 1px, 0);
+  }
+  50% {
+    transform: translate3d(-3px, -1px, 0);
+  }
+  75% {
+    transform: translate3d(2px, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
