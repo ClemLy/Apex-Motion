@@ -44,6 +44,7 @@ export function Heritage() {
     <section id="heritage" ref={wrapperRef} className="relative">
       <div className="flex h-screen flex-col justify-center gap-10 overflow-hidden py-16">
         <SectionLabel
+          as="h1"
           kicker={dict.heritage.kicker}
           title={dict.heritage.title}
           subtitle={dict.heritage.subtitle}

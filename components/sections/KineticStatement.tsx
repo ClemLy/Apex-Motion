@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,46 +19,52 @@ gsap.registerPlugin(ScrollTrigger);
 export function KineticStatement() {
   const { dict } = useLanguage();
   const rootRef = useRef<HTMLDivElement>(null);
+  const reducedMotion = usePrefersReducedMotion();
 
   const words = dict.kinetic.words;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const common = {
-        ease: "none" as const,
-        scrollTrigger: {
-          trigger: rootRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1.1,
-        },
-      };
+      // The counter-scrolling shear is exactly the kind of large,
+      // constantly-moving pattern reduced motion asks sites to drop — the
+      // statement itself still fades in, just without the scrub.
+      if (!reducedMotion) {
+        const common = {
+          ease: "none" as const,
+          scrollTrigger: {
+            trigger: rootRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1.1,
+          },
+        };
 
-      // Counter-running rows: the shear between them is the whole effect.
-      gsap.fromTo(
-        ".kinetic-row-a",
-        { xPercent: 6 },
-        { xPercent: -26, ...common },
-      );
-      gsap.fromTo(
-        ".kinetic-row-b",
-        { xPercent: -28 },
-        { xPercent: 8, ...common },
-      );
-      gsap.fromTo(
-        ".kinetic-slice",
-        { xPercent: 22 },
-        { xPercent: -32, ...common },
-      );
+        // Counter-running rows: the shear between them is the whole effect.
+        gsap.fromTo(
+          ".kinetic-row-a",
+          { xPercent: 6 },
+          { xPercent: -26, ...common },
+        );
+        gsap.fromTo(
+          ".kinetic-row-b",
+          { xPercent: -28 },
+          { xPercent: 8, ...common },
+        );
+        gsap.fromTo(
+          ".kinetic-slice",
+          { xPercent: 22 },
+          { xPercent: -32, ...common },
+        );
+      }
 
       // The statement resolves into place as the band centres in the viewport.
       gsap.fromTo(
         ".kinetic-statement",
-        { opacity: 0, y: 30 },
+        { opacity: 0, y: reducedMotion ? 0 : 30 },
         {
           opacity: 1,
           y: 0,
-          duration: 1,
+          duration: reducedMotion ? 0.01 : 1,
           ease: "power3.out",
           scrollTrigger: { trigger: rootRef.current, start: "top 60%" },
         },
@@ -65,7 +72,7 @@ export function KineticStatement() {
     }, rootRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [reducedMotion]);
 
   return (
     <section
@@ -74,7 +81,10 @@ export function KineticStatement() {
       className="relative isolate overflow-hidden py-20"
     >
       {/* Row A: outlined type, the quieter layer. */}
-      <div className="kinetic-row-a flex w-max gap-10 whitespace-nowrap will-change-transform">
+      <div
+        aria-hidden
+        className="kinetic-row-a flex w-max gap-10 whitespace-nowrap will-change-transform"
+      >
         {[...words, ...words].map((word, i) => (
           <span
             key={`a-${i}`}
@@ -86,7 +96,10 @@ export function KineticStatement() {
       </div>
 
       {/* Row B: solid type running the other way. */}
-      <div className="kinetic-row-b -mt-[3vw] flex w-max gap-10 whitespace-nowrap will-change-transform">
+      <div
+        aria-hidden
+        className="kinetic-row-b -mt-[3vw] flex w-max gap-10 whitespace-nowrap will-change-transform"
+      >
         {[...words, ...words].map((word, i) => (
           <span
             key={`b-${i}`}
@@ -98,7 +111,10 @@ export function KineticStatement() {
       </div>
 
       {/* Slice layer: inverts everything it crosses. */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center mix-blend-difference">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-y-0 left-0 flex items-center mix-blend-difference"
+      >
         <div className="kinetic-slice flex w-max gap-10 whitespace-nowrap will-change-transform">
           {[...words, ...words].map((word, i) => (
             <span

@@ -92,10 +92,32 @@ function CompareSlider({ image }: { image: string }) {
       </span>
 
       <div
+        role="slider"
+        tabIndex={0}
+        aria-label={dict.configurator.compare.button}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(position)}
+        aria-orientation="horizontal"
         className="absolute inset-y-0 w-px cursor-ew-resize bg-white/70"
         style={{ left: `${position}%` }}
         onPointerDown={() => {
           dragging.current = true;
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowLeft") {
+            e.preventDefault();
+            setPosition((p) => Math.max(0, p - 5));
+          } else if (e.key === "ArrowRight") {
+            e.preventDefault();
+            setPosition((p) => Math.min(100, p + 5));
+          } else if (e.key === "Home") {
+            e.preventDefault();
+            setPosition(0);
+          } else if (e.key === "End") {
+            e.preventDefault();
+            setPosition(100);
+          }
         }}
       >
         <div className="absolute top-1/2 left-1/2 flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-black/60 backdrop-blur-sm">
@@ -106,6 +128,7 @@ function CompareSlider({ image }: { image: string }) {
       <button
         type="button"
         onClick={exitCompare}
+        aria-label={dict.configurator.compare.exit}
         data-cursor={dict.configurator.compare.exit}
         className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-neutral-300 transition-colors hover:border-white/40 hover:text-neutral-50"
       >

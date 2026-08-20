@@ -127,7 +127,7 @@ export function HudFrame() {
         >
           060 FPS
         </span>
-        <span className="font-mono tracking-[0.2em] text-neutral-600">
+        <span className="font-mono tracking-[0.2em] text-neutral-500">
           WEBGL / R3F
         </span>
       </div>
@@ -140,7 +140,7 @@ export function HudFrame() {
         >
           0.311
         </span>
-        <span className="font-mono tracking-[0.2em] text-neutral-600">
+        <span className="font-mono tracking-[0.2em] text-neutral-500">
           {dict.hud.downforce}{" "}
           <span ref={downforceRef} className="tabular-nums">
             842 N
@@ -156,13 +156,13 @@ export function HudFrame() {
           </span>{" "}
           tr/min
         </span>
-        <span className="font-mono tracking-[0.2em] text-neutral-600">
+        <span className="font-mono tracking-[0.2em] text-neutral-500">
           {dict.hud.coolant}{" "}
           <span ref={coolantRef} className="tabular-nums">
             88.4 C
           </span>
         </span>
-        <span className="font-mono tracking-[0.2em] text-neutral-600">
+        <span className="font-mono tracking-[0.2em] text-neutral-500">
           {dict.hud.oil}{" "}
           <span ref={oilRef} className="tabular-nums">
             5.20 BAR
@@ -180,7 +180,7 @@ export function HudFrame() {
         </span>
         <span
           ref={coordsRef}
-          className="font-mono tabular-nums tracking-[0.2em] text-neutral-600"
+          className="font-mono tabular-nums tracking-[0.2em] text-neutral-500"
         >
           50.3356 N / 6.9475 E
         </span>

@@ -3,6 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
+import { FrameLimiter } from "./FrameLimiter";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+
+/** Slow ambient drift, running behind every page forever — no reason to redraw at the display's full refresh rate. */
+const TARGET_FPS = 30;
 
 /** Full-screen quad in clip space — camera-independent, always fills the viewport. */
 const VERTEX_SHADER = /* glsl */ `
@@ -126,6 +131,7 @@ function FluidQuad() {
   const targetMouse = useRef(new THREE.Vector2(0.5, 0.5));
   const wipe = useRef({ active: false, start: 0, duration: 550 });
   const { size } = useThree();
+  const reducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
     const onPointerMove = (event: PointerEvent) => {
@@ -178,7 +184,11 @@ function FluidQuad() {
       }
     }
 
-    material.uniforms.uTime.value = clock.getElapsedTime();
+    // Freezing uTime kills the autonomous drift while leaving the hover
+    // reveal (driven by real pointer input, not a timer) untouched.
+    if (!reducedMotion) {
+      material.uniforms.uTime.value = clock.getElapsedTime();
+    }
     material.uniforms.uMouse.value.copy(mouse.current);
     material.uniforms.uScroll.value = scroll;
     material.uniforms.uResolution.value.set(size.width, size.height);
@@ -227,8 +237,9 @@ export function FluidBackground() {
       <Canvas
         dpr={1}
         gl={{ antialias: false, alpha: false }}
-        frameloop={active ? "always" : "never"}
+        frameloop={active ? "demand" : "never"}
       >
+        <FrameLimiter fps={TARGET_FPS} />
         <FluidQuad />
       </Canvas>
     </div>

@@ -11,15 +11,22 @@ import { CinematicEffects } from "./CinematicEffects";
 import { ModelLoadOverlay } from "./ModelLoadOverlay";
 import { useRenderGate } from "@/hooks/useRenderGate";
 import { useConfigurator } from "@/lib/configurator/store";
+import { paintOptions, wheelFinishOptions } from "@/lib/configurator/types";
+import { useLanguage } from "@/lib/i18n/LanguageProvider";
 import { getCarConfig } from "@/lib/three/carConfigs";
 import { CaptureHandler } from "./CaptureHandler";
 import { DebugTriangleReporter } from "./DebugTriangleReporter";
+import { FrameLimiter } from "./FrameLimiter";
 import type { GltfCarHandle } from "./GltfCar";
+
+/** Camera parallax reacts to pointer position every render, so this stays higher than the purely-ambient canvases — still well under an uncapped 120Hz+ display. */
+const TARGET_FPS = 60;
 
 export function ConfiguratorCanvas() {
   const { ref, active } = useRenderGate<HTMLDivElement>({ eager: true });
   const [dprMax, setDprMax] = useState(1.8);
   const { state } = useConfigurator();
+  const { dict } = useLanguage();
   const car = getCarConfig(state.carId);
   const carRef = useRef<GltfCarHandle>(null);
   // The Visualizer covers this canvas entirely while open — pausing the
@@ -30,8 +37,21 @@ export function ConfiguratorCanvas() {
   // sidesteps that entirely, at the cost of one dormant context.
   const rendering = active && !state.visualizerOpen;
 
+  const paintLabel =
+    paintOptions.find((p) => p.id === state.paintId)?.label ?? "";
+  const wheelLabel =
+    wheelFinishOptions.find((w) => w.id === state.wheelFinish)?.label ?? "";
+  const viewportLabel = [car.name, paintLabel, wheelLabel]
+    .filter(Boolean)
+    .join(", ");
+
   return (
-    <div ref={ref} className="relative h-full w-full">
+    <div
+      ref={ref}
+      role="img"
+      aria-label={`${viewportLabel}, ${dict.a11y.studioViewport}`}
+      className="relative h-full w-full"
+    >
       <ModelLoadOverlay />
       <Canvas
         dpr={[1, dprMax]}
@@ -40,10 +60,12 @@ export function ConfiguratorCanvas() {
           fov: 32,
         }}
         gl={{ antialias: false, toneMapping: THREE.NoToneMapping }}
-        frameloop={rendering ? "always" : "never"}
+        frameloop={rendering ? "demand" : "never"}
       >
         <color attach="background" args={["#020202"]} />
         <fog attach="fog" args={["#020202", 11, 26]} />
+
+        <FrameLimiter fps={TARGET_FPS} />
 
         <PerformanceMonitor
           onDecline={() => setDprMax(1)}

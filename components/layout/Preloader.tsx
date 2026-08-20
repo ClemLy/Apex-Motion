@@ -202,6 +202,7 @@ export function Preloader() {
       ref={rootRef}
       className="fixed inset-0 z-[200] overflow-hidden"
       role="dialog"
+      aria-modal="true"
       aria-label={dict.preloader.title}
       onClick={handleScreenClick}
       onContextMenu={handleScreenContextMenu}
@@ -234,11 +235,11 @@ export function Preloader() {
         <div className="flex w-full max-w-3xl flex-col gap-5">
           <div className="flex items-end justify-between gap-6">
             <span className="text-sm font-semibold uppercase tracking-[0.35em] text-neutral-100">
-              APEX <span className="text-neutral-600">{"//"}</span> MOTION
+              APEX <span className="text-neutral-500">{"//"}</span> MOTION
             </span>
             <span className="font-mono text-5xl leading-none tabular-nums text-neutral-50 sm:text-7xl">
               <span ref={counterRef}>000.0</span>
-              <span className="ml-2 text-base text-neutral-600">%</span>
+              <span className="ml-2 text-base text-neutral-500">%</span>
             </span>
           </div>
 
@@ -278,7 +279,7 @@ export function Preloader() {
                 <span className="relative">{dict.preloader.enter}</span>
                 <span className="relative h-1 w-1 rounded-full bg-emerald-400" />
               </button>
-              <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-neutral-600">
+              <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-neutral-500">
                 {dict.preloader.hint}
               </span>
             </>

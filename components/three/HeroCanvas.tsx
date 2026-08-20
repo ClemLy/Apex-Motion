@@ -7,13 +7,18 @@ import * as THREE from "three";
 import { Studio } from "./Studio";
 import { GltfCar } from "./GltfCar";
 import { CinematicEffects } from "./CinematicEffects";
+import { FrameLimiter } from "./FrameLimiter";
 import { useRenderGate } from "@/hooks/useRenderGate";
 import { DebugTriangleReporter } from "./DebugTriangleReporter";
 import { paintOptions } from "@/lib/configurator/types";
+import { useLanguage } from "@/lib/i18n/LanguageProvider";
 import type { CarConfig } from "@/lib/three/carConfigs";
 
 /** Hero field of view — matches the Canvas's own `camera={{ fov: 30 }}` prop below. */
 const HERO_FOV = 30;
+
+/** Purely a slow turntable + drift — nothing here needs the display's full refresh rate. */
+const TARGET_FPS = 30;
 
 /** Slow turntable with a gentle pointer-driven tilt. */
 function Turntable({ children }: { children: ReactNode }) {
@@ -44,17 +49,29 @@ const SHOWCASE_PAINT =
 export function HeroCanvas({
   car,
   eager = false,
+  decorative = false,
 }: {
   car: CarConfig;
   /** Pass true only for the instance guaranteed to be the first thing on screen. */
   eager?: boolean;
+  /** Pass true when this canvas sits inside a link/button that already has
+   * its own accessible name — the wrapper's role="img" description would
+   * otherwise prefix that name with a redundant, confusing car description. */
+  decorative?: boolean;
 }) {
   const { ref, active, mounted } = useRenderGate<HTMLDivElement>({ eager });
+  const { dict } = useLanguage();
   // Resolution ceiling drops on weak hardware, so frame rate holds instead.
   const [dprMax, setDprMax] = useState(1.6);
 
   return (
-    <div ref={ref} className="h-full w-full">
+    <div
+      ref={ref}
+      {...(decorative
+        ? { "aria-hidden": true }
+        : { role: "img", "aria-label": `${car.name}, ${dict.a11y.heroShowcase}` })}
+      className="h-full w-full"
+    >
       {mounted && (
         <Canvas
           dpr={[1, dprMax]}
@@ -63,10 +80,12 @@ export function HeroCanvas({
             fov: HERO_FOV,
           }}
           gl={{ antialias: false, toneMapping: THREE.NoToneMapping }}
-          frameloop={active ? "always" : "never"}
+          frameloop={active ? "demand" : "never"}
         >
           <color attach="background" args={["#020202"]} />
           <fog attach="fog" args={["#020202", 9, 22]} />
+
+          <FrameLimiter fps={TARGET_FPS} />
 
           <PerformanceMonitor
             onDecline={() => setDprMax(1)}

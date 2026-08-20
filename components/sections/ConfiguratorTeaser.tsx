@@ -52,7 +52,7 @@ export function ConfiguratorTeaser() {
         className="teaser-reveal group relative block h-[70vh] w-full overflow-hidden rounded-3xl border border-white/10"
       >
         <div className="absolute inset-0">
-          <HeroCanvas car={TURBO_930_CONFIG} />
+          <HeroCanvas car={TURBO_930_CONFIG} decorative />
         </div>
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#030303] via-transparent to-transparent" />
         <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">

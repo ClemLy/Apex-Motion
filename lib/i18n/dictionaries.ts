@@ -11,6 +11,14 @@ export const dictionaries = {
       heritage: "Héritage",
       audioOn: "Audio activé",
       audioOff: "Audio coupé",
+      menuOpen: "Ouvrir le menu",
+      menuClose: "Fermer le menu",
+      changeLanguage: "Passer en anglais",
+    },
+    a11y: {
+      heroShowcase: "vue décorative en rotation, ne réagit pas au clavier",
+      studioViewport:
+        "aperçu du Studio, se met à jour selon les réglages choisis",
     },
     cursor: {
       drag: "Glisser",
@@ -173,6 +181,13 @@ export const dictionaries = {
       heritage: "Heritage",
       audioOn: "Audio on",
       audioOff: "Audio off",
+      menuOpen: "Open menu",
+      menuClose: "Close menu",
+      changeLanguage: "Switch to French",
+    },
+    a11y: {
+      heroShowcase: "decorative rotating view, not keyboard-interactive",
+      studioViewport: "Studio preview, updates live with your selections",
     },
     cursor: {
       drag: "Drag",

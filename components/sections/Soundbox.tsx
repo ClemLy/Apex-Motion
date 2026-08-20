@@ -135,12 +135,23 @@ export function Soundbox() {
           }}
           onPointerUp={() => setRevving(false)}
           onPointerLeave={() => setRevving(false)}
+          onKeyDown={(e) => {
+            if (e.key !== "Enter" && e.key !== " ") return;
+            e.preventDefault();
+            if (e.repeat) return;
+            if (!enabled) toggleEnabled();
+            setRevving(true);
+          }}
+          onKeyUp={(e) => {
+            if (e.key !== "Enter" && e.key !== " ") return;
+            setRevving(false);
+          }}
           data-cursor={dict.cursor.rev}
           className="select-none rounded-full border border-white/15 bg-neutral-50 px-10 py-4 text-[11px] uppercase tracking-[0.25em] text-neutral-950 shadow-[0_0_40px_-8px_rgba(255,255,255,0.5)] transition-transform duration-300 active:scale-95"
         >
           {dict.soundbox.rev}
         </button>
-        <span className="text-[10px] uppercase tracking-[0.2em] text-neutral-600">
+        <span className="text-[10px] uppercase tracking-[0.2em] text-neutral-500">
           {dict.soundbox.release}
         </span>
 

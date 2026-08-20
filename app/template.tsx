@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useState, type ReactNode } from "react";
 import { useIntro } from "@/lib/intro/IntroProvider";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 /** Matches the envelope FluidBackground's uWipe uniform animates over. */
 const WIPE_DURATION_MS = 550;
@@ -24,23 +25,22 @@ export default function Template({ children }: { children: ReactNode }) {
   // fire the wipe when the Preloader is dismissed mid-session, which isn't
   // a navigation.
   const [isRealNavigation] = useState(() => hasEntered);
+  const reducedMotion = usePrefersReducedMotion();
+  const animated = isRealNavigation && !reducedMotion;
 
   useEffect(() => {
-    if (!isRealNavigation) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!animated) return;
     window.dispatchEvent(
       new CustomEvent("apex:page-wipe", {
         detail: { duration: WIPE_DURATION_MS },
       }),
     );
-  }, [isRealNavigation]);
+  }, [animated]);
 
   return (
     <motion.div
-      initial={isRealNavigation ? { opacity: 0, y: 12 } : false}
-      animate={
-        isRealNavigation ? { opacity: [0, 0, 1], y: [12, 12, 0] } : undefined
-      }
+      initial={animated ? { opacity: 0, y: 12 } : false}
+      animate={animated ? { opacity: [0, 0, 1], y: [12, 12, 0] } : undefined}
       transition={{
         duration: WIPE_DURATION_MS / 1000,
         times: [0, WIPE_PEAK_AT, 1],

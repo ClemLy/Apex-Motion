@@ -136,7 +136,7 @@ export function Hero() {
               },
             ].map((item) => (
               <div key={item.label} className="flex flex-col gap-1.5">
-                <span className="text-[9px] uppercase tracking-[0.3em] text-neutral-600">
+                <span className="text-[9px] uppercase tracking-[0.3em] text-neutral-500">
                   {item.label}
                 </span>
                 <span className="font-mono text-lg tabular-nums leading-none text-neutral-100">
@@ -168,7 +168,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="hero-fade flex items-center gap-2 pt-2 text-[9px] uppercase tracking-[0.35em] text-neutral-600">
+        <div className="hero-fade flex items-center gap-2 pt-2 text-[9px] uppercase tracking-[0.35em] text-neutral-500">
           <MoveDown className="h-3 w-3 animate-bounce" aria-hidden />
           {dict.hud.scroll}
         </div>

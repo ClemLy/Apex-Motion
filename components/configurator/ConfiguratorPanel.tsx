@@ -203,7 +203,7 @@ export function ConfiguratorPanel() {
                   </span>
                   {paintGroups.map((group) => (
                     <div key={group.finish} className="flex flex-col gap-2.5">
-                      <span className="text-[9px] uppercase tracking-wide text-neutral-600">
+                      <span className="text-[9px] uppercase tracking-wide text-neutral-500">
                         {group.label}
                       </span>
                       <div className="grid grid-cols-3 gap-3">
@@ -426,7 +426,7 @@ function ShowroomSection({
 function SpecField({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex flex-col gap-1">
-      <span className="text-[9px] uppercase tracking-wide text-neutral-600">
+      <span className="text-[9px] uppercase tracking-wide text-neutral-500">
         {label}
       </span>
       <span className="text-xs text-neutral-300">{value}</span>

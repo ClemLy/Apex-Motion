@@ -1,6 +1,13 @@
 "use client";
 
-import { Suspense, useLayoutEffect, useMemo, useState } from "react";
+import {
+  Suspense,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import {
   AdaptiveDpr,
@@ -16,6 +23,7 @@ import { ConfiguratorCar } from "./ConfiguratorCar";
 import { CinematicEffects } from "./CinematicEffects";
 import { CaptureHandler } from "./CaptureHandler";
 import { DebugTriangleReporter } from "./DebugTriangleReporter";
+import { FrameLimiter } from "./FrameLimiter";
 import { useConfigurator } from "@/lib/configurator/store";
 import { useCapture } from "@/lib/capture/CaptureProvider";
 import { useUISound } from "@/hooks/useUISound";
@@ -24,6 +32,10 @@ import { getCarConfig, type CarConfig } from "@/lib/three/carConfigs";
 import { frameObject } from "@/lib/three/frameCamera";
 
 const VISUALIZER_FOV = 32;
+
+/** OrbitControls invalidates on its own during an active drag, so this only
+ * throttles the otherwise-continuous idle render loop between interactions. */
+const TARGET_FPS = 60;
 
 /**
  * Sets the initial camera position/orbit target once the model is loaded
@@ -80,11 +92,44 @@ export function VisualizerCanvas() {
   } | null>(null);
 
   const car = useMemo(() => getCarConfig(state.carId), [state.carId]);
+  const captureButtonRef = useRef<HTMLButtonElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Escape closes the overlay from anywhere, matching the "any gesture gets
+  // you in/out" convenience already used elsewhere (Preloader, CarSwitcher).
+  useEffect(() => {
+    if (!state.visualizerOpen) return;
+    closeButtonRef.current?.focus();
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        toggleVisualizer();
+        return;
+      }
+      // Simple two-item focus trap: Capturer and Fermer are the only
+      // interactive elements this full-screen view exposes, so Tab and
+      // Shift+Tab both just toggle which one is focused.
+      if (e.key === "Tab") {
+        e.preventDefault();
+        const other =
+          document.activeElement === closeButtonRef.current
+            ? captureButtonRef.current
+            : closeButtonRef.current;
+        other?.focus();
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [state.visualizerOpen, toggleVisualizer]);
 
   if (!state.visualizerOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-40 bg-[#020202]">
+    <div
+      className="fixed inset-0 z-40 bg-[#020202]"
+      role="dialog"
+      aria-modal="true"
+      aria-label={car.name}
+    >
       <Canvas
         dpr={[1, dprMax]}
         camera={{
@@ -92,9 +137,12 @@ export function VisualizerCanvas() {
           fov: VISUALIZER_FOV,
         }}
         gl={{ antialias: false, toneMapping: THREE.NoToneMapping }}
+        frameloop="demand"
       >
         <color attach="background" args={["#020202"]} />
         <fog attach="fog" args={["#020202", 11, 26]} />
+
+        <FrameLimiter fps={TARGET_FPS} />
 
         <PerformanceMonitor
           onDecline={() => setDprMax(1)}
@@ -140,17 +188,20 @@ export function VisualizerCanvas() {
 
         <div className="pointer-events-auto flex items-center gap-3">
           <button
+            ref={captureButtonRef}
             type="button"
             onClick={() => {
               playSound("toggle");
               requestCapture();
             }}
             data-cursor={dict.configurator.capture}
+            aria-label={dict.configurator.capture}
             className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-neutral-950/70 text-neutral-300 backdrop-blur-xl transition-colors hover:border-white/25 hover:text-neutral-50"
           >
             <Camera className="h-4 w-4" aria-hidden />
           </button>
           <button
+            ref={closeButtonRef}
             type="button"
             onClick={() => {
               playSound("toggle");
@@ -165,7 +216,7 @@ export function VisualizerCanvas() {
         </div>
       </div>
 
-      <p className="pointer-events-none absolute inset-x-0 bottom-8 text-center text-[10px] uppercase tracking-[0.25em] text-neutral-600">
+      <p className="pointer-events-none absolute inset-x-0 bottom-8 text-center text-[10px] uppercase tracking-[0.25em] text-neutral-500">
         {dict.configurator.visualizer.hint}
       </p>
     </div>

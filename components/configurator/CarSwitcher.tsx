@@ -128,7 +128,7 @@ export function CarSwitcher({
             <span className="text-xs uppercase tracking-wide text-neutral-50">
               {car.name}
             </span>
-            <span className="text-[9px] uppercase tracking-wide text-neutral-600">
+            <span className="text-[9px] uppercase tracking-wide text-neutral-500">
               {car.years}
             </span>
           </span>
@@ -185,7 +185,7 @@ export function CarSwitcher({
                   >
                     {c.name}
                   </span>
-                  <span className="text-[9px] uppercase tracking-wide text-neutral-600">
+                  <span className="text-[9px] uppercase tracking-wide text-neutral-500">
                     {c.years}
                   </span>
                 </button>

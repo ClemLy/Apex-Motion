@@ -6,6 +6,7 @@ import * as THREE from "three";
 import { useConfigurator } from "@/lib/configurator/store";
 import type { CarConfig } from "@/lib/three/carConfigs";
 import { stepSpring } from "@/lib/three/springs";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 /**
  * Spring constants.
@@ -37,6 +38,7 @@ const MAX_ROLL = 0.055;
  */
 export function CameraRig({ car }: { car: CarConfig }) {
   const { state } = useConfigurator();
+  const reducedMotion = usePrefersReducedMotion();
 
   const position = useRef(new THREE.Vector3(4.6, 1.9, 4.9));
   const positionVelocity = useRef(new THREE.Vector3());
@@ -67,9 +69,12 @@ export function CameraRig({ car }: { car: CarConfig }) {
     goalPosition.current.set(...preset.position);
     goalTarget.current.set(...preset.target);
 
-    // Pointer parallax, orbiting slightly around the focus point.
-    goalPosition.current.x += pointer.x * PARALLAX;
-    goalPosition.current.y += pointer.y * PARALLAX * 0.45;
+    // Pointer parallax, orbiting slightly around the focus point — a known
+    // vestibular trigger, so it's the first thing reduced motion drops.
+    if (!reducedMotion) {
+      goalPosition.current.x += pointer.x * PARALLAX;
+      goalPosition.current.y += pointer.y * PARALLAX * 0.45;
+    }
 
     stepSpring(
       position.current,
@@ -92,6 +97,20 @@ export function CameraRig({ car }: { car: CarConfig }) {
 
     camera.position.copy(position.current);
     camera.lookAt(target.current);
+
+    // Simulated G-force (lens roll + FOV punch tied to camera speed) is the
+    // other half of the vestibular-trigger pair with pointer parallax above
+    // — skip it too under reduced motion, camera just settles plainly.
+    if (reducedMotion) {
+      if (
+        camera instanceof THREE.PerspectiveCamera &&
+        camera.fov !== BASE_FOV
+      ) {
+        camera.fov = BASE_FOV;
+        camera.updateProjectionMatrix();
+      }
+      return;
+    }
 
     const speed = positionVelocity.current.length();
 

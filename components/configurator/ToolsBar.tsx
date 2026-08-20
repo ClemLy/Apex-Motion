@@ -23,6 +23,7 @@ function ToolButton({
       type="button"
       onClick={onClick}
       aria-pressed={active}
+      aria-label={label}
       data-cursor={label}
       className={cn(
         "flex h-9 w-9 items-center justify-center rounded-lg border transition-colors duration-300",
