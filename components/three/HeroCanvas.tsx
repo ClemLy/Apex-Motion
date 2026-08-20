@@ -69,7 +69,10 @@ export function HeroCanvas({
       ref={ref}
       {...(decorative
         ? { "aria-hidden": true }
-        : { role: "img", "aria-label": `${car.name}, ${dict.a11y.heroShowcase}` })}
+        : {
+            role: "img",
+            "aria-label": `${car.name}, ${dict.a11y.heroShowcase}`,
+          })}
       className="h-full w-full"
     >
       {mounted && (
