@@ -128,48 +128,48 @@ export function ConfiguratorPanel() {
           {dict.configurator.carSwitcher}
         </span>
 
-        <button
-          type="button"
-          onClick={() => {
-            playSound("select");
-            setSwitcherOpen((open) => !open);
-          }}
-          data-cursor={dict.cursor.toggle}
-          aria-expanded={switcherOpen}
-          className={cn(
-            "flex items-center justify-between rounded-lg border bg-white/5 px-3 py-2.5 text-left transition-colors duration-300",
-            switcherOpen
-              ? "border-neutral-50"
-              : "border-white/10 hover:border-white/25",
-          )}
-        >
-          <span className="flex items-baseline gap-2.5">
-            <span className="text-xs uppercase tracking-wide text-neutral-50">
-              {car.name}
-            </span>
-            <span className="text-[9px] uppercase tracking-wide text-neutral-600">
-              {car.years}
-            </span>
-          </span>
-          <ChevronDown
-            aria-hidden
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => {
+              playSound("select");
+              setSwitcherOpen((open) => !open);
+            }}
+            data-cursor={dict.cursor.toggle}
+            aria-expanded={switcherOpen}
             className={cn(
-              "h-3.5 w-3.5 text-neutral-400 transition-transform duration-300",
-              switcherOpen && "rotate-180",
+              "flex w-full items-center justify-between rounded-lg border bg-white/5 px-3 py-2.5 text-left transition-colors duration-300",
+              switcherOpen
+                ? "border-neutral-50"
+                : "border-white/10 hover:border-white/25",
             )}
-          />
-        </button>
+          >
+            <span className="flex items-baseline gap-2.5">
+              <span className="text-xs uppercase tracking-wide text-neutral-50">
+                {car.name}
+              </span>
+              <span className="text-[9px] uppercase tracking-wide text-neutral-600">
+                {car.years}
+              </span>
+            </span>
+            <ChevronDown
+              aria-hidden
+              className={cn(
+                "h-3.5 w-3.5 text-neutral-400 transition-transform duration-300",
+                switcherOpen && "rotate-180",
+              )}
+            />
+          </button>
 
-        <AnimatePresence initial={false}>
-          {switcherOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
-              className="overflow-hidden"
-            >
-              <div className="grid grid-cols-2 gap-2 pt-2">
+          <AnimatePresence>
+            {switcherOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: -6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute inset-x-0 top-full z-30 mt-2 grid grid-cols-2 gap-2 rounded-xl border border-white/10 bg-neutral-950/95 p-2 shadow-2xl shadow-black/60 backdrop-blur-2xl"
+              >
                 {CARS.map((c) => (
                   <button
                     key={c.id}
@@ -202,10 +202,10 @@ export function ConfiguratorPanel() {
                     </span>
                   </button>
                 ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
 
       {showroomOnly ? (

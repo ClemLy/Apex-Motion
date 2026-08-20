@@ -1,4 +1,5 @@
 import type { CameraFocus } from "@/lib/configurator/types";
+import { MODEL_URLS } from "./modelManifest";
 
 type CameraPreset = {
   position: [number, number, number];
@@ -44,7 +45,7 @@ export const GT3RS_CONFIG: CarConfig = {
   id: "gt3rs",
   name: "911 GT3 RS",
   years: "2023",
-  url: "/models/porsche-gt3-rs.glb",
+  url: MODEL_URLS["porsche-gt3-rs"],
   scale: 1,
   // "carPaint.003" (body) and "carPaint.008" (wing) — both catch on substring.
   paintMaterials: [{ match: "carPaint" }],
@@ -72,7 +73,7 @@ export const TURBO_930_CONFIG: CarConfig = {
   id: "930-turbo",
   name: "911 Turbo 930",
   years: "1975",
-  url: "/models/porsche-930-turbo.glb",
+  url: MODEL_URLS["porsche-930-turbo"],
   scale: 1,
   paintMaterials: [{ match: "paint", exact: true }],
   wheelMaterial: { match: "930_rim" },
@@ -88,12 +89,12 @@ export const CAYMAN_GT4_CONFIG: CarConfig = {
   id: "718-gt4",
   name: "718 Cayman GT4",
   years: "2020",
-  url: "/models/porsche-718-gt4.glb",
+  url: MODEL_URLS["porsche-718-gt4"],
   scale: 1,
   paintMaterials: [{ match: "Porsche_718CaymanGT4_2020Paint_Material" }],
-  wheelMaterial: {
-    match: "Porsche_718CaymanGT4_2020_Wheel1A_3D_3DWheel1A_Material",
-  },
+  // The source models the whole wheel, tyre included, under one material —
+  // the optimize pipeline splits the rim off so recolouring spares the rubber.
+  wheelMaterial: { match: "GT4_RimFace", exact: true },
   // Substring catches both CALIP_1 and CALIP_2, recoloring together.
   caliperMaterial: { match: "CALIP" },
   cameraPresets: {
@@ -107,11 +108,14 @@ export const CARRERA_4S_CONFIG: CarConfig = {
   id: "911-carrera-4s",
   name: "911 Carrera 4S",
   years: "2019",
-  url: "/models/porsche-911-carrera-4s.glb",
+  url: MODEL_URLS["porsche-911-carrera-4s"],
   scale: 1,
   paintMaterials: [{ match: "paint", exact: true }],
-  // No dedicated wheel/caliper material could be identified with confidence
-  // (the closest candidate, "silver", is shared with other trim) — paint-only.
+  // The rims sat in two nodes sharing the generic "silver" brightwork material
+  // (mirrors, trim); the optimize pipeline moves them onto their own material.
+  wheelMaterial: { match: "Carrera4S_RimFace", exact: true },
+  // Matched exactly: a plain "Material" also exists on this model.
+  caliperMaterial: { match: "Material.001", exact: true },
   cameraPresets: {
     exterior: { position: [5.53, 1.54, 5.89], target: [0, 0.43, 0] },
     rear: { position: [-4.03, 1.12, -5.21], target: [0, 0.48, -1.99] },
@@ -123,7 +127,7 @@ export const PORSCHE_917K_CONFIG: CarConfig = {
   id: "917k-lm",
   name: "917K",
   years: "1970",
-  url: "/models/porsche-917k-lm.glb",
+  url: MODEL_URLS["porsche-917k-lm"],
   scale: 1,
   // Livery is baked entirely into the texture (neutral [1,1,1] base color) —
   // recoloring would tint the historic paint scheme itself. Showroom-only.
@@ -140,9 +144,11 @@ export const SPYDER_918_CONFIG: CarConfig = {
   id: "918-spyder",
   name: "918 Spyder",
   years: "2015",
-  url: "/models/porsche-918-spyder.glb",
+  url: MODEL_URLS["porsche-918-spyder"],
   scale: 1,
   paintMaterials: [{ match: "Body_Paint_-_GT_Silver_Metalic" }],
+  // Generic name, so matched exactly — "material" and "material_0" also exist.
+  wheelMaterial: { match: "material_42", exact: true },
   caliperMaterial: { match: "Caliper" },
   cameraPresets: {
     exterior: { position: [5.67, 1.62, 6.05], target: [0, 0.45, 0] },
@@ -155,7 +161,7 @@ export const MISSION_R_CONFIG: CarConfig = {
   id: "mission-r",
   name: "Mission R",
   years: "2021",
-  url: "/models/porsche-mission-r.glb",
+  url: MODEL_URLS["porsche-mission-r"],
   scale: 1,
   // Fixed concept livery baked into the texture, same reasoning as the 917K.
   paintMaterials: [],
@@ -171,14 +177,19 @@ export const MISSION_R_CONFIG: CarConfig = {
   },
 };
 
+/**
+ * Ordered oldest to newest, so the switcher reads as a timeline of the range.
+ * The studio still opens on the GT3 RS — that comes from
+ * defaultConfiguratorState.carId, not from this order.
+ */
 export const CARS: CarConfig[] = [
-  GT3RS_CONFIG,
-  TURBO_930_CONFIG,
-  CAYMAN_GT4_CONFIG,
-  CARRERA_4S_CONFIG,
   PORSCHE_917K_CONFIG,
+  TURBO_930_CONFIG,
   SPYDER_918_CONFIG,
+  CARRERA_4S_CONFIG,
+  CAYMAN_GT4_CONFIG,
   MISSION_R_CONFIG,
+  GT3RS_CONFIG,
 ];
 
 export function getCarConfig(id: string): CarConfig {
