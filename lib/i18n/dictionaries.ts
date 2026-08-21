@@ -7,7 +7,6 @@ export const dictionaries = {
     nav: {
       home: "Accueil",
       configurator: "Studio",
-      soundbox: "Sonorité",
       heritage: "Héritage",
       audioOn: "Audio activé",
       audioOff: "Audio coupé",
@@ -79,11 +78,11 @@ export const dictionaries = {
       },
     },
     configurator: {
-      kicker: "Module 01 / studio en temps réel — modèles Porsche réels",
+      kicker: "Module 01 / studio en temps réel",
       title: "STUDIO DE",
       titleAccent: "PERSONNALISATION",
       subtitle:
-        "Chaque changement est rendu en direct sur un modèle 3D scanné. Aucune image statique, uniquement de la géométrie et des matériaux dynamiques.",
+        "Chaque choix prend vie en direct sur la carrosserie scannée de la voiture. Rien n'est figé, tout répond au geste.",
       carSwitcher: "Modèle",
       tabs: {
         paint: "Peinture",
@@ -109,7 +108,7 @@ export const dictionaries = {
         red: "Guards Red",
       },
       showroom: {
-        notice: "Pièce de vitrine — personnalisation indisponible",
+        notice: "Pièce de vitrine, personnalisation indisponible",
         exterior: "Extérieur",
         rear: "Arrière",
         wheels: "Jantes",
@@ -128,24 +127,24 @@ export const dictionaries = {
         button: "Visualiser",
         kicker: "Vue libre",
         close: "Fermer",
-        hint: "Glisser pour orbiter — molette pour zoomer",
+        hint: "Glisser pour orbiter, molette pour zoomer",
       },
       resetLabel: "Réinitialiser",
       loadingModel: "Chargement du modèle 3D",
     },
-    soundbox: {
-      kicker: "Module 02 / laboratoire sonore",
-      title: "SONORITÉ",
-      titleAccent: "MOTEUR",
+    telemetry: {
+      kicker: "Module 02 / relevé de tour",
+      title: "TRACÉ",
+      titleAccent: "TÉLÉMÉTRIE",
       subtitle:
-        "Testez la sonorité de différentes lignes d'échappement. Synthèse audio en temps réel, aucun fichier préenregistré.",
-      lines: {
-        oem: "Origine constructeur",
-        titanium: "Titane course",
-        straight: "Ligne directe",
+        "Vitesse, freinages, appuis latéraux : une interprétation du tour, pas un relevé réel.",
+      trackName: "Nürburgring Nordschleife",
+      stats: {
+        speed: "Vitesse",
+        gForce: "Force G",
+        brake: "Freinage",
       },
-      rev: "Maintenir pour accélérer",
-      release: "Relâcher pour retomber",
+      sectorLabel: "Secteur",
     },
     heritage: {
       kicker: "Module 03 / archives",
@@ -177,7 +176,6 @@ export const dictionaries = {
     nav: {
       home: "Home",
       configurator: "Studio",
-      soundbox: "Sound",
       heritage: "Heritage",
       audioOn: "Audio on",
       audioOff: "Audio off",
@@ -248,11 +246,11 @@ export const dictionaries = {
       },
     },
     configurator: {
-      kicker: "Module 01 / real-time studio — real Porsche scans",
+      kicker: "Module 01 / real-time studio",
       title: "CUSTOMIZATION",
       titleAccent: "STUDIO",
       subtitle:
-        "Every change renders live on a scanned 3D model. No static imagery, only dynamic geometry and materials.",
+        "Every choice comes alive on the car's own scanned body. Nothing here is static, everything answers to your hand.",
       carSwitcher: "Model",
       tabs: {
         paint: "Paint",
@@ -278,7 +276,7 @@ export const dictionaries = {
         red: "Guards Red",
       },
       showroom: {
-        notice: "Showroom piece — customization unavailable",
+        notice: "Showroom piece, customization unavailable",
         exterior: "Exterior",
         rear: "Rear",
         wheels: "Wheels",
@@ -297,24 +295,24 @@ export const dictionaries = {
         button: "Visualize",
         kicker: "Free view",
         close: "Close",
-        hint: "Drag to orbit — scroll to zoom",
+        hint: "Drag to orbit, scroll to zoom",
       },
       resetLabel: "Reset",
       loadingModel: "Loading 3D model",
     },
-    soundbox: {
-      kicker: "Module 02 / sound lab",
-      title: "ENGINE",
-      titleAccent: "SOUND",
+    telemetry: {
+      kicker: "Module 02 / lap readout",
+      title: "TRACK",
+      titleAccent: "TELEMETRY",
       subtitle:
-        "Test different exhaust lines. Real-time audio synthesis, no prerecorded files.",
-      lines: {
-        oem: "Factory OEM",
-        titanium: "Titanium race",
-        straight: "Straight pipe",
+        "Speed, braking, lateral G: an interpretation of the lap, not a real readout.",
+      trackName: "Nürburgring Nordschleife",
+      stats: {
+        speed: "Speed",
+        gForce: "G-Force",
+        brake: "Braking",
       },
-      rev: "Hold to rev",
-      release: "Release to fall",
+      sectorLabel: "Sector",
     },
     heritage: {
       kicker: "Module 03 / archive",

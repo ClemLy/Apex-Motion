@@ -1,7 +1,7 @@
 import { Hero } from "@/components/sections/Hero";
 import { KineticStatement } from "@/components/sections/KineticStatement";
 import { ConfiguratorTeaser } from "@/components/sections/ConfiguratorTeaser";
-import { Soundbox } from "@/components/sections/Soundbox";
+import { LapTelemetry } from "@/components/sections/LapTelemetry";
 import { Heritage } from "@/components/sections/Heritage";
 
 export default function Home() {
@@ -10,7 +10,7 @@ export default function Home() {
       <Hero />
       <KineticStatement />
       <ConfiguratorTeaser />
-      <Soundbox />
+      <LapTelemetry />
       <Heritage />
     </>
   );
