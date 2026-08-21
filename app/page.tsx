@@ -2,7 +2,8 @@ import { Hero } from "@/components/sections/Hero";
 import { KineticStatement } from "@/components/sections/KineticStatement";
 import { ConfiguratorTeaser } from "@/components/sections/ConfiguratorTeaser";
 import { LapTelemetry } from "@/components/sections/LapTelemetry";
-import { Heritage } from "@/components/sections/Heritage";
+import { SilhouetteEvolution } from "@/components/sections/SilhouetteEvolution";
+import { AeroFlow } from "@/components/sections/AeroFlow";
 
 export default function Home() {
   return (
@@ -11,7 +12,8 @@ export default function Home() {
       <KineticStatement />
       <ConfiguratorTeaser />
       <LapTelemetry />
-      <Heritage />
+      <AeroFlow />
+      <SilhouetteEvolution />
     </>
   );
 }

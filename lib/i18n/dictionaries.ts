@@ -146,8 +146,24 @@ export const dictionaries = {
       },
       sectorLabel: "Secteur",
     },
+    silhouette: {
+      kicker: "Module 04 / continuité de forme",
+      title: "LA SILHOUETTE",
+      titleAccent: "CONTINUE",
+      subtitle:
+        "Sept voitures du Studio, un seul profil qui n'a jamais cessé de se retoucher.",
+    },
+    aero: {
+      kicker: "Module 03 / soufflerie",
+      title: "LIGNES",
+      titleAccent: "D'APPUI",
+      subtitle:
+        "Cx et appui aérodynamique, une lecture illustrative — pas une fiche technique certifiée de la GT3 RS.",
+      cxLabel: "Traînée Cx",
+      downforceLabel: "Appui",
+    },
     heritage: {
-      kicker: "Module 03 / archives",
+      kicker: "Module 05 / archives",
       title: "HÉRITAGE",
       subtitle:
         "Sept décennies d'ingénierie flat-6, de la 356 originelle à la GT3 RS moderne.",
@@ -160,7 +176,7 @@ export const dictionaries = {
         models: "Modèles dans le Studio",
       },
       fleet: {
-        kicker: "Module 04 / la collection",
+        kicker: "Module 06 / la collection",
         title: "LE GARAGE",
         subtitle:
           "Les sept voitures du Studio, dans l'ordre où l'ingénierie flat-6 les a vues naître.",
@@ -314,8 +330,24 @@ export const dictionaries = {
       },
       sectorLabel: "Sector",
     },
+    silhouette: {
+      kicker: "Module 04 / continuity of form",
+      title: "THE SHAPE",
+      titleAccent: "NEVER BREAKS",
+      subtitle:
+        "Seven cars from the Studio, one profile that never stopped revising itself.",
+    },
+    aero: {
+      kicker: "Module 03 / wind tunnel",
+      title: "LINES",
+      titleAccent: "OF DOWNFORCE",
+      subtitle:
+        "Cx and aero downforce, an illustrative reading — not a certified spec sheet for the GT3 RS.",
+      cxLabel: "Drag Cx",
+      downforceLabel: "Downforce",
+    },
     heritage: {
-      kicker: "Module 03 / archive",
+      kicker: "Module 05 / archive",
       title: "HERITAGE",
       subtitle:
         "Seven decades of flat-6 engineering, from the original 356 to the modern GT3 RS.",
@@ -328,7 +360,7 @@ export const dictionaries = {
         models: "Models in the Studio",
       },
       fleet: {
-        kicker: "Module 04 / the collection",
+        kicker: "Module 06 / the collection",
         title: "THE GARAGE",
         subtitle:
           "The Studio's seven cars, in the order flat-6 engineering brought them into being.",

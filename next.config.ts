@@ -26,6 +26,16 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        // Content-hashed by scripts/capture-fleet-images.mjs, same reasoning as /models/*.
+        source: "/silhouettes/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: `public, max-age=${YEAR_IN_SECONDS}, immutable`,
+          },
+        ],
+      },
     ];
   },
 };
