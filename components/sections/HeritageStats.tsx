@@ -73,15 +73,28 @@ export function HeritageStats() {
   const stats = useStats();
 
   return (
-    <section className="relative flex flex-col gap-10 px-6 py-24 sm:px-10">
-      <SectionLabel
-        kicker={dict.heritage.statsKicker}
-        title={dict.heritage.statsTitle}
-      />
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-        {stats.map((stat) => (
-          <StatCard key={stat.label} {...stat} />
+    <section className="relative flex flex-col gap-16 px-6 py-24 sm:px-10">
+      <div className="mx-auto flex max-w-2xl flex-col gap-5">
+        <span className="text-[10px] uppercase tracking-[0.35em] text-neutral-500">
+          {dict.heritage.story.kicker}
+        </span>
+        {dict.heritage.story.paragraphs.map((paragraph, i) => (
+          <p key={i} className="text-sm leading-relaxed text-neutral-400">
+            {paragraph}
+          </p>
         ))}
+      </div>
+
+      <div className="flex flex-col gap-10">
+        <SectionLabel
+          kicker={dict.heritage.statsKicker}
+          title={dict.heritage.statsTitle}
+        />
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+          {stats.map((stat) => (
+            <StatCard key={stat.label} {...stat} />
+          ))}
+        </div>
       </div>
     </section>
   );

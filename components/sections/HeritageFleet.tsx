@@ -39,7 +39,7 @@ export function HeritageFleet() {
         trigger: wrapper,
         start: "top top",
         end: () => `+=${totalScroll}`,
-        scrub: 0.4,
+        scrub: 1,
         pin: true,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
@@ -53,6 +53,14 @@ export function HeritageFleet() {
     }, wrapper);
 
     return () => ctx.revert();
+  }, []);
+
+  // Starts fetching the fleet's first car the moment this section mounts —
+  // this page's own Heritage/HeritageStats sections sit above it, giving the
+  // model a real head start over the scroll instead of only starting once
+  // HeroCanvas's render gate lets the section's Canvas itself mount.
+  useEffect(() => {
+    useGLTF.preload(CARS[0].url);
   }, []);
 
   // Warms whichever car scrolling to is about to reach next, in either

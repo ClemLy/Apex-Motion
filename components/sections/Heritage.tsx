@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { heritageEras } from "@/lib/heritage-data";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { FlatEngineDiagram } from "@/components/ui/FlatEngineDiagram";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -73,6 +74,10 @@ export function Heritage() {
                     "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
                 }}
               />
+              <FlatEngineDiagram
+                cylinders={era.cylinders}
+                className="pointer-events-none absolute right-[-10%] top-[8%] w-[85%] text-white/[0.07] transition-colors duration-500 group-hover:text-white/[0.14]"
+              />
               <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-neutral-500">
                 {era.years}
               </span>
@@ -86,6 +91,10 @@ export function Heritage() {
                 <span>{era.power}</span>
                 <span>{era.topSpeed}</span>
               </div>
+              <span className="mt-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-600">
+                {era.cylinders} {dict.heritage.cylinders} ·{" "}
+                {dict.heritage.cooling[era.cooling]}
+              </span>
             </article>
           ))}
         </div>

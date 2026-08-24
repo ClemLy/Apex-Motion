@@ -133,6 +133,28 @@ function FluidQuad() {
   const { size } = useThree();
   const reducedMotion = usePrefersReducedMotion();
 
+  // `scrollHeight` forces a layout reflow if the DOM was recently mutated
+  // elsewhere on the page — reading it every frame (this shader's only
+  // per-frame DOM touch) is the one thing here that could jank. Cached and
+  // only recomputed on resize / real navigation, not on every tick; the
+  // fluid backdrop only needs a roughly-correct scroll fraction, not a
+  // pixel-exact one.
+  const scrollableHeight = useRef(0);
+
+  useEffect(() => {
+    const updateScrollableHeight = () => {
+      scrollableHeight.current =
+        document.documentElement.scrollHeight - window.innerHeight;
+    };
+    updateScrollableHeight();
+    window.addEventListener("resize", updateScrollableHeight);
+    window.addEventListener("apex:page-wipe", updateScrollableHeight);
+    return () => {
+      window.removeEventListener("resize", updateScrollableHeight);
+      window.removeEventListener("apex:page-wipe", updateScrollableHeight);
+    };
+  }, []);
+
   useEffect(() => {
     const onPointerMove = (event: PointerEvent) => {
       targetMouse.current.set(
@@ -166,8 +188,7 @@ function FluidQuad() {
     const k = 1 - Math.pow(0.0025, delta);
     mouse.current.lerp(targetMouse.current, k);
 
-    const scrollable =
-      document.documentElement.scrollHeight - window.innerHeight;
+    const scrollable = scrollableHeight.current;
     const scroll = scrollable > 0 ? window.scrollY / scrollable : 0;
 
     let wipeValue = 0;

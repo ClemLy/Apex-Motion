@@ -5,6 +5,11 @@ export interface HeritageEra {
   tagline: { fr: string; en: string };
   power: string;
   topSpeed: string;
+  /** Real, well-documented architecture facts — unlike the site's illustrative
+   * telemetry elsewhere, these are used to draw an honest engine schematic,
+   * not a fabricated spec sheet. */
+  cylinders: 4 | 6;
+  cooling: "air" | "liquide";
 }
 
 export const heritageEras: HeritageEra[] = [
@@ -18,6 +23,8 @@ export const heritageEras: HeritageEra[] = [
     },
     power: "40 - 95 ch",
     topSpeed: "160 km/h",
+    cylinders: 4,
+    cooling: "air",
   },
   {
     id: "911-og",
@@ -29,6 +36,8 @@ export const heritageEras: HeritageEra[] = [
     },
     power: "130 - 300 ch",
     topSpeed: "245 km/h",
+    cylinders: 6,
+    cooling: "air",
   },
   {
     id: "959",
@@ -40,6 +49,8 @@ export const heritageEras: HeritageEra[] = [
     },
     power: "450 ch",
     topSpeed: "317 km/h",
+    cylinders: 6,
+    cooling: "air",
   },
   {
     id: "996-997",
@@ -51,17 +62,21 @@ export const heritageEras: HeritageEra[] = [
     },
     power: "300 - 530 ch",
     topSpeed: "310 km/h",
+    cylinders: 6,
+    cooling: "liquide",
   },
   {
     id: "991-gt3rs",
     years: "2011 - 2019",
     model: "911 GT3 RS (991)",
     tagline: {
-      fr: "L'obsession. Aéro active et flat-6 atmosphérique porté à son sommet.",
-      en: "The obsession. Active aero and naturally aspirated flat-6 at their peak.",
+      fr: "L'obsession. Aérodynamique de course et flat-6 atmosphérique portés à leur sommet.",
+      en: "The obsession. Race-honed aerodynamics and a naturally aspirated flat-6 at their peak.",
     },
     power: "500 ch",
     topSpeed: "312 km/h",
+    cylinders: 6,
+    cooling: "liquide",
   },
   {
     id: "992-gt3rs",
@@ -73,5 +88,7 @@ export const heritageEras: HeritageEra[] = [
     },
     power: "525 ch",
     topSpeed: "296 km/h",
+    cylinders: 6,
+    cooling: "liquide",
   },
 ];

@@ -8,6 +8,7 @@ import { ArrowRight, MoveDown } from "lucide-react";
 import { HeroCanvas } from "@/components/three/HeroCanvas";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
 import { useIntro } from "@/lib/intro/IntroProvider";
+import { useMagneticHover } from "@/hooks/useMagneticHover";
 import { GT3RS_CONFIG } from "@/lib/three/carConfigs";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -16,6 +17,8 @@ export function Hero() {
   const { dict } = useLanguage();
   const { hasEntered } = useIntro();
   const rootRef = useRef<HTMLDivElement>(null);
+  const primaryCtaRef = useMagneticHover<HTMLAnchorElement>();
+  const secondaryCtaRef = useMagneticHover<HTMLAnchorElement>();
 
   // Park the entrance elements in their start state immediately, so nothing
   // flashes in its final position while the curtain is still pulling apart.
@@ -151,17 +154,19 @@ export function Hero() {
 
           <div className="hero-fade flex flex-wrap items-center gap-3">
             <Link
+              ref={primaryCtaRef}
               href="/configurator"
               data-cursor={dict.cursor.explore}
-              className="group flex items-center gap-2 rounded-full bg-neutral-50 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-neutral-950 transition-transform duration-300 hover:scale-[1.03]"
+              className="group flex items-center gap-2 rounded-full bg-neutral-50 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-neutral-950"
             >
               {dict.hero.cta}
               <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
             <Link
+              ref={secondaryCtaRef}
               href="/heritage"
               data-cursor={dict.cursor.view}
-              className="rounded-full border border-white/15 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-neutral-300 transition-colors duration-300 hover:border-white/40 hover:text-neutral-50"
+              className="magnetic rounded-full border border-white/15 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-neutral-300 transition-colors duration-300 hover:border-white/40 hover:text-neutral-50"
             >
               {dict.hero.ctaSecondary}
             </Link>

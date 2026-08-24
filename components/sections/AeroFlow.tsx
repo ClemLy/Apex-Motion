@@ -1,12 +1,18 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { AERO_HERO_IMAGE } from "@/lib/three/aeroHeroImage";
+import {
+  AERO_CONTOUR_WIDTH,
+  AERO_CONTOUR_HEIGHT,
+  AERO_TOP_LAYERS,
+  AERO_BOTTOM_LAYERS,
+} from "@/lib/three/aeroContour";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,19 +22,82 @@ gsap.registerPlugin(ScrollTrigger);
 const FINAL_CX = 0.32;
 const FINAL_DOWNFORCE_KG = 152;
 
-/** Horizontal streaks layered over the car at different heights, each
- * cascading in with its own offset so they don't all sweep in unison —
- * reuses the "lines suggesting speed" idea from the removed launch sequence,
- * reoriented to read as airflow around a stationary car instead of motion
- * toward the viewer. */
-const FLOW_LINES = [
-  { top: "18%", delay: 0 },
-  { top: "30%", delay: 0.06 },
-  { top: "42%", delay: 0.02 },
-  { top: "58%", delay: 0.1 },
-  { top: "70%", delay: 0.04 },
-  { top: "82%", delay: 0.08 },
+/** The generating script's convex hull picks the *correct* points (it hugs
+ * bodywork and bridges concave dips), but a straight polyline through those
+ * sparse vertices reads as a drafted, kinked line rather than moving air.
+ * Catmull-Rom-to-Bezier turns the same vertices into one continuous curve. */
+function contourToPath(points: readonly (readonly [number, number])[]) {
+  if (points.length < 3) {
+    return points
+      .map(([x, y], i) => `${i === 0 ? "M" : "L"}${x},${y}`)
+      .join(" ");
+  }
+  let d = `M${points[0][0]},${points[0][1]}`;
+  for (let i = 0; i < points.length - 1; i += 1) {
+    const p0 = points[i - 1] ?? points[i];
+    const p1 = points[i];
+    const p2 = points[i + 1];
+    const p3 = points[i + 2] ?? p2;
+    const c1x = p1[0] + (p2[0] - p0[0]) / 6;
+    const c1y = p1[1] + (p2[1] - p0[1]) / 6;
+    const c2x = p2[0] - (p3[0] - p1[0]) / 6;
+    const c2y = p2[1] - (p3[1] - p1[1]) / 6;
+    d += ` C${c1x},${c1y} ${c2x},${c2y} ${p2[0]},${p2[1]}`;
+  }
+  return d;
+}
+
+/** Each entry pairs a soft blurred "glow" stroke with a thinner, sharper
+ * "core" stroke on the same path — read together as a wisp of smoke or a
+ * laser sheet catching moving air, not a drafted vector line. Layers get
+ * progressively softer/fainter outward from the body, matching how only the
+ * streak closest to a car's surface reads crisply in real wind-tunnel smoke
+ * photography while the outer ones blur into a calmer haze. */
+const LINE_STYLES = [
+  {
+    blur: 0.6,
+    glowWidth: 6,
+    glowOpacity: 0.22,
+    coreWidth: 1.4,
+    coreOpacity: 0.7,
+  },
+  {
+    blur: 1.4,
+    glowWidth: 8,
+    glowOpacity: 0.18,
+    coreWidth: 1.3,
+    coreOpacity: 0.58,
+  },
+  {
+    blur: 2.4,
+    glowWidth: 10,
+    glowOpacity: 0.14,
+    coreWidth: 1.1,
+    coreOpacity: 0.42,
+  },
+  {
+    blur: 3.6,
+    glowWidth: 13,
+    glowOpacity: 0.1,
+    coreWidth: 1,
+    coreOpacity: 0.28,
+  },
+  {
+    blur: 0.8,
+    glowWidth: 6,
+    glowOpacity: 0.17,
+    coreWidth: 1.2,
+    coreOpacity: 0.55,
+  },
+  {
+    blur: 1.8,
+    glowWidth: 8,
+    glowOpacity: 0.12,
+    coreWidth: 1,
+    coreOpacity: 0.38,
+  },
 ];
+const LINE_DELAYS = [0, 0.04, 0.08, 0.12, 0.02, 0.06];
 
 /** How much of the scroll range is spent building up the flow lines before
  * the readout starts settling — keeps the two beats from resolving at
@@ -39,23 +108,48 @@ export function AeroFlow() {
   const { dict } = useLanguage();
   const reducedMotion = usePrefersReducedMotion();
   const rootRef = useRef<HTMLDivElement>(null);
-  const lineRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const glowRefs = useRef<(SVGPathElement | null)[]>([]);
+  const coreRefs = useRef<(SVGPathElement | null)[]>([]);
   const cxRef = useRef<HTMLSpanElement>(null);
   const downforceRef = useRef<HTMLSpanElement>(null);
 
+  const lines = useMemo(
+    () => [
+      ...AERO_TOP_LAYERS.map((points) => contourToPath(points)),
+      ...AERO_BOTTOM_LAYERS.map((points) => contourToPath(points)),
+    ],
+    [],
+  );
+
   useEffect(() => {
+    const lengths = coreRefs.current.map((el) => el?.getTotalLength() ?? 0);
+    lengths.forEach((length, i) => {
+      const glow = glowRefs.current[i];
+      const core = coreRefs.current[i];
+      if (glow) glow.style.strokeDasharray = `${length}`;
+      if (core) core.style.strokeDasharray = `${length}`;
+    });
+
     const applyProgress = (progress: number) => {
       const p = Math.min(1, Math.max(0, progress));
 
-      lineRefs.current.forEach((el, i) => {
-        if (!el) return;
-        const { delay } = FLOW_LINES[i];
+      lines.forEach((_, i) => {
+        const delay = LINE_DELAYS[i];
         const local = Math.min(
           1,
           Math.max(0, (p - delay) / (LINES_END - delay || 1)),
         );
-        el.style.width = `${local * 100}%`;
-        el.style.opacity = `${local}`;
+        const dashoffset = `${lengths[i] * (1 - local)}`;
+        const glow = glowRefs.current[i];
+        const core = coreRefs.current[i];
+        if (glow) {
+          glow.style.strokeDashoffset = dashoffset;
+          glow.style.opacity = `${local * LINE_STYLES[i].glowOpacity}`;
+        }
+        if (core) {
+          core.style.strokeDashoffset = dashoffset;
+          core.style.opacity = `${local * LINE_STYLES[i].coreOpacity}`;
+        }
       });
 
       // Amplitude collapses toward 0 as p -> 1, so the readout reads as
@@ -90,7 +184,7 @@ export function AeroFlow() {
     }, rootRef);
 
     return () => ctx.revert();
-  }, [reducedMotion]);
+  }, [reducedMotion, lines]);
 
   return (
     <section ref={rootRef} className="relative min-h-[300vh] bg-[#020202]">
@@ -108,23 +202,52 @@ export function AeroFlow() {
             className="relative w-full max-w-5xl"
             style={{ aspectRatio: "1400 / 420" }}
           >
-            {FLOW_LINES.map((line, i) => (
-              <div
-                key={line.top}
-                ref={(el) => {
-                  lineRefs.current[i] = el;
-                }}
-                aria-hidden
-                className="pointer-events-none absolute left-0 h-px"
-                style={{
-                  top: line.top,
-                  width: 0,
-                  opacity: 0,
-                  background:
-                    "linear-gradient(90deg, transparent, rgba(245,245,245,0.6) 40%, rgba(245,245,245,0.6) 90%, transparent)",
-                }}
-              />
-            ))}
+            <svg
+              aria-hidden
+              className="pointer-events-none absolute inset-0 h-full w-full"
+              viewBox={`0 0 ${AERO_CONTOUR_WIDTH} ${AERO_CONTOUR_HEIGHT}`}
+              preserveAspectRatio="none"
+            >
+              <defs>
+                <linearGradient id="aero-line-fade" x1="0" x2="1" y1="0" y2="0">
+                  <stop offset="0%" stopColor="rgba(245,250,255,0)" />
+                  <stop offset="12%" stopColor="rgba(245,250,255,1)" />
+                  <stop offset="88%" stopColor="rgba(245,250,255,1)" />
+                  <stop offset="100%" stopColor="rgba(245,250,255,0)" />
+                </linearGradient>
+              </defs>
+              {/* Blurred glow pass first, sharper core pass on top — read as one soft streak of air per line, not two overlapping shapes. */}
+              {lines.map((d, i) => (
+                <path
+                  key={`glow-${i}`}
+                  ref={(el) => {
+                    glowRefs.current[i] = el;
+                  }}
+                  d={d}
+                  fill="none"
+                  stroke="url(#aero-line-fade)"
+                  strokeWidth={LINE_STYLES[i].glowWidth}
+                  strokeLinecap="round"
+                  opacity={0}
+                  style={{ filter: `blur(${LINE_STYLES[i].blur}px)` }}
+                />
+              ))}
+              {lines.map((d, i) => (
+                <path
+                  key={`core-${i}`}
+                  ref={(el) => {
+                    coreRefs.current[i] = el;
+                  }}
+                  d={d}
+                  fill="none"
+                  stroke="url(#aero-line-fade)"
+                  strokeWidth={LINE_STYLES[i].coreWidth}
+                  strokeLinecap="round"
+                  opacity={0}
+                  style={{ filter: `blur(${LINE_STYLES[i].blur * 0.3}px)` }}
+                />
+              ))}
+            </svg>
             <img
               src={AERO_HERO_IMAGE}
               alt=""

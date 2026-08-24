@@ -8,6 +8,7 @@ import { Studio } from "./Studio";
 import { GltfCar } from "./GltfCar";
 import { CinematicEffects } from "./CinematicEffects";
 import { FrameLimiter } from "./FrameLimiter";
+import { ModelLoadOverlay } from "./ModelLoadOverlay";
 import { useRenderGate } from "@/hooks/useRenderGate";
 import { DebugTriangleReporter } from "./DebugTriangleReporter";
 import { paintOptions } from "@/lib/configurator/types";
@@ -17,8 +18,11 @@ import type { CarConfig } from "@/lib/three/carConfigs";
 /** Hero field of view — matches the Canvas's own `camera={{ fov: 30 }}` prop below. */
 const HERO_FOV = 30;
 
-/** Purely a slow turntable + drift — nothing here needs the display's full refresh rate. */
-const TARGET_FPS = 30;
+/** Higher than the purely-ambient canvases (FluidBackground): the turntable's
+ * pointer-driven tilt is a continuous, felt interaction, and this is the
+ * single highest-visibility canvas on the site — same reasoning that gives
+ * ConfiguratorCanvas's CameraRig 60fps rather than 30. */
+const TARGET_FPS = 60;
 
 /** Slow turntable with a gentle pointer-driven tilt. */
 function Turntable({ children }: { children: ReactNode }) {
@@ -73,8 +77,9 @@ export function HeroCanvas({
             role: "img",
             "aria-label": `${car.name}, ${dict.a11y.heroShowcase}`,
           })}
-      className="h-full w-full"
+      className="relative h-full w-full"
     >
+      {mounted && <ModelLoadOverlay />}
       {mounted && (
         <Canvas
           dpr={[1, dprMax]}

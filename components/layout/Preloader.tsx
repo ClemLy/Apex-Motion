@@ -8,10 +8,18 @@ import {
   type MouseEvent,
 } from "react";
 import { gsap } from "gsap";
+import { useGLTF } from "@react-three/drei";
+import { usePathname } from "next/navigation";
 import { useIntro } from "@/lib/intro/IntroProvider";
 import { useAppAudio } from "@/lib/audio/AudioProvider";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
 import { playCue } from "@/lib/audio/soundDesign";
+import { GT3RS_CONFIG } from "@/lib/three/carConfigs";
+
+// Set here too (GltfCar.tsx also sets it): this file doesn't otherwise
+// import anything from the three.js tree, so the preload call below can't
+// rely on import order alone to have configured the decoder path first.
+useGLTF.setDecoderPath("/draco/");
 
 /** Columns and rows of the microscopic technical grid. */
 const GRID_COLS = 32;
@@ -25,6 +33,7 @@ export function Preloader() {
   const { enter } = useIntro();
   const { getContext, setEnabled } = useAppAudio();
   const { dict } = useLanguage();
+  const pathname = usePathname();
 
   const rootRef = useRef<HTMLDivElement>(null);
   const counterRef = useRef<HTMLSpanElement>(null);
@@ -37,6 +46,16 @@ export function Preloader() {
   // Unmount is driven locally, not by `hasEntered`, so the curtain can keep
   // animating while the hero is already coming alive behind it.
   const [finished, setFinished] = useState(false);
+
+  // Only on the homepage: the hero's GT3RS is the one model guaranteed to be
+  // needed a couple of seconds from now, so its fetch starts during the
+  // preloader's own on-screen animation rather than waiting for the hero to
+  // mount after the curtain opens — the gap that made the model feel slow to
+  // arrive. Landing on /configurator or /heritage directly shouldn't pull in
+  // a model neither of those routes shows first, so this stays route-gated.
+  useEffect(() => {
+    if (pathname === "/") useGLTF.preload(GT3RS_CONFIG.url);
+  }, [pathname]);
 
   // Drive the counter, bar and grid straight through the DOM: a hundred
   // re-renders per load would be pure waste for a purely visual readout.

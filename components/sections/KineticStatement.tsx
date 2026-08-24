@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,6 +21,10 @@ export function KineticStatement() {
   const { dict } = useLanguage();
   const rootRef = useRef<HTMLDivElement>(null);
   const reducedMotion = usePrefersReducedMotion();
+  const statementRef = useScrollReveal<HTMLParagraphElement>({
+    y: 30,
+    start: "top 60%",
+  });
 
   const words = dict.kinetic.words;
 
@@ -56,19 +61,6 @@ export function KineticStatement() {
           { xPercent: -32, ...common },
         );
       }
-
-      // The statement resolves into place as the band centres in the viewport.
-      gsap.fromTo(
-        ".kinetic-statement",
-        { opacity: 0, y: reducedMotion ? 0 : 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: reducedMotion ? 0.01 : 1,
-          ease: "power3.out",
-          scrollTrigger: { trigger: rootRef.current, start: "top 60%" },
-        },
-      );
     }, rootRef);
 
     return () => ctx.revert();
@@ -127,7 +119,10 @@ export function KineticStatement() {
         </div>
       </div>
 
-      <p className="kinetic-statement relative mx-auto mt-10 max-w-2xl px-6 text-center text-sm leading-relaxed text-neutral-400">
+      <p
+        ref={statementRef}
+        className="relative mx-auto mt-10 max-w-2xl px-6 text-center text-sm leading-relaxed text-neutral-400"
+      >
         {dict.kinetic.statement}
       </p>
     </section>

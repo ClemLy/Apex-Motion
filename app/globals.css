@@ -149,6 +149,37 @@ html[data-custom-cursor="true"] * {
   }
 }
 
+/*
+ * Cursor-tracking glow for elements using `useMagneticHover` — the hook
+ * drives `--mx`/`--my` (percentage position within the element) and the
+ * element's own transform directly; this pseudo-element only owns the halo
+ * that follows those coordinates. Kept as a plain opacity fade (not tied to
+ * the hook's rAF loop) since a CSS transition is cheaper and looks identical.
+ */
+.magnetic {
+  position: relative;
+}
+
+.magnetic::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(
+    140px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(245, 245, 245, 0.18),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.magnetic:hover::before {
+  opacity: 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

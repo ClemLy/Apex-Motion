@@ -1,4 +1,5 @@
 import { cn } from "@/utils/cn";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 export function SectionLabel({
   kicker,
@@ -8,6 +9,7 @@ export function SectionLabel({
   align = "left",
   className,
   as = "h2",
+  reveal = true,
 }: {
   kicker: string;
   title: string;
@@ -17,11 +19,17 @@ export function SectionLabel({
   className?: string;
   /** The page's very first section should own the single `<h1>` — every other section stays an `<h2>`. */
   as?: "h1" | "h2";
+  /** Every section title gets a fade+rise entrance on scroll into view for
+   * free. Set false for the rare case a parent section already drives this
+   * element's opacity/position itself (e.g. as part of its own timeline). */
+  reveal?: boolean;
 }) {
   const Heading = as;
+  const revealRef = useScrollReveal<HTMLDivElement>();
 
   return (
     <div
+      ref={reveal ? revealRef : undefined}
       className={cn(
         "flex flex-col gap-4",
         align === "center" && "items-center text-center",

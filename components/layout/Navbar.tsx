@@ -10,6 +10,7 @@ import { useUISound } from "@/hooks/useUISound";
 import { useAppAudio } from "@/lib/audio/AudioProvider";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
 import { useDebug } from "@/lib/debug/DebugProvider";
+import { useMagneticHover } from "@/hooks/useMagneticHover";
 import { cn } from "@/utils/cn";
 
 /** How long a click waits for the next one before resolving as a single click. */
@@ -39,6 +40,7 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const logoMagneticRef = useMagneticHover<HTMLAnchorElement>();
 
   // Route change closes an open mobile panel — otherwise it'd stay open,
   // covering the page that just loaded underneath it. Adjusted during render
@@ -115,6 +117,7 @@ export function Navbar() {
       <nav className="pointer-events-auto mt-6 flex w-full max-w-4xl flex-col gap-2">
         <div className="flex items-center justify-between gap-4 rounded-full border border-white/10 bg-neutral-950/70 px-6 py-3 backdrop-blur-2xl">
           <Link
+            ref={logoMagneticRef}
             href="/"
             onClick={handleLogoClick}
             data-cursor={dict.cursor.view}
