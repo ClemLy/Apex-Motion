@@ -15,6 +15,7 @@ import { useAppAudio } from "@/lib/audio/AudioProvider";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
 import { playCue } from "@/lib/audio/soundDesign";
 import { GT3RS_CONFIG } from "@/lib/three/carConfigs";
+import { PARTICLE_POINTS } from "@/lib/three/particlePoints";
 
 // Set here too (GltfCar.tsx also sets it): this file doesn't otherwise
 // import anything from the three.js tree, so the preload call below can't
@@ -53,8 +54,18 @@ export function Preloader() {
   // mount after the curtain opens — the gap that made the model feel slow to
   // arrive. Landing on /configurator or /heritage directly shouldn't pull in
   // a model neither of those routes shows first, so this stays route-gated.
+  //
+  // Same idea for the particle-assembly section's own point cloud, further
+  // down the same page: a plain fetch warming the browser's HTTP cache, not
+  // React state — by the time a visitor reaches that section, it's long
+  // since finished, so its own request resolves instantly instead of
+  // visibly loading in. That section's post-assembly reveal reuses this
+  // same preloaded GT3RS model (see ParticleAssembly.tsx) rather than any
+  // asset of its own, so there's nothing else to warm here for it.
   useEffect(() => {
-    if (pathname === "/") useGLTF.preload(GT3RS_CONFIG.url);
+    if (pathname !== "/") return;
+    useGLTF.preload(GT3RS_CONFIG.url);
+    fetch(PARTICLE_POINTS.url).catch(() => {});
   }, [pathname]);
 
   // Drive the counter, bar and grid straight through the DOM: a hundred

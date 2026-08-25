@@ -180,6 +180,28 @@ html[data-custom-cursor="true"] * {
   opacity: 1;
 }
 
+/*
+ * Indeterminate loading bar for ModelLoadOverlay — three.js's global loading
+ * manager only reports progress as itemsLoaded/itemsTotal, which for a
+ * single .glb request jumps straight from 0 to 100 rather than climbing
+ * smoothly, reading as visibly stuck at one number for most of a real load.
+ * A sweep that doesn't claim a specific percentage is honest about not
+ * knowing how far along it is, while still reading unmistakably as "working
+ * on it" rather than a frozen screen.
+ */
+@keyframes loading-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(340%);
+  }
+}
+
+.loading-sweep {
+  animation: loading-sweep 1.4s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -12,7 +12,8 @@
     "format:check": "prettier --check .",
     "optimize:models": "node scripts/optimize-models.mjs",
     "capture:fleet": "node scripts/capture-fleet-images.mjs",
-    "capture:aero": "node scripts/capture-aero-hero.mjs"
+    "capture:aero": "node scripts/capture-aero-hero.mjs",
+    "extract:particles": "node scripts/extract-particle-points.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.8",

@@ -79,10 +79,10 @@ export const dictionaries = {
     },
     configurator: {
       kicker: "Module 01 / studio en temps réel",
-      title: "STUDIO DE",
-      titleAccent: "PERSONNALISATION",
+      title: "LA FORME",
+      titleAccent: "VOUS APPARTIENT",
       subtitle:
-        "Chaque choix prend vie en direct sur la carrosserie scannée de la voiture. Rien n'est figé, tout répond au geste.",
+        "Une teinte se pose, une jante se choisit : la carrosserie qui attendait dans l'ombre devient, geste après geste, la vôtre.",
       carSwitcher: "Modèle",
       tabs: {
         paint: "Peinture",
@@ -134,10 +134,10 @@ export const dictionaries = {
     },
     telemetry: {
       kicker: "Module 02 / relevé de tour",
-      title: "TRACÉ",
-      titleAccent: "TÉLÉMÉTRIE",
+      title: "UN TOUR,",
+      titleAccent: "SANS RELÂCHE",
       subtitle:
-        "Vitesse, freinages, appuis latéraux : une interprétation du tour, pas un relevé réel.",
+        "Le freinage arrive tard, l'appui grimpe en courbe, la corde se prend sans y penser : la Nordschleife tenue d'un seul geste.",
       trackName: "Nürburgring Nordschleife",
       stats: {
         speed: "Vitesse",
@@ -151,19 +151,33 @@ export const dictionaries = {
       title: "LA SILHOUETTE",
       titleAccent: "CONTINUE",
       subtitle:
-        "Sept voitures du Studio, un seul profil qui n'a jamais cessé de se retoucher.",
+        "Sept voitures, un seul trait qui n'a jamais cessé de se retoucher depuis 1948.",
     },
     aero: {
       kicker: "Module 03 / soufflerie",
       title: "LIGNES",
       titleAccent: "D'APPUI",
       subtitle:
-        "Cx et appui aérodynamique : une lecture illustrative, pas une fiche technique certifiée de la GT3 RS.",
+        "L'air se sépare au museau, glisse jusqu'au becquet, et retombe enfin, dompté, plaquant la voiture au bitume.",
       cxLabel: "Traînée Cx",
       downforceLabel: "Appui",
     },
+    particleAssembly: {
+      kicker: "Module 05 / la GT3 RS en résumé",
+      title: "525 CHEVAUX.",
+      titleAccent: "AUCUNE CONCESSION.",
+      subtitle:
+        "Le plus grand aileron jamais monté sur une 911 de route, hérité tout droit de la compétition : ici, la vitesse n'est pas un chiffre, c'est une décision.",
+    },
+    outro: {
+      kicker: "Fin de la visite",
+      title: "LA PAGE",
+      titleAccent: "S'ARRÊTE ICI",
+      subtitle:
+        "Le Studio, lui, ne fait que commencer. Entrez, et faites de cette GT3 RS la vôtre.",
+    },
     heritage: {
-      kicker: "Module 05 / archives",
+      kicker: "Module 06 / archives",
       title: "HÉRITAGE",
       subtitle:
         "Sept décennies d'ingénierie à plat, du flat-4 originel de la 356 au flat-6 moderne de la GT3 RS.",
@@ -189,7 +203,7 @@ export const dictionaries = {
         ],
       },
       fleet: {
-        kicker: "Module 06 / la collection",
+        kicker: "Module 07 / la collection",
         title: "LE GARAGE",
         subtitle:
           "Les sept voitures du Studio : le flat-6 en fil conducteur, et trois ruptures qui l'ont mis à l'épreuve.",
@@ -276,10 +290,10 @@ export const dictionaries = {
     },
     configurator: {
       kicker: "Module 01 / real-time studio",
-      title: "CUSTOMIZATION",
-      titleAccent: "STUDIO",
+      title: "THE FORM,",
+      titleAccent: "NOW YOURS",
       subtitle:
-        "Every choice comes alive on the car's own scanned body. Nothing here is static, everything answers to your hand.",
+        "A shade settles. A wheel is chosen. The bodywork that waited in the shadow turns, gesture by gesture, into something only yours.",
       carSwitcher: "Model",
       tabs: {
         paint: "Paint",
@@ -331,10 +345,10 @@ export const dictionaries = {
     },
     telemetry: {
       kicker: "Module 02 / lap readout",
-      title: "TRACK",
-      titleAccent: "TELEMETRY",
+      title: "ONE LAP,",
+      titleAccent: "NO LETTING UP",
       subtitle:
-        "Speed, braking, lateral G: an interpretation of the lap, not a real readout.",
+        "Braking arrives late, grip climbs through the corner, the apex comes without thinking: the Nordschleife held in one continuous motion.",
       trackName: "Nürburgring Nordschleife",
       stats: {
         speed: "Speed",
@@ -347,20 +361,32 @@ export const dictionaries = {
       kicker: "Module 04 / continuity of form",
       title: "THE SHAPE",
       titleAccent: "NEVER BREAKS",
-      subtitle:
-        "Seven cars from the Studio, one profile that never stopped revising itself.",
+      subtitle: "Seven cars, one line still being redrawn since 1948.",
     },
     aero: {
       kicker: "Module 03 / wind tunnel",
       title: "LINES",
       titleAccent: "OF DOWNFORCE",
       subtitle:
-        "Cx and aero downforce: an illustrative reading, not a certified spec sheet for the GT3 RS.",
+        "Air splits at the nose, rides the roofline, and finally falls away, tamed, pressing the car flat to the asphalt.",
       cxLabel: "Drag Cx",
       downforceLabel: "Downforce",
     },
+    particleAssembly: {
+      kicker: "Module 05 / the GT3 RS, in short",
+      title: "525 HORSEPOWER.",
+      titleAccent: "ZERO COMPROMISE.",
+      subtitle:
+        "The largest wing ever fitted to a road-going 911, pulled straight from competition: here, speed isn't a number, it's a decision.",
+    },
+    outro: {
+      kicker: "End of the tour",
+      title: "THE PAGE",
+      titleAccent: "STOPS HERE",
+      subtitle: "The Studio doesn't. Step in, and make this GT3 RS yours.",
+    },
     heritage: {
-      kicker: "Module 05 / archive",
+      kicker: "Module 06 / archive",
       title: "HERITAGE",
       subtitle:
         "Seven decades of flat-engine thinking, from the 356's original flat-4 to the GT3 RS's modern flat-6.",
@@ -386,7 +412,7 @@ export const dictionaries = {
         ],
       },
       fleet: {
-        kicker: "Module 06 / the collection",
+        kicker: "Module 07 / the collection",
         title: "THE GARAGE",
         subtitle:
           "The Studio's seven cars: the flat-6 as throughline, and three breaks that put it to the test.",

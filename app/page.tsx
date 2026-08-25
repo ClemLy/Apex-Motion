@@ -4,6 +4,8 @@ import { ConfiguratorTeaser } from "@/components/sections/ConfiguratorTeaser";
 import { LapTelemetry } from "@/components/sections/LapTelemetry";
 import { SilhouetteEvolution } from "@/components/sections/SilhouetteEvolution";
 import { AeroFlow } from "@/components/sections/AeroFlow";
+import { ParticleAssembly } from "@/components/sections/ParticleAssembly";
+import { StudioOutro } from "@/components/sections/StudioOutro";
 
 export default function Home() {
   return (
@@ -14,6 +16,8 @@ export default function Home() {
       <LapTelemetry />
       <AeroFlow />
       <SilhouetteEvolution />
+      <ParticleAssembly />
+      <StudioOutro />
     </>
   );
 }

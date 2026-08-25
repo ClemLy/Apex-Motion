@@ -1,23 +1,34 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
-function readPref() {
-  if (typeof window === "undefined") return false;
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const QUERY = "(prefers-reduced-motion: reduce)";
+
+function subscribe(callback: () => void) {
+  const mq = window.matchMedia(QUERY);
+  mq.addEventListener("change", callback);
+  return () => mq.removeEventListener("change", callback);
 }
 
-/** Single shared `matchMedia` listener — reused everywhere instead of each
- * consumer re-querying and re-subscribing on its own. */
+function getSnapshot() {
+  return window.matchMedia(QUERY).matches;
+}
+
+// The server (and the client's very first, pre-hydration render) can never
+// know the real browser preference, so both have to agree on the same
+// placeholder - `useSyncExternalStore`'s `getServerSnapshot` is built for
+// exactly this, unlike a plain `useState` + effect pair, which reads the
+// real value in a synchronous `setState` inside the effect and so still
+// forces an extra render right after mount. Harmless for a consumer that
+// only gates animation logic inside its own effect, but a real hydration
+// mismatch for one that branches its JSX tree on the value (as
+// ParticleAssembly.tsx does for its reduced-motion end state).
+function getServerSnapshot() {
+  return false;
+}
+
+/** Single shared `matchMedia` subscription — reused everywhere instead of
+ * each consumer re-querying and re-subscribing on its own. */
 export function usePrefersReducedMotion() {
-  const [reduced, setReduced] = useState(readPref);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const onChange = () => setReduced(mq.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
-
-  return reduced;
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }

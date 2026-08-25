@@ -36,6 +36,16 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        // Content-hashed by scripts/extract-particle-points.mjs, same reasoning as /models/*.
+        source: "/particles/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: `public, max-age=${YEAR_IN_SECONDS}, immutable`,
+          },
+        ],
+      },
     ];
   },
 };

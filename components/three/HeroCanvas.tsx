@@ -9,6 +9,7 @@ import { GltfCar } from "./GltfCar";
 import { CinematicEffects } from "./CinematicEffects";
 import { FrameLimiter } from "./FrameLimiter";
 import { ModelLoadOverlay } from "./ModelLoadOverlay";
+import { ReadySignal } from "./ReadySignal";
 import { useRenderGate } from "@/hooks/useRenderGate";
 import { DebugTriangleReporter } from "./DebugTriangleReporter";
 import { paintOptions } from "@/lib/configurator/types";
@@ -54,6 +55,7 @@ export function HeroCanvas({
   car,
   eager = false,
   decorative = false,
+  loadingCtaLabel,
 }: {
   car: CarConfig;
   /** Pass true only for the instance guaranteed to be the first thing on screen. */
@@ -62,11 +64,29 @@ export function HeroCanvas({
    * its own accessible name — the wrapper's role="img" description would
    * otherwise prefix that name with a redundant, confusing car description. */
   decorative?: boolean;
+  /** Forwarded to ModelLoadOverlay - see its own doc comment. Only the
+   * homepage's studio teaser needs this; every other caller keeps the
+   * default compact readout. */
+  loadingCtaLabel?: string;
 }) {
   const { ref, active, mounted } = useRenderGate<HTMLDivElement>({ eager });
   const { dict } = useLanguage();
   // Resolution ceiling drops on weak hardware, so frame rate holds instead.
   const [dprMax, setDprMax] = useState(1.6);
+  const [contentReady, setContentReady] = useState(false);
+
+  // Resets on every unmount (this canvas scrolled far enough away to be
+  // torn down - see useRenderGate) so a later remount starts from "not
+  // ready" again instead of skipping the overlay based on stale state.
+  // Adjusted during render (React's sanctioned "reset state when a prop
+  // changes" pattern - see Navbar.tsx's own prevPathname) rather than in an
+  // effect, so it applies before the first paint of the fresh mount instead
+  // of flashing the previous ready state for a frame.
+  const [prevMounted, setPrevMounted] = useState(mounted);
+  if (mounted !== prevMounted) {
+    setPrevMounted(mounted);
+    if (!mounted) setContentReady(false);
+  }
 
   return (
     <div
@@ -79,7 +99,9 @@ export function HeroCanvas({
           })}
       className="relative h-full w-full"
     >
-      {mounted && <ModelLoadOverlay />}
+      {mounted && !contentReady && (
+        <ModelLoadOverlay ctaLabel={loadingCtaLabel} />
+      )}
       {mounted && (
         <Canvas
           dpr={[1, dprMax]}
@@ -105,6 +127,7 @@ export function HeroCanvas({
             <Turntable>
               <GltfCar config={car} paint={SHOWCASE_PAINT} />
             </Turntable>
+            <ReadySignal onReady={() => setContentReady(true)} />
             <Preload all />
           </Suspense>
 

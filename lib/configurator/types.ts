@@ -197,6 +197,21 @@ export const paintOptions: PaintOption[] = [
   },
   // Paint to Sample
   {
+    // A brighter, more saturated "apple green" than the two olive-leaning
+    // PTS greens below - used by the homepage's particle-assembly section
+    // (components/sections/ParticleAssembly.tsx) and its hero capture
+    // (scripts/capture-particle-hero.mjs), not currently offered as a
+    // configurator swatch selection.
+    id: "apple-green",
+    label: "Apple Green",
+    finish: "pts",
+    color: "#8bc53f",
+    roughness: 0.2,
+    metalness: 0.75,
+    clearcoat: 1,
+    clearcoatRoughness: 0.03,
+  },
+  {
     id: "pts-viper-green",
     label: "PTS Viper Green",
     finish: "pts",
