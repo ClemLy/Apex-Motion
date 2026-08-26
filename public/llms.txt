@@ -1,0 +1,15 @@
+# APEX // MOTION
+
+> Exploration numérique immersive de l'ingénierie Porsche. Studio de personnalisation 3D en temps réel, télémétrie de circuit et archives héritage. Projet indépendant, non affilié à Porsche, à but non commercial : aucun prix, aucune transaction.
+
+Conçu et développé par Clémentin Ly (https://clementin-portfolio.vercel.app/).
+
+## Pages
+
+- [Accueil](/) : hero cinématique, télémétrie de tour sur la Nordschleife, soufflerie aérodynamique, évolution des silhouettes Porsche, assemblage de particules révélant une GT3 RS.
+- [Studio](/configurator) : configurateur 3D en temps réel d'une Porsche 911 GT3 RS (peinture, jantes, étriers, aileron, export HD).
+- [Héritage](/heritage) : frise chronologique de sept décennies d'ingénierie flat-6 Porsche, de la 356 (1948) à la 911 GT3 RS (992) moderne.
+
+## Stack
+
+Next.js (App Router), React, TypeScript, Three.js / React Three Fiber, Tailwind CSS, GSAP, Web Audio API. Disponible en français, anglais et allemand.

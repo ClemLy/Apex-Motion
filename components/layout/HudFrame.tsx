@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
 
 /**
@@ -26,6 +26,23 @@ const CORNER_BASE =
  */
 export function HudFrame() {
   const { dict } = useLanguage();
+
+  // The frame is viewport-fixed, so its bottom corners sit wherever the
+  // viewport's bottom edge lands — including on top of the Footer once a
+  // visitor scrolls that far. Fading it out for that stretch reads as the
+  // cockpit instruments powering down for the credits rather than as a
+  // layout bug.
+  const [overFooter, setOverFooter] = useState(false);
+
+  useEffect(() => {
+    const footer = document.querySelector("footer");
+    if (!footer) return;
+    const observer = new IntersectionObserver(([entry]) =>
+      setOverFooter(entry.isIntersecting),
+    );
+    observer.observe(footer);
+    return () => observer.disconnect();
+  }, []);
 
   const fpsRef = useRef<HTMLSpanElement>(null);
   const coolantRef = useRef<HTMLSpanElement>(null);
@@ -108,7 +125,9 @@ export function HudFrame() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-0 z-30 hidden select-none lg:block"
+      className={`pointer-events-none fixed inset-0 z-30 hidden select-none transition-opacity duration-500 lg:block ${
+        overFooter ? "opacity-0" : "opacity-100"
+      }`}
     >
       {/* Hairline frame */}
       <div className="absolute inset-5 border border-white/[0.06]" />

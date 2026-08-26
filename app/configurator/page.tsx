@@ -5,7 +5,9 @@ import { ConfiguratorPanel } from "@/components/configurator/ConfiguratorPanel";
 import { StudioHeading } from "@/components/configurator/StudioHeading";
 
 export const metadata: Metadata = {
-  title: "Studio - APEX // MOTION",
+  title: "Studio",
+  description:
+    "Personnalisez une Porsche 911 GT3 RS en temps réel : peinture, jantes, étriers et aileron, sur un modèle 3D réel avec export HD.",
 };
 
 export default function ConfiguratorPage() {

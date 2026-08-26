@@ -226,6 +226,7 @@ export const dictionaries = {
         "APEX // MOTION est un projet indépendant à but non commercial, non affilié à Dr. Ing. h.c. F. Porsche AG.",
       rights: "Tous droits réservés",
       navLabel: "Navigation du site",
+      credit: "Conçu par",
     },
   },
   en: {
@@ -448,6 +449,7 @@ export const dictionaries = {
         "APEX // MOTION is an independent, non-commercial project, not affiliated with Dr. Ing. h.c. F. Porsche AG.",
       rights: "All rights reserved",
       navLabel: "Site navigation",
+      credit: "Built by",
     },
   },
   de: {
@@ -673,6 +675,7 @@ export const dictionaries = {
         "APEX // MOTION ist ein unabhängiges, nicht-kommerzielles Projekt und nicht mit der Dr. Ing. h.c. F. Porsche AG verbunden.",
       rights: "Alle Rechte vorbehalten",
       navLabel: "Seitennavigation",
+      credit: "Entwickelt von",
     },
   },
 } as const;
