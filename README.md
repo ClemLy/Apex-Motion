@@ -330,3 +330,6 @@ outillage) pour limiter le bruit de revue.
 APEX // MOTION est un projet indépendant à but non commercial, non affilié à
 Dr. Ing. h.c. F. Porsche AG. Tous les noms de modèles sont cités à titre de référence
 uniquement, dans un cadre éditorial et non lucratif.
+
+Code source publié à titre de démonstration (portfolio) uniquement, voir
+[LICENSE](LICENSE) pour les conditions d'utilisation.
