@@ -1,4 +1,4 @@
-export const locales = ["fr", "en"] as const;
+export const locales = ["fr", "en", "de"] as const;
 export type Locale = (typeof locales)[number];
 export const defaultLocale: Locale = "fr";
 
@@ -237,7 +237,7 @@ export const dictionaries = {
       audioOff: "Audio off",
       menuOpen: "Open menu",
       menuClose: "Close menu",
-      changeLanguage: "Switch to French",
+      changeLanguage: "Switch to German",
     },
     a11y: {
       heroShowcase: "decorative rotating view, not keyboard-interactive",
@@ -448,6 +448,231 @@ export const dictionaries = {
         "APEX // MOTION is an independent, non-commercial project, not affiliated with Dr. Ing. h.c. F. Porsche AG.",
       rights: "All rights reserved",
       navLabel: "Site navigation",
+    },
+  },
+  de: {
+    nav: {
+      home: "Start",
+      configurator: "Studio",
+      heritage: "Erbe",
+      audioOn: "Audio ein",
+      audioOff: "Audio aus",
+      menuOpen: "Menü öffnen",
+      menuClose: "Menü schließen",
+      changeLanguage: "Auf Französisch wechseln",
+    },
+    a11y: {
+      heroShowcase: "dekorative Rotationsansicht, nicht per Tastatur bedienbar",
+      studioViewport:
+        "Studio-Vorschau, aktualisiert sich live entsprechend Ihrer Auswahl",
+      sections: {
+        hero: "Präsentation — Flat-6 Evolution",
+        telemetry: "Rundenmessung auf der Strecke",
+        aero: "Windkanal — Abtriebslinien",
+        silhouette: "Formkontinuität — Silhouettenentwicklung",
+        particles: "GT3 RS — 3D-Zusammenbau",
+        outro: "Zugang zum Studio",
+        configuratorTeaser: "Studio-Vorschau",
+        heritageStats: "Erbe — Statistiken",
+        heritageFleet: "Kollektion — die sieben Fahrzeuge",
+      },
+    },
+    cursor: {
+      drag: "Ziehen",
+      view: "Ansehen",
+      explore: "Erkunden",
+      audio: "Audio",
+      orbit: "Umkreisen",
+      rev: "Hochdrehen",
+      copy: "Kopieren",
+      toggle: "Umschalten",
+    },
+    hud: {
+      system: "System",
+      render: "Rendering",
+      drag: "Cw-Wert",
+      downforce: "Abtrieb",
+      temp: "Temperatur",
+      rpm: "Drehzahl",
+      chassis: "Fahrwerk",
+      sector: "Sektor",
+      live: "Live",
+      scroll: "Scrollen",
+      coolant: "Kühlmitteltemperatur",
+      oil: "Öldruck",
+      circuit: "Strecke",
+      position: "Position",
+    },
+    preloader: {
+      title: "Startsequenz",
+      enter: "Starten",
+      hint: "Klicken Sie irgendwo (oder drücken Sie die Leertaste), um einzutreten",
+      stages: [
+        "Systeminitialisierung",
+        "Shader werden kompiliert",
+        "Geometrie wird geladen",
+        "Windkanalkalibrierung",
+        "Motor wird hochgefahren",
+      ],
+    },
+    kinetic: {
+      words: ["Präzision", "Obsession", "Ingenieurskunst", "Erbe", "Apex"],
+      statement:
+        "Sieben Jahrzehnte Porsche-Ingenieurskunst, verdichtet in einer Echtzeit-Rendering-Engine.",
+    },
+    hero: {
+      kicker: "Flat-6 Evolution / digitale Edition",
+      title1: "FLAT-6",
+      title2: "EVOLUTION",
+      subtitle:
+        "Eine immersive Erkundung der Porsche-Ingenieurskunst. Kein Preis, keine Transaktion. Nur Leidenschaft, Präzision und Bewegung.",
+      cta: "Studio betreten",
+      ctaSecondary: "Erbe entdecken",
+      telemetry: {
+        rpm: "Drehzahl",
+        gforce: "G-Kraft",
+        downforce: "Aerodynamischer Abtrieb",
+        topSpeed: "Höchstgeschwindigkeit",
+      },
+    },
+    configurator: {
+      kicker: "Modul 01 / Echtzeit-Studio",
+      title: "DIE FORM",
+      titleAccent: "GEHÖRT IHNEN",
+      subtitle:
+        "Ein Farbton legt sich an, eine Felge wird gewählt: Die Karosserie, die im Schatten wartete, wird Geste für Geste zu Ihrer eigenen.",
+      carSwitcher: "Modell",
+      tabs: {
+        paint: "Lackierung",
+        aero: "Aero",
+        wheels: "Felgen",
+      },
+      paint: {
+        title: "Lackierung und Oberfläche",
+        solid: "Unifarben",
+        metallic: "Metallic-Farben",
+        satin: "Satin-Lackierungen",
+        matte: "Mattfarben",
+        pts: "Paint to Sample",
+      },
+      aero: {
+        title: "Aero",
+        wing: "Carbon-Heckflügel",
+      },
+      wheels: {
+        title: "Felgen und Bremsen",
+        calipers: "Bremssättel",
+        pccb: "PCCB Gelb",
+        red: "Guards Red",
+      },
+      showroom: {
+        notice: "Ausstellungsstück, Personalisierung nicht verfügbar",
+        exterior: "Außen",
+        rear: "Heck",
+        wheels: "Felgen",
+        displacement: "Hubraum",
+        power: "Leistung",
+        weight: "Gewicht",
+      },
+      compare: {
+        button: "Vergleichen",
+        before: "Vorher",
+        after: "Nachher",
+        exit: "Beenden",
+      },
+      capture: "Aufnehmen",
+      visualizer: {
+        button: "Visualisieren",
+        kicker: "Freie Ansicht",
+        close: "Schließen",
+        hint: "Ziehen zum Umkreisen, Scrollen zum Zoomen",
+      },
+      resetLabel: "Zurücksetzen",
+      loadingModel: "3D-Modell wird geladen",
+    },
+    telemetry: {
+      kicker: "Modul 02 / Rundenmessung",
+      title: "EINE RUNDE,",
+      titleAccent: "OHNE NACHLASSEN",
+      subtitle:
+        "Die Bremsung kommt spät, der Abtrieb steigt in der Kurve, der Scheitelpunkt wird ohne Nachdenken getroffen: die Nordschleife in einer einzigen Bewegung gehalten.",
+      trackName: "Nürburgring Nordschleife",
+      stats: {
+        speed: "Geschwindigkeit",
+        gForce: "G-Kraft",
+        brake: "Bremsung",
+      },
+      sectorLabel: "Sektor",
+    },
+    silhouette: {
+      kicker: "Modul 04 / Formkontinuität",
+      title: "DIE SILHOUETTE",
+      titleAccent: "BLEIBT BESTEHEN",
+      subtitle:
+        "Sieben Fahrzeuge, eine einzige Linie, die seit 1948 nie aufgehört hat, sich zu verfeinern.",
+    },
+    aero: {
+      kicker: "Modul 03 / Windkanal",
+      title: "LINIEN",
+      titleAccent: "DES ABTRIEBS",
+      subtitle:
+        "Die Luft teilt sich an der Front, gleitet über die Dachlinie und legt sich schließlich gebändigt auf den Asphalt.",
+      cxLabel: "Cw-Wert",
+      downforceLabel: "Abtrieb",
+    },
+    particleAssembly: {
+      kicker: "Modul 05 / die GT3 RS im Überblick",
+      title: "525 PS.",
+      titleAccent: "KEIN KOMPROMISS.",
+      subtitle:
+        "Der größte je an einem straßenzugelassenen 911 montierte Heckflügel, direkt aus dem Rennsport übernommen: Hier ist Geschwindigkeit keine Zahl, sondern eine Entscheidung.",
+    },
+    outro: {
+      kicker: "Ende der Tour",
+      title: "DIE SEITE",
+      titleAccent: "ENDET HIER",
+      subtitle:
+        "Das Studio hingegen fängt gerade erst an. Steigen Sie ein und machen Sie diesen GT3 RS zu Ihrem eigenen.",
+      cta: "Studio öffnen",
+    },
+    heritage: {
+      kicker: "Modul 06 / Archiv",
+      title: "ERBE",
+      subtitle:
+        "Sieben Jahrzehnte Boxermotor-Ingenieurskunst, vom ursprünglichen Flat-4 des 356 bis zum modernen Flat-6 des GT3 RS.",
+      statsKicker: "In Zahlen",
+      statsTitle: "DER BOXER-BOGEN",
+      stats: {
+        decades: "Jahrzehnte mit Boxermotoren",
+        power: "Spitzenleistung",
+        speed: "Höchstgeschwindigkeit",
+        models: "Modelle im Studio",
+      },
+      cooling: {
+        air: "Luftkühlung",
+        liquide: "Wasserkühlung",
+      },
+      cylinders: "Boxerzylinder",
+      story: {
+        kicker: "Ein Stück Geschichte",
+        paragraphs: [
+          "1948. Ferry Porsche baut den 356 in einer österreichischen Werkstatt mit den Mitteln, die zur Verfügung stehen: einem Flat-4 aus dem Käfer entliehen, einer auf das Wesentliche reduzierten Karosserie und einer einfachen Überzeugung: Das Auto soll dem Fahrer dienen, nicht umgekehrt. Fünfzehn Jahre später wird derselbe Flat-4 im allerersten 911 zum Flat-6. Die daraus entstandene Silhouette hat sich seither kaum verändert.",
+          "Drei Jahrzehnte lang treibt der luftgekühlte Flat-6 dieses Fahrwerk in jede Richtung, bis der 959 einen Allradantrieb und ein Turbopaar aus dem Rennsport einpflanzt und damit künftige Porsche vorwegnimmt. Dann kommt 1998: Der 996 tauscht Luft gegen Wasser, eine Entscheidung, die Puristen damals spaltet und sich im Rückblick als selbstverständlich erweist.",
+          "Das Studio endet jedoch nicht beim Flat-6. Drei Fahrzeuge erzählen hier eine andere Geschichte: der 917K, ein Flat-12, der 1970 Le Mans gewann und wohl der berühmteste Rennmotor der Marke bleibt; der 918 Spyder, ein Hybrid-V8, der bereits 2013 bewies, dass Elektrifizierung und puristisches Fahren koexistieren können; und der Mission R, ein vollelektrisches Konzept, das den Porsche-Rennsport von morgen skizziert. Drei Brüche mit dem Muster, eine gemeinsame Obsession.",
+        ],
+      },
+      fleet: {
+        kicker: "Modul 07 / die Kollektion",
+        title: "DIE GARAGE",
+        subtitle:
+          "Die sieben Fahrzeuge des Studios: der Flat-6 als roter Faden, und drei Brüche, die ihn auf die Probe stellten.",
+      },
+    },
+    footer: {
+      disclaimer:
+        "APEX // MOTION ist ein unabhängiges, nicht-kommerzielles Projekt und nicht mit der Dr. Ing. h.c. F. Porsche AG verbunden.",
+      rights: "Alle Rechte vorbehalten",
+      navLabel: "Seitennavigation",
     },
   },
 } as const;

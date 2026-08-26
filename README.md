@@ -101,7 +101,7 @@ apex-motion/
 │   └── sections/                # Sections de la page d'accueil
 ├── hooks/                       # useFPS, useRenderGate, useScrollReveal, useMagneticHover, ...
 ├── lib/
-│   ├── i18n/                    # Dictionnaires FR/EN et provider de langue
+│   ├── i18n/                    # Dictionnaires FR/EN/DE et provider de langue
 │   ├── audio/                   # Provider audio et conception sonore synthétisée
 │   ├── intro/                   # État de la séquence d'entrée
 │   ├── debug/                   # Panneau de debug interne
@@ -300,8 +300,9 @@ saturent.
 ## Internationalisation
 
 Le projet est multilingue dès l'origine (`lib/i18n`). Le français est la langue par défaut ;
-l'anglais est disponible via le sélecteur de langue dans la navigation. Ajouter une langue
-consiste à étendre `dictionaries.ts` avec un nouveau bloc de traductions typées.
+l'anglais et l'allemand sont disponibles via le sélecteur de langue dans la navigation, qui
+fait défiler les trois locales. Ajouter une langue consiste à étendre `dictionaries.ts` avec
+un nouveau bloc de traductions typées.
 
 ## Intégration et déploiement continus
 

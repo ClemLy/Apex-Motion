@@ -9,7 +9,12 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { defaultLocale, dictionaries, type Locale } from "./dictionaries";
+import {
+  defaultLocale,
+  dictionaries,
+  locales,
+  type Locale,
+} from "./dictionaries";
 
 interface LanguageContextValue {
   locale: Locale;
@@ -24,7 +29,9 @@ const STORAGE_KEY = "apex-motion-locale";
 function readStoredLocale(): Locale {
   if (typeof window === "undefined") return defaultLocale;
   const stored = window.localStorage.getItem(STORAGE_KEY);
-  return stored === "fr" || stored === "en" ? stored : defaultLocale;
+  return locales.includes(stored as Locale)
+    ? (stored as Locale)
+    : defaultLocale;
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {

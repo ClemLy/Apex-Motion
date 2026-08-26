@@ -9,6 +9,7 @@ import { useFPS } from "@/hooks/useFPS";
 import { useUISound } from "@/hooks/useUISound";
 import { useAppAudio } from "@/lib/audio/AudioProvider";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
+import { locales } from "@/lib/i18n/dictionaries";
 import { useDebug } from "@/lib/debug/DebugProvider";
 import { useMagneticHover } from "@/hooks/useMagneticHover";
 import { cn } from "@/utils/cn";
@@ -215,9 +216,13 @@ export function Navbar() {
                 type="button"
                 onClick={() => {
                   playSound("tick");
-                  setLocale(locale === "fr" ? "en" : "fr");
+                  const next =
+                    locales[(locales.indexOf(locale) + 1) % locales.length];
+                  setLocale(next);
                 }}
-                data-cursor={locale === "fr" ? "EN" : "FR"}
+                data-cursor={locales[
+                  (locales.indexOf(locale) + 1) % locales.length
+                ].toUpperCase()}
                 className="flex h-10 w-10 items-center justify-center text-[11px] uppercase tracking-[0.2em] text-neutral-400 transition-colors hover:text-neutral-50"
                 aria-label={dict.nav.changeLanguage}
               >
