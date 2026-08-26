@@ -3,9 +3,9 @@
 # APEX // MOTION
 
 **Une exploration numérique immersive de l'ingénierie Porsche.**
-Studio de personnalisation 3D en temps réel, laboratoire sonore et archives héritage.
+Studio de personnalisation 3D en temps réel, télémétrie de circuit et archives héritage.
 
-Aucun prix. Aucun panier. Uniquement la passion, la précision et le mouvement.
+Projet indépendant, non affilié à Porsche.
 
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 [![React](https://img.shields.io/badge/React-19-149eca?logo=react)](https://react.dev)
@@ -40,12 +40,10 @@ Aucun prix. Aucun panier. Uniquement la passion, la précision et le mouvement.
 
 ## Vision
 
-APEX // MOTION est un projet indépendant, non commercial, dédié à la mise en scène
-digitale de l'ingénierie Porsche. Le site adopte une esthétique brutaliste-luxe : noir
-abyssal, typographie éditoriale surdimensionnée, télémétrie de cockpit épinglée aux
-angles, et une caméra 3D à ressort qui répond à chaque interaction. L'objectif est
-purement contemplatif et technique : aucune logique e-commerce, aucun prix, aucun bouton
-d'achat n'existe dans ce projet.
+APEX // MOTION est un projet indépendant dédié à la mise en scène digitale de
+l'ingénierie Porsche. Le site adopte une esthétique brutaliste-luxe : noir abyssal,
+typographie éditoriale surdimensionnée, télémétrie de cockpit épinglée aux angles, et
+une caméra 3D à ressort qui répond à chaque interaction.
 
 ## Aperçu visuel
 
@@ -75,7 +73,7 @@ d'achat n'existe dans ce projet.
 | 3D / WebGL      | [Three.js](https://threejs.org) via [React Three Fiber](https://docs.pmnd.rs/react-three-fiber) + [drei](https://github.com/pmndrs/drei) | Flotte de modèles `.glb` réels, matériaux dynamiques, caméra à ressort |
 | Post-traitement | [@react-three/postprocessing](https://github.com/pmndrs/react-postprocessing)                                                            | Bloom, aberration chromatique, grain, vignette, tone mapping ACES      |
 | Pipeline 3D     | [glTF-Transform](https://gltf-transform.dev) + Draco                                                                                     | Optimisation et compression des modèles source                         |
-| Audio           | Web Audio API (synthèse temps réel)                                                                                                      | Sonorités d'échappement, blips d'interface, aucun fichier son          |
+| Audio           | Web Audio API (synthèse temps réel)                                                                                                      | Retours sonores d'interface synthétisés, aucun fichier son             |
 | Icônes          | [lucide-react](https://lucide.dev)                                                                                                       | Iconographie fine, aucune émoji                                        |
 | Qualité         | ESLint, Prettier, TypeScript strict                                                                                                      | Portes de qualité en intégration continue                              |
 
