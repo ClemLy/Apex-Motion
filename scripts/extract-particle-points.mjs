@@ -38,13 +38,12 @@ const PAINT_MATCH = "carPaint";
 const WHEEL_MATCH = "wheels_chrome_1";
 const CALIPER_MATCH = "amdb11_caliper";
 
-/** Same apple-green as lib/configurator/types.ts's new "apple-green" paint
- * option (and the car shown in scripts/capture-particle-hero.mjs's capture),
- * so the resting/assembled cloud reads as the same car the section reveals
- * at the end rather than an unrelated palette. Calipers stay a contrasting
- * red rather than matching the body - a common real factory pairing on
- * green PTS cars, and a useful accent in the cloud either way. */
-const COLOR_PAINT = [0.545, 0.773, 0.247];
+/** Same lava-orange as lib/configurator/types.ts's "lava-orange" paint
+ * option, so the resting/assembled cloud reads as the same car the section
+ * reveals at the end rather than an unrelated palette. Calipers stay a
+ * contrasting red rather than matching the body - a useful accent in the
+ * cloud either way. */
+const COLOR_PAINT = [0.831, 0.286, 0.118];
 const COLOR_CALIPER = [0.659, 0.071, 0.102];
 const COLOR_WHEEL = [0.16, 0.16, 0.18];
 const COLOR_NEUTRAL = [0.72, 0.72, 0.76];

@@ -30,11 +30,12 @@ const TARGET_FPS = 60;
 const TURNTABLE_ARC_DEG = 30;
 
 const HERO_PAINT =
-  paintOptions.find((p) => p.id === "apple-green") ?? paintOptions[0];
+  paintOptions.find((p) => p.id === "lava-orange") ?? paintOptions[0];
 const HERO_WHEEL =
-  wheelFinishOptions.find((w) => w.id === "silver") ?? wheelFinishOptions[0];
+  wheelFinishOptions.find((w) => w.id === "satin-black") ??
+  wheelFinishOptions[0];
 /** Matches scripts/extract-particle-points.mjs's COLOR_CALIPER - a
- * contrasting red rather than body-matched green. */
+ * contrasting red rather than body-matched orange. */
 const HERO_CALIPER_COLOR = "#a8121a";
 
 /** Progress boundaries carving the section's single 0-1 scroll range into
