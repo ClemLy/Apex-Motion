@@ -1,9 +1,8 @@
 /**
- * Placeholder until the real production domain is known — update once the
- * project is deployed and (optionally) a custom domain is attached, then
- * every consumer below (metadata, robots, sitemap, JSON-LD) picks it up.
+ * Update this if a custom domain is ever attached in Vercel — every
+ * consumer below (metadata, robots, sitemap, JSON-LD) picks it up from here.
  */
-export const SITE_URL = "https://apex-motion.vercel.app";
+export const SITE_URL = "https://apex-motion-studio.vercel.app";
 
 export const SITE_NAME = "APEX // MOTION";
 

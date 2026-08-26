@@ -133,7 +133,7 @@ export function Hero() {
           Leading stays loose enough that the reveal mask never clips the
           accent on capitals such as the E of EVOLUTION.
         */}
-        <h1 className="flex flex-col text-[19vw] font-semibold uppercase leading-[0.92] tracking-[-0.055em] text-white mix-blend-difference sm:text-[13vw]">
+        <h1 className="flex flex-col text-[15vw] font-semibold uppercase leading-[0.92] tracking-[-0.055em] text-white mix-blend-difference sm:text-[13vw]">
           <span className="block overflow-hidden">
             <span className="hero-line block origin-left">
               {dict.hero.title1}
