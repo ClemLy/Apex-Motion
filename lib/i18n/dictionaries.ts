@@ -228,6 +228,19 @@ export const dictionaries = {
       navLabel: "Navigation du site",
       credit: "Conçu par",
     },
+    notFound: {
+      kicker: "Erreur 404 / hors piste",
+      title: "SIGNAL",
+      titleAccent: "PERDU",
+      subtitle:
+        "Cette page a quitté la trajectoire : le circuit ne comprend aucune piste à cette adresse.",
+      cta: "Reprendre la piste",
+      ctaSecondary: "Entrer dans le studio",
+      sectorLabel: "Secteur",
+      sectorValue: "Hors circuit",
+      statusLabel: "Statut",
+      statusValue: "Aucun signal",
+    },
   },
   en: {
     nav: {
@@ -450,6 +463,19 @@ export const dictionaries = {
       rights: "All rights reserved",
       navLabel: "Site navigation",
       credit: "Built by",
+    },
+    notFound: {
+      kicker: "Error 404 / off track",
+      title: "SIGNAL",
+      titleAccent: "LOST",
+      subtitle:
+        "This page left the racing line: the circuit has no route at this address.",
+      cta: "Back on track",
+      ctaSecondary: "Enter the studio",
+      sectorLabel: "Sector",
+      sectorValue: "Off circuit",
+      statusLabel: "Status",
+      statusValue: "No signal",
     },
   },
   de: {
@@ -676,6 +702,19 @@ export const dictionaries = {
       rights: "Alle Rechte vorbehalten",
       navLabel: "Seitennavigation",
       credit: "Entwickelt von",
+    },
+    notFound: {
+      kicker: "Fehler 404 / abseits der Strecke",
+      title: "SIGNAL",
+      titleAccent: "VERLOREN",
+      subtitle:
+        "Diese Seite hat die Ideallinie verlassen: Die Strecke kennt diese Adresse nicht.",
+      cta: "Zurück auf die Strecke",
+      ctaSecondary: "Studio betreten",
+      sectorLabel: "Sektor",
+      sectorValue: "Außerhalb der Strecke",
+      statusLabel: "Status",
+      statusValue: "Kein Signal",
     },
   },
 } as const;
