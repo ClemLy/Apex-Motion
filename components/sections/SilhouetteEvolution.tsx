@@ -45,10 +45,12 @@ export function SilhouetteEvolution() {
   const imageRefs = useRef<(HTMLImageElement | null)[]>([]);
   const nameRef = useRef<HTMLSpanElement>(null);
   const scanRef = useRef<HTMLDivElement>(null);
+  const currentNameRef = useRef<string>("");
 
   useEffect(() => {
     if (FRAMES.length < 2) return;
     const segments = FRAMES.length - 1;
+    currentNameRef.current = "";
 
     const applyProgress = (progress: number) => {
       const scaled = Math.min(segments, Math.max(0, progress * segments));
@@ -97,8 +99,24 @@ export function SilhouetteEvolution() {
       if (nameRef.current) {
         const frame = FRAMES[t < 0.5 ? index : index + 1];
         const label = `${frame.name} · ${frame.years}`;
-        if (nameRef.current.textContent !== label) {
-          nameRef.current.textContent = label;
+        if (currentNameRef.current !== label) {
+          currentNameRef.current = label;
+          const el = nameRef.current;
+          if (reducedMotion || !el.textContent) {
+            el.textContent = label;
+          } else {
+            gsap.killTweensOf(el);
+            gsap.to(el, {
+              opacity: 0,
+              y: -5,
+              duration: 0.12,
+              ease: "power2.in",
+              onComplete: () => {
+                el.textContent = label;
+                gsap.to(el, { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" });
+              },
+            });
+          }
         }
       }
     };
@@ -125,7 +143,7 @@ export function SilhouetteEvolution() {
   if (FRAMES.length < 2) return null;
 
   return (
-    <section ref={rootRef} className="relative min-h-[480vh] bg-[#020202]">
+    <section ref={rootRef} aria-label={dict.a11y.sections.silhouette} className="relative min-h-[260vh] bg-[#020202] md:min-h-[480vh]">
       <div className="sticky top-0 flex h-screen flex-col justify-center gap-10 overflow-hidden px-6 py-28 sm:px-10">
         <SectionLabel
           kicker={dict.silhouette.kicker}

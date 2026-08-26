@@ -61,7 +61,7 @@ function StatCard({
         {value}
         {unit && <span className="ml-1 text-lg text-neutral-500">{unit}</span>}
       </span>
-      <span className="text-[10px] uppercase tracking-[0.25em] text-neutral-500">
+      <span className="text-[11px] uppercase tracking-[0.25em] text-neutral-500">
         {label}
       </span>
     </div>
@@ -73,9 +73,9 @@ export function HeritageStats() {
   const stats = useStats();
 
   return (
-    <section className="relative flex flex-col gap-16 px-6 py-24 sm:px-10">
+    <section aria-label={dict.a11y.sections.heritageStats} className="relative flex flex-col gap-16 px-6 py-24 sm:px-10">
       <div className="mx-auto flex max-w-2xl flex-col gap-5">
-        <span className="text-[10px] uppercase tracking-[0.35em] text-neutral-500">
+        <span className="text-[11px] uppercase tracking-[0.35em] text-neutral-500">
           {dict.heritage.story.kicker}
         </span>
         {dict.heritage.story.paragraphs.map((paragraph, i) => (

@@ -245,6 +245,8 @@ function FluidQuad() {
  */
 export function FluidBackground() {
   const [active, setActive] = useState(true);
+  const [otherCanvasActive, setOtherCanvasActive] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onVisibility = () =>
@@ -253,14 +255,35 @@ export function FluidBackground() {
     return () => document.removeEventListener("visibilitychange", onVisibility);
   }, []);
 
+  // When another WebGL canvas is present (HeroCanvas, ConfiguratorCanvas…),
+  // the fluid backdrop is entirely hidden behind it — no reason to redraw at
+  // full rate. Drop to 10 fps to keep wipe transitions alive while saving ~67%
+  // of GPU redraws. Uses childList MutationObserver (no attribute watching)
+  // so it only fires when nodes enter/leave the DOM, not on every animation tick.
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    const check = () => {
+      const canvases = document.querySelectorAll("canvas");
+      let others = 0;
+      canvases.forEach((c) => {
+        if (!wrapper?.contains(c)) others++;
+      });
+      setOtherCanvasActive(others > 0);
+    };
+    const observer = new MutationObserver(check);
+    observer.observe(document.body, { childList: true, subtree: true });
+    check();
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
+    <div ref={wrapperRef} aria-hidden className="pointer-events-none fixed inset-0 -z-10">
       <Canvas
         dpr={1}
         gl={{ antialias: false, alpha: false }}
         frameloop={active ? "demand" : "never"}
       >
-        <FrameLimiter fps={TARGET_FPS} />
+        <FrameLimiter fps={otherCanvasActive ? 10 : TARGET_FPS} />
         <FluidQuad />
       </Canvas>
     </div>

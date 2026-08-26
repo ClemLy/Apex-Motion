@@ -92,7 +92,7 @@ export function CarSwitcher({
     <div ref={rootRef} className="flex flex-col gap-2">
       <span
         id="car-switcher-label"
-        className="text-[10px] uppercase tracking-[0.2em] text-neutral-500"
+        className="text-[11px] uppercase tracking-[0.2em] text-neutral-500"
       >
         {dict.configurator.carSwitcher}
       </span>

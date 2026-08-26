@@ -17,6 +17,7 @@ import { chromium } from "playwright";
 import { createHash } from "node:crypto";
 import { mkdir, readdir, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
+import sharp from "sharp";
 
 /** Same order as lib/three/carConfigs.ts's CARS. */
 const CAR_IDS = [
@@ -67,12 +68,13 @@ async function main() {
     }
 
     const base64 = dataUrl.replace(/^data:image\/png;base64,/, "");
-    const buffer = Buffer.from(base64, "base64");
-    const hash = createHash("sha256").update(buffer).digest("hex").slice(0, 8);
-    const filename = `${id}.${hash}.png`;
-    await writeFile(path.join(OUTPUT_DIR, filename), buffer);
+    const pngBuffer = Buffer.from(base64, "base64");
+    const webpBuffer = await sharp(pngBuffer).webp({ quality: 85 }).toBuffer();
+    const hash = createHash("sha256").update(webpBuffer).digest("hex").slice(0, 8);
+    const filename = `${id}.${hash}.webp`;
+    await writeFile(path.join(OUTPUT_DIR, filename), webpBuffer);
     manifestEntries.push({ id, filename });
-    console.log(`${filename} (${(buffer.length / 1024).toFixed(0)}kb)`);
+    console.log(`${filename} (${(webpBuffer.length / 1024).toFixed(0)}kb, was ${(pngBuffer.length / 1024).toFixed(0)}kb PNG)`);
   }
 
   await browser.close();

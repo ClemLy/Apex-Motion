@@ -18,6 +18,17 @@ export const dictionaries = {
       heroShowcase: "vue décorative en rotation, ne réagit pas au clavier",
       studioViewport:
         "aperçu du Studio, se met à jour selon les réglages choisis",
+      sections: {
+        hero: "Présentation — Flat-6 Évolution",
+        telemetry: "Relevé de tour sur circuit",
+        aero: "Soufflerie — lignes d'appui",
+        silhouette: "Continuité de forme — évolution des silhouettes",
+        particles: "GT3 RS — assemblage 3D",
+        outro: "Accès au Studio",
+        configuratorTeaser: "Aperçu du Studio",
+        heritageStats: "Héritage — statistiques",
+        heritageFleet: "Collection — les sept voitures",
+      },
     },
     cursor: {
       drag: "Glisser",
@@ -175,6 +186,7 @@ export const dictionaries = {
       titleAccent: "S'ARRÊTE ICI",
       subtitle:
         "Le Studio, lui, ne fait que commencer. Entrez, et faites de cette GT3 RS la vôtre.",
+      cta: "Ouvrir le studio",
     },
     heritage: {
       kicker: "Module 06 / archives",
@@ -213,6 +225,7 @@ export const dictionaries = {
       disclaimer:
         "APEX // MOTION est un projet indépendant à but non commercial, non affilié à Dr. Ing. h.c. F. Porsche AG.",
       rights: "Tous droits réservés",
+      navLabel: "Navigation du site",
     },
   },
   en: {
@@ -229,6 +242,17 @@ export const dictionaries = {
     a11y: {
       heroShowcase: "decorative rotating view, not keyboard-interactive",
       studioViewport: "Studio preview, updates live with your selections",
+      sections: {
+        hero: "Flat-6 Evolution — showcase",
+        telemetry: "Lap telemetry on circuit",
+        aero: "Wind tunnel — downforce lines",
+        silhouette: "Continuity of form — silhouette evolution",
+        particles: "GT3 RS — 3D assembly",
+        outro: "Studio access",
+        configuratorTeaser: "Studio preview",
+        heritageStats: "Heritage — statistics",
+        heritageFleet: "Collection — all seven cars",
+      },
     },
     cursor: {
       drag: "Drag",
@@ -384,6 +408,7 @@ export const dictionaries = {
       title: "THE PAGE",
       titleAccent: "STOPS HERE",
       subtitle: "The Studio doesn't. Step in, and make this GT3 RS yours.",
+      cta: "Open the studio",
     },
     heritage: {
       kicker: "Module 06 / archive",
@@ -422,6 +447,7 @@ export const dictionaries = {
       disclaimer:
         "APEX // MOTION is an independent, non-commercial project, not affiliated with Dr. Ing. h.c. F. Porsche AG.",
       rights: "All rights reserved",
+      navLabel: "Site navigation",
     },
   },
 } as const;

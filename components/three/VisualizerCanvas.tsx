@@ -178,7 +178,7 @@ export function VisualizerCanvas() {
 
       <div className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between p-6 sm:p-10">
         <div className="flex flex-col gap-1">
-          <span className="text-[10px] uppercase tracking-[0.25em] text-neutral-500">
+          <span className="text-[11px] uppercase tracking-[0.25em] text-neutral-500">
             {dict.configurator.visualizer.kicker}
           </span>
           <span className="text-2xl font-semibold uppercase tracking-tight text-neutral-50">
@@ -216,7 +216,7 @@ export function VisualizerCanvas() {
         </div>
       </div>
 
-      <p className="pointer-events-none absolute inset-x-0 bottom-8 text-center text-[10px] uppercase tracking-[0.25em] text-neutral-500">
+      <p className="pointer-events-none absolute inset-x-0 bottom-8 text-center text-[11px] uppercase tracking-[0.25em] text-neutral-500">
         {dict.configurator.visualizer.hint}
       </p>
     </div>

@@ -284,11 +284,11 @@ export function Preloader() {
           <div className="flex items-center justify-between gap-6">
             <span
               ref={stageRef}
-              className="font-mono text-[10px] uppercase tracking-[0.3em] text-neutral-500"
+              className="font-mono text-[11px] uppercase tracking-[0.3em] text-neutral-500"
             >
               {dict.preloader.stages[0]}
             </span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-neutral-700">
+            <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-neutral-700">
               WEISSACH / DE
             </span>
           </div>
@@ -302,6 +302,7 @@ export function Preloader() {
             <>
               <button
                 type="button"
+                onClick={handleEnter}
                 data-cursor={dict.preloader.enter}
                 className="group relative flex items-center gap-4 rounded-full border border-white/20 px-9 py-3.5 text-[11px] uppercase tracking-[0.35em] text-neutral-100 transition-colors duration-300 hover:border-white/60"
               >
@@ -309,7 +310,7 @@ export function Preloader() {
                 <span className="relative">{dict.preloader.enter}</span>
                 <span className="relative h-1 w-1 rounded-full bg-emerald-400" />
               </button>
-              <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-neutral-500">
+              <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-neutral-500">
                 {dict.preloader.hint}
               </span>
             </>

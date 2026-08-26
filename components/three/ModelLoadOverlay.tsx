@@ -39,7 +39,12 @@ export function ModelLoadOverlay({
 
   if (ctaLabel) {
     return (
-      <div className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center gap-10 bg-[#020202]">
+      <div
+        className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center gap-10 bg-[#020202]"
+        role="status"
+        aria-label={dict.configurator.loadingModel}
+        aria-live="polite"
+      >
         <div className="flex flex-col items-center gap-4">
           <div className="h-1.5 w-64 overflow-hidden rounded-full bg-white/10 sm:w-80">
             <div className="loading-sweep h-full w-1/3 rounded-full bg-neutral-50" />
@@ -56,12 +61,17 @@ export function ModelLoadOverlay({
   }
 
   return (
-    <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center bg-[#020202]">
+    <div
+      className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center bg-[#020202]"
+      role="status"
+      aria-label={dict.configurator.loadingModel}
+      aria-live="polite"
+    >
       <div className="flex flex-col items-center gap-3">
         <div className="h-1 w-32 overflow-hidden rounded-full bg-white/10">
           <div className="loading-sweep h-full w-1/3 rounded-full bg-neutral-100" />
         </div>
-        <span className="text-[10px] uppercase tracking-[0.35em] text-neutral-500">
+        <span className="text-[11px] uppercase tracking-[0.35em] text-neutral-500">
           {dict.configurator.loadingModel}
         </span>
       </div>

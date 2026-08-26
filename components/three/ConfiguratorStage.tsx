@@ -84,10 +84,10 @@ function CompareSlider({ image }: { image: string }) {
         style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
       />
 
-      <span className="pointer-events-none absolute bottom-4 left-4 text-[10px] uppercase tracking-[0.2em] text-neutral-300">
+      <span className="pointer-events-none absolute bottom-4 left-4 text-[11px] uppercase tracking-[0.2em] text-neutral-300">
         {dict.configurator.compare.before}
       </span>
-      <span className="pointer-events-none absolute bottom-4 right-4 text-[10px] uppercase tracking-[0.2em] text-neutral-300">
+      <span className="pointer-events-none absolute bottom-4 right-4 text-[11px] uppercase tracking-[0.2em] text-neutral-300">
         {dict.configurator.compare.after}
       </span>
 

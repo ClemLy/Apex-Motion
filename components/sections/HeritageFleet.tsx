@@ -77,6 +77,7 @@ export function HeritageFleet() {
   return (
     <section
       ref={wrapperRef}
+      aria-label={dict.a11y.sections.heritageFleet}
       className="relative h-screen overflow-hidden bg-[#020202]"
     >
       <div className="absolute inset-0">

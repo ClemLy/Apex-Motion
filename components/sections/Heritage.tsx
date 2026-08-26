@@ -91,7 +91,7 @@ export function Heritage() {
                 <span>{era.power}</span>
                 <span>{era.topSpeed}</span>
               </div>
-              <span className="mt-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-600">
+              <span className="mt-1.5 font-mono text-[11px] uppercase tracking-[0.2em] text-neutral-600">
                 {era.cylinders} {dict.heritage.cylinders} ·{" "}
                 {dict.heritage.cooling[era.cooling]}
               </span>

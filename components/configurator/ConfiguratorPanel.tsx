@@ -166,7 +166,7 @@ export function ConfiguratorPanel() {
                 onClick={() => handleTab(t.id, t.focus)}
                 data-cursor={dict.cursor.view}
                 className={cn(
-                  "relative flex-1 rounded-full px-3 py-2 text-[10px] uppercase tracking-[0.2em] transition-colors duration-300",
+                  "relative flex-1 rounded-full px-3 py-2 text-[11px] uppercase tracking-[0.2em] transition-colors duration-300",
                   activeTab === t.id
                     ? "text-neutral-950"
                     : "text-neutral-400 hover:text-neutral-100",
@@ -198,7 +198,7 @@ export function ConfiguratorPanel() {
                   data-lenis-prevent
                   className="flex max-h-[52vh] flex-col gap-5 overflow-y-auto pr-1 lg:max-h-[46vh]"
                 >
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-neutral-500">
+                  <span className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">
                     {dict.configurator.paint.title}
                   </span>
                   {paintGroups.map((group) => (
@@ -242,7 +242,7 @@ export function ConfiguratorPanel() {
 
               {activeTab === "aero" && hasWing && (
                 <div className="flex flex-col gap-3">
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-neutral-500">
+                  <span className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">
                     {dict.configurator.aero.title}
                   </span>
                   <ToggleRow
@@ -261,7 +261,7 @@ export function ConfiguratorPanel() {
                 <div className="flex flex-col gap-4">
                   {hasWheelColor && (
                     <div className="flex flex-col gap-3">
-                      <span className="text-[10px] uppercase tracking-[0.2em] text-neutral-500">
+                      <span className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">
                         {dict.configurator.wheels.title}
                       </span>
                       <div className="flex gap-3">
@@ -297,7 +297,7 @@ export function ConfiguratorPanel() {
                   )}
                   {hasCalipers && (
                     <div className="flex flex-col gap-3">
-                      <span className="text-[10px] uppercase tracking-[0.2em] text-neutral-500">
+                      <span className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">
                         {dict.configurator.wheels.calipers}
                       </span>
                       <div className="flex gap-3">
@@ -345,7 +345,7 @@ export function ConfiguratorPanel() {
             reset();
           }}
           data-cursor={dict.configurator.resetLabel}
-          className="flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-neutral-400 transition-colors hover:text-neutral-100"
+          className="flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-neutral-400 transition-colors hover:text-neutral-100"
         >
           <RotateCcw className="h-3.5 w-3.5" aria-hidden />
           {dict.configurator.resetLabel}
@@ -379,7 +379,7 @@ function ShowroomSection({
             onClick={() => onFocus(f)}
             data-cursor={dict.cursor.view}
             className={cn(
-              "relative flex-1 rounded-full px-3 py-2 text-[10px] uppercase tracking-[0.2em] transition-colors duration-300",
+              "relative flex-1 rounded-full px-3 py-2 text-[11px] uppercase tracking-[0.2em] transition-colors duration-300",
               focus === f
                 ? "text-neutral-950"
                 : "text-neutral-400 hover:text-neutral-100",
@@ -399,7 +399,7 @@ function ShowroomSection({
         ))}
       </div>
 
-      <p className="text-[10px] uppercase tracking-[0.2em] text-neutral-500">
+      <p className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">
         {dict.configurator.showroom.notice}
       </p>
 

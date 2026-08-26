@@ -115,7 +115,7 @@ export function LapTelemetry() {
   }, [reducedMotion]);
 
   return (
-    <section ref={rootRef} className="relative min-h-[250vh]">
+    <section ref={rootRef} aria-label={dict.a11y.sections.telemetry} className="relative min-h-[150vh] md:min-h-[250vh]">
       <div className="sticky top-0 flex h-screen flex-col justify-center gap-10 overflow-hidden px-6 py-16 sm:px-10">
         <SectionLabel
           kicker={dict.telemetry.kicker}
@@ -149,12 +149,12 @@ export function LapTelemetry() {
           </svg>
 
           <GlassPanel className="absolute top-0 right-0 flex flex-col gap-3 p-5">
-            <span className="text-right text-[10px] uppercase tracking-[0.25em] text-neutral-500">
+            <span className="text-right text-[11px] uppercase tracking-[0.25em] text-neutral-500">
               {dict.telemetry.trackName}
             </span>
 
             <div className="flex flex-col items-end gap-1">
-              <span className="text-[9px] uppercase tracking-[0.2em] text-neutral-500">
+              <span className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">
                 {dict.telemetry.stats.speed}
               </span>
               <span className="font-mono text-3xl tabular-nums text-neutral-50">
@@ -165,7 +165,7 @@ export function LapTelemetry() {
 
             <div className="flex gap-6">
               <div className="flex flex-col items-end gap-1">
-                <span className="text-[9px] uppercase tracking-[0.2em] text-neutral-500">
+                <span className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">
                   {dict.telemetry.stats.gForce}
                 </span>
                 <span className="font-mono text-sm tabular-nums text-neutral-200">
@@ -173,7 +173,7 @@ export function LapTelemetry() {
                 </span>
               </div>
               <div className="flex flex-col items-end gap-1">
-                <span className="text-[9px] uppercase tracking-[0.2em] text-neutral-500">
+                <span className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">
                   {dict.telemetry.stats.brake}
                 </span>
                 <span className="font-mono text-sm tabular-nums text-neutral-200">
@@ -182,7 +182,7 @@ export function LapTelemetry() {
               </div>
             </div>
 
-            <span className="text-right text-[9px] uppercase tracking-[0.2em] text-neutral-500">
+            <span className="text-right text-[11px] uppercase tracking-[0.2em] text-neutral-500">
               {dict.telemetry.sectorLabel} <span ref={sectorRef}>1</span>
             </span>
           </GlassPanel>

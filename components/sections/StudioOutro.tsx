@@ -20,9 +20,9 @@ export function StudioOutro() {
   const ctaRef = useMagneticHover<HTMLAnchorElement>();
 
   return (
-    <section className="relative flex flex-col items-center gap-8 px-6 py-32 text-center sm:px-10 sm:py-40">
+    <section aria-label={dict.a11y.sections.outro} className="relative flex flex-col items-center gap-8 px-6 py-32 text-center sm:px-10 sm:py-40">
       <div ref={revealRef} className="flex flex-col items-center gap-6">
-        <span className="text-[10px] uppercase tracking-[0.35em] text-neutral-500">
+        <span className="text-[11px] uppercase tracking-[0.35em] text-neutral-500">
           {dict.outro.kicker}
         </span>
         <h2 className="text-4xl font-semibold uppercase leading-[0.95] tracking-tighter text-neutral-50 sm:text-6xl">
@@ -40,9 +40,9 @@ export function StudioOutro() {
         ref={ctaRef}
         href="/configurator"
         data-cursor={dict.cursor.explore}
-        className="group flex items-center gap-2 rounded-full bg-neutral-50 px-8 py-4 text-xs uppercase tracking-[0.2em] text-neutral-950"
+        className="group flex items-center gap-2 rounded-full bg-neutral-50 px-8 py-4 text-xs uppercase tracking-[0.2em] text-neutral-950 transition-transform duration-200 hover:scale-[1.02] active:scale-[0.97]"
       >
-        {dict.hero.cta}
+        {dict.outro.cta}
         <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
       </Link>
     </section>

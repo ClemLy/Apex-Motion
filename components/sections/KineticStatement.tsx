@@ -34,6 +34,11 @@ export function KineticStatement() {
       // constantly-moving pattern reduced motion asks sites to drop — the
       // statement itself still fades in, just without the scrub.
       if (!reducedMotion) {
+        const marqueeEls = [
+          ".kinetic-row-a",
+          ".kinetic-row-b",
+          ".kinetic-slice",
+        ];
         const common = {
           ease: "none" as const,
           scrollTrigger: {
@@ -60,6 +65,20 @@ export function KineticStatement() {
           { xPercent: 22 },
           { xPercent: -32, ...common },
         );
+
+        // Promote layers to their own composite only while the section is
+        // in view; three permanent will-change: transform layers are wasteful
+        // on every other part of the page.
+        ScrollTrigger.create({
+          trigger: rootRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          onToggle: (self) => {
+            gsap.set(marqueeEls, {
+              willChange: self.isActive ? "transform" : "auto",
+            });
+          },
+        });
       }
     }, rootRef);
 
@@ -75,7 +94,7 @@ export function KineticStatement() {
       {/* Row A: outlined type, the quieter layer. */}
       <div
         aria-hidden
-        className="kinetic-row-a flex w-max gap-10 whitespace-nowrap will-change-transform"
+        className="kinetic-row-a flex w-max gap-10 whitespace-nowrap"
       >
         {[...words, ...words].map((word, i) => (
           <span
@@ -90,7 +109,7 @@ export function KineticStatement() {
       {/* Row B: solid type running the other way. */}
       <div
         aria-hidden
-        className="kinetic-row-b -mt-[3vw] flex w-max gap-10 whitespace-nowrap will-change-transform"
+        className="kinetic-row-b -mt-[3vw] flex w-max gap-10 whitespace-nowrap"
       >
         {[...words, ...words].map((word, i) => (
           <span
@@ -107,7 +126,7 @@ export function KineticStatement() {
         aria-hidden
         className="pointer-events-none absolute inset-y-0 left-0 flex items-center mix-blend-difference"
       >
-        <div className="kinetic-slice flex w-max gap-10 whitespace-nowrap will-change-transform">
+        <div className="kinetic-slice flex w-max gap-10 whitespace-nowrap">
           {[...words, ...words].map((word, i) => (
             <span
               key={`c-${i}`}

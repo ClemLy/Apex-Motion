@@ -219,12 +219,12 @@ export function ParticleAssembly() {
   }, [reducedMotion]);
 
   return (
-    <section ref={rootRef} className="relative min-h-[420vh] bg-[#020202]">
+    <section ref={rootRef} aria-label={dict.a11y.sections.particles} className="relative min-h-[240vh] bg-[#020202] md:min-h-[420vh]">
       <div className="sticky top-0 h-screen overflow-hidden">
         <div className="absolute left-6 top-28 z-20 sm:left-10">
           <span
             ref={kickerRef}
-            className="text-[10px] uppercase tracking-[0.35em] text-neutral-500"
+            className="text-[11px] uppercase tracking-[0.35em] text-neutral-500"
             style={{ opacity: reducedMotion ? 1 : 0 }}
           >
             {dict.particleAssembly.kicker}

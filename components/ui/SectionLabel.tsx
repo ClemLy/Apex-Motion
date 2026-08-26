@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { cn } from "@/utils/cn";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
@@ -26,6 +27,30 @@ export function SectionLabel({
 }) {
   const Heading = as;
   const revealRef = useScrollReveal<HTMLDivElement>();
+  const headingRef = useRef<HTMLHeadingElement>(null);
+
+  // One-shot glitch pulse when the heading scrolls into view — fires on both
+  // pointer and touch screens, unlike the hover-only version in globals.css.
+  useEffect(() => {
+    const el = headingRef.current;
+    if (!el || !reveal) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let timer: ReturnType<typeof setTimeout>;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        el.classList.add("glitch-entry");
+        timer = setTimeout(() => el.classList.remove("glitch-entry"), 900);
+        obs.disconnect();
+      },
+      { threshold: 0.5 },
+    );
+    obs.observe(el);
+    return () => {
+      obs.disconnect();
+      clearTimeout(timer);
+    };
+  }, [reveal]);
 
   return (
     <div
@@ -36,10 +61,11 @@ export function SectionLabel({
         className,
       )}
     >
-      <span className="text-[10px] uppercase tracking-[0.35em] text-neutral-500">
+      <span className="text-[11px] uppercase tracking-[0.35em] text-neutral-500">
         {kicker}
       </span>
       <Heading
+        ref={headingRef}
         data-text={title}
         className="glitch-title text-4xl font-semibold uppercase leading-[0.95] tracking-tighter text-neutral-50 sm:text-6xl"
       >

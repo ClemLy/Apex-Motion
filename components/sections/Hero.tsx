@@ -9,6 +9,7 @@ import { HeroCanvas } from "@/components/three/HeroCanvas";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
 import { useIntro } from "@/lib/intro/IntroProvider";
 import { useMagneticHover } from "@/hooks/useMagneticHover";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { GT3RS_CONFIG } from "@/lib/three/carConfigs";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -16,25 +17,54 @@ gsap.registerPlugin(ScrollTrigger);
 export function Hero() {
   const { dict } = useLanguage();
   const { hasEntered } = useIntro();
+  const reducedMotion = usePrefersReducedMotion();
   const rootRef = useRef<HTMLDivElement>(null);
+  const scrollHintRef = useRef<HTMLDivElement>(null);
   const primaryCtaRef = useMagneticHover<HTMLAnchorElement>();
   const secondaryCtaRef = useMagneticHover<HTMLAnchorElement>();
 
   // Park the entrance elements in their start state immediately, so nothing
   // flashes in its final position while the curtain is still pulling apart.
+  // When reduced motion is preferred, skip straight to the final state.
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.set(".hero-line", { yPercent: 115, skewY: 5 });
-      gsap.set(".hero-rule", { scaleX: 0 });
-      gsap.set(".hero-fade", { opacity: 0, y: 22 });
+      if (reducedMotion) {
+        gsap.set(".hero-line", { yPercent: 0, skewY: 0 });
+        gsap.set(".hero-rule", { scaleX: 1 });
+        gsap.set(".hero-fade", { opacity: 1, y: 0 });
+      } else {
+        gsap.set(".hero-line", { yPercent: 115, skewY: 5 });
+        gsap.set(".hero-rule", { scaleX: 0 });
+        gsap.set(".hero-fade", { opacity: 0, y: 22 });
+      }
     }, rootRef);
     return () => ctx.revert();
+  }, [reducedMotion]);
+
+  // Fade out the scroll hint once the user has actually scrolled.
+  useEffect(() => {
+    const el = scrollHintRef.current;
+    const trigger = rootRef.current;
+    if (!el || !trigger) return;
+    const st = ScrollTrigger.create({
+      trigger,
+      start: "top+=80 top",
+      once: true,
+      onEnter: () => {
+        gsap.to(el, { opacity: 0, y: 6, duration: 0.5, ease: "power2.out" });
+      },
+    });
+    return () => st.kill();
   }, []);
 
   useEffect(() => {
     // The entrance is choreographed against the preloader curtain, so it only
     // fires once that has burst open.
     if (!hasEntered) return;
+
+    // When the user prefers reduced motion, the set-effect above has already
+    // shown the final state — nothing more to animate here.
+    if (reducedMotion) return;
 
     const ctx = gsap.context(() => {
       const intro = gsap.timeline({ defaults: { ease: "power4.out" } });
@@ -74,12 +104,13 @@ export function Hero() {
     }, rootRef);
 
     return () => ctx.revert();
-  }, [hasEntered]);
+  }, [hasEntered, reducedMotion]);
 
   return (
     <section
       ref={rootRef}
       id="home"
+      aria-label={dict.a11y.sections.hero}
       className="relative flex min-h-[100svh] w-full flex-col justify-end overflow-hidden pb-14 pt-32 lg:pb-40"
     >
       <div className="absolute inset-0" data-cursor={dict.cursor.orbit}>
@@ -92,7 +123,7 @@ export function Hero() {
       <div className="hero-parallax relative z-10 flex flex-col gap-8 px-6 sm:px-10">
         <div className="hero-fade flex items-center gap-4">
           <span className="h-px w-10 bg-white/25" />
-          <span className="text-[10px] uppercase tracking-[0.4em] text-neutral-400">
+          <span className="text-[11px] uppercase tracking-[0.4em] text-neutral-400">
             {dict.hero.kicker}
           </span>
         </div>
@@ -139,12 +170,12 @@ export function Hero() {
               },
             ].map((item) => (
               <div key={item.label} className="flex flex-col gap-1.5">
-                <span className="text-[9px] uppercase tracking-[0.3em] text-neutral-500">
+                <span className="text-[11px] uppercase tracking-[0.3em] text-neutral-500">
                   {item.label}
                 </span>
                 <span className="font-mono text-lg tabular-nums leading-none text-neutral-100">
                   {item.value}
-                  <span className="ml-1 text-[10px] text-neutral-500">
+                  <span className="ml-1 text-[11px] text-neutral-500">
                     {item.unit}
                   </span>
                 </span>
@@ -157,7 +188,7 @@ export function Hero() {
               ref={primaryCtaRef}
               href="/configurator"
               data-cursor={dict.cursor.explore}
-              className="group flex items-center gap-2 rounded-full bg-neutral-50 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-neutral-950"
+              className="group flex items-center gap-2 rounded-full bg-neutral-50 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-neutral-950 transition-transform duration-200 hover:scale-[1.02] active:scale-[0.97]"
             >
               {dict.hero.cta}
               <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
@@ -166,15 +197,15 @@ export function Hero() {
               ref={secondaryCtaRef}
               href="/heritage"
               data-cursor={dict.cursor.view}
-              className="magnetic rounded-full border border-white/15 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-neutral-300 transition-colors duration-300 hover:border-white/40 hover:text-neutral-50"
+              className="magnetic rounded-full border border-white/15 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-neutral-300 transition duration-300 hover:border-white/40 hover:scale-[1.02] hover:text-neutral-50 active:scale-[0.97]"
             >
               {dict.hero.ctaSecondary}
             </Link>
           </div>
         </div>
 
-        <div className="hero-fade flex items-center gap-2 pt-2 text-[9px] uppercase tracking-[0.35em] text-neutral-500">
-          <MoveDown className="h-3 w-3 animate-bounce" aria-hidden />
+        <div ref={scrollHintRef} className="hero-fade flex items-center gap-2 pt-2 text-[11px] uppercase tracking-[0.35em] text-neutral-500">
+          <MoveDown className="h-3 w-3" aria-hidden />
           {dict.hud.scroll}
         </div>
       </div>

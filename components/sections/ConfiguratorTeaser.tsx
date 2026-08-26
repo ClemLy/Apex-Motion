@@ -15,6 +15,7 @@ export function ConfiguratorTeaser() {
   return (
     <section
       id="configurator"
+      aria-label={dict.a11y.sections.configuratorTeaser}
       className="relative flex flex-col gap-10 px-6 py-28 sm:px-10"
     >
       <SectionLabel
@@ -42,9 +43,9 @@ export function ConfiguratorTeaser() {
             {dict.configurator.tabs.paint} / {dict.configurator.tabs.aero} /{" "}
             {dict.configurator.tabs.wheels}
           </span>
-          <span className="flex items-center gap-2 rounded-full border border-white/15 bg-black/40 px-4 py-2 text-[10px] uppercase tracking-[0.2em] text-neutral-100 backdrop-blur-xl transition-transform group-hover:scale-105">
+          <span className="flex items-center gap-2 rounded-full border border-white/15 bg-black/40 px-4 py-2 text-[11px] uppercase tracking-[0.2em] text-neutral-100 backdrop-blur-xl transition-all duration-300 group-hover:scale-105 group-hover:gap-3 group-hover:border-white/30">
             {dict.hero.cta}
-            <ArrowUpRight className="h-3.5 w-3.5" />
+            <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </span>
         </div>
       </Link>
