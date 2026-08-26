@@ -115,7 +115,11 @@ export function LapTelemetry() {
   }, [reducedMotion]);
 
   return (
-    <section ref={rootRef} aria-label={dict.a11y.sections.telemetry} className="relative min-h-[150vh] md:min-h-[250vh]">
+    <section
+      ref={rootRef}
+      aria-label={dict.a11y.sections.telemetry}
+      className="relative min-h-[150vh] md:min-h-[250vh]"
+    >
       <div className="sticky top-0 flex h-screen flex-col justify-center gap-10 overflow-hidden px-6 py-16 sm:px-10">
         <SectionLabel
           kicker={dict.telemetry.kicker}

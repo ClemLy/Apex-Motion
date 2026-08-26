@@ -7,6 +7,12 @@ Studio de personnalisation 3D en temps réel, laboratoire sonore et archives hé
 
 Aucun prix. Aucun panier. Uniquement la passion, la précision et le mouvement.
 
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
+[![React](https://img.shields.io/badge/React-19-149eca?logo=react)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Three.js](https://img.shields.io/badge/Three.js-R3F-000000?logo=three.js&logoColor=white)](https://docs.pmnd.rs/react-three-fiber)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+
 </div>
 
 ---
@@ -14,11 +20,12 @@ Aucun prix. Aucun panier. Uniquement la passion, la précision et le mouvement.
 ## Sommaire
 
 - [Vision](#vision)
+- [Aperçu visuel](#aperçu-visuel)
 - [Stack technique](#stack-technique)
 - [Architecture du projet](#architecture-du-projet)
 - [Démarrage](#démarrage)
 - [Scripts disponibles](#scripts-disponibles)
-- [Modules](#modules)
+- [Parcours du site](#parcours-du-site)
 - [Direction artistique](#direction-artistique)
 - [Couche cinématographique WebGL](#couche-cinématographique-webgl)
 - [Séquence d'entrée](#séquence-dentrée)
@@ -40,55 +47,81 @@ angles, et une caméra 3D à ressort qui répond à chaque interaction. L'object
 purement contemplatif et technique : aucune logique e-commerce, aucun prix, aucun bouton
 d'achat n'existe dans ce projet.
 
+## Aperçu visuel
+
+<table>
+<tr>
+<td width="50%"><img src="screenshots/hero.jpg" alt="Page d'accueil : Flat-6 Évolution" /><br /><sub>Page d'accueil : le hero cinématique</sub></td>
+<td width="50%"><img src="screenshots/studio.jpg" alt="Studio de personnalisation 3D" /><br /><sub>Studio : personnalisation temps réel</sub></td>
+</tr>
+<tr>
+<td width="50%"><img src="screenshots/lap-telemetry.jpg" alt="Relevé de tour Nürburgring Nordschleife" /><br /><sub>Relevé de tour : Nürburgring Nordschleife</sub></td>
+<td width="50%"><img src="screenshots/aero-flow.jpg" alt="Soufflerie aérodynamique" /><br /><sub>Soufflerie : lignes d'appui</sub></td>
+</tr>
+<tr>
+<td width="50%"><img src="screenshots/particle-reveal.jpg" alt="Assemblage de particules révélant la GT3 RS" /><br /><sub>Assemblage de particules : révélation finale</sub></td>
+<td width="50%"><img src="screenshots/heritage.jpg" alt="Frise chronologique Héritage" /><br /><sub>Héritage : sept décennies de flat-6</sub></td>
+</tr>
+</table>
+
 ## Stack technique
 
-| Domaine         | Choix                                                                                                                                    | Rôle                                                              |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| Framework       | [Next.js 16](https://nextjs.org) (App Router) + React 19 + TypeScript                                                                    | SPA fluide, routage par modules                                   |
-| Style           | [Tailwind CSS v4](https://tailwindcss.com)                                                                                               | Design system utilitaire, thème sombre natif                      |
-| Scroll          | [Lenis](https://github.com/darkroomengineering/lenis)                                                                                    | Inertie de scroll fluide et pesée                                 |
-| Animation       | [GSAP](https://gsap.com) (ScrollTrigger) + [Framer Motion](https://www.framer.com/motion)                                                | Chorégraphies éditoriales et micro-états d'interface              |
-| 3D / WebGL      | [Three.js](https://threejs.org) via [React Three Fiber](https://docs.pmnd.rs/react-three-fiber) + [drei](https://github.com/pmndrs/drei) | Véhicule procédural, matériaux dynamiques, caméra à ressort       |
-| Post-traitement | [@react-three/postprocessing](https://github.com/pmndrs/react-postprocessing)                                                            | Bloom, aberration chromatique, grain, vignette, tone mapping ACES |
-| Audio           | Web Audio API (synthèse temps réel) + [Howler.js](https://howlerjs.com) (réservé aux futurs effets échantillonnés)                       | Sonorités d'échappement, blips d'interface                        |
-| Icônes          | [lucide-react](https://lucide.dev)                                                                                                       | Iconographie fine, aucune émoji                                   |
-| Qualité         | ESLint, Prettier, TypeScript strict, smoke test Playwright                                                                               | Portes de qualité en intégration continue                         |
+| Domaine         | Choix                                                                                                                                    | Rôle                                                                   |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| Framework       | [Next.js 16](https://nextjs.org) (App Router) + React 19 + TypeScript                                                                    | SPA fluide, routage par modules                                        |
+| Style           | [Tailwind CSS v4](https://tailwindcss.com)                                                                                               | Design system utilitaire, thème sombre natif                           |
+| Scroll          | [Lenis](https://github.com/darkroomengineering/lenis)                                                                                    | Inertie de scroll fluide et pesée                                      |
+| Animation       | [GSAP](https://gsap.com) (ScrollTrigger) + [Framer Motion](https://www.framer.com/motion)                                                | Chorégraphies éditoriales et micro-états d'interface                   |
+| 3D / WebGL      | [Three.js](https://threejs.org) via [React Three Fiber](https://docs.pmnd.rs/react-three-fiber) + [drei](https://github.com/pmndrs/drei) | Flotte de modèles `.glb` réels, matériaux dynamiques, caméra à ressort |
+| Post-traitement | [@react-three/postprocessing](https://github.com/pmndrs/react-postprocessing)                                                            | Bloom, aberration chromatique, grain, vignette, tone mapping ACES      |
+| Pipeline 3D     | [glTF-Transform](https://gltf-transform.dev) + Draco                                                                                     | Optimisation et compression des modèles source                         |
+| Audio           | Web Audio API (synthèse temps réel)                                                                                                      | Sonorités d'échappement, blips d'interface, aucun fichier son          |
+| Icônes          | [lucide-react](https://lucide.dev)                                                                                                       | Iconographie fine, aucune émoji                                        |
+| Qualité         | ESLint, Prettier, TypeScript strict                                                                                                      | Portes de qualité en intégration continue                              |
 
 ## Architecture du projet
 
 ```
 apex-motion/
 ├── .github/
-│   ├── workflows/ci.yml         # Types, lint, format, build, smoke test
+│   ├── workflows/ci.yml         # Types, lint, format, build
 │   ├── workflows/deploy.yml     # Déploiement Vercel en production
 │   └── dependabot.yml           # Mises à jour groupées des dépendances
 ├── app/                         # Routes App Router (SPA à modules)
 │   ├── layout.tsx               # Providers, grain, curseur, HUD, navigation
 │   ├── template.tsx             # Transitions de page (Framer Motion)
+│   ├── favicon.ico              # Chevron Apex sur noir abyssal
 │   ├── page.tsx                 # Page d'accueil (assemble les sections)
-│   ├── configurator/            # Module 01 - Studio de personnalisation 3D
-│   ├── heritage/                # Module 03 - Archives héritage
-│   └── garage/                  # Module 04 - Garage communautaire
+│   ├── configurator/            # Studio de personnalisation 3D
+│   ├── heritage/                # Frise chronologique héritage
+│   └── silhouette-capture/      # Outil interne de capture de silhouettes
 ├── components/
 │   ├── layout/                  # Navbar, Footer, Preloader, HudFrame, scroll
 │   ├── ui/                      # CustomCursor, GlassPanel, TelemetryTag, SectionLabel
 │   ├── three/                   # Scène 3D, éclairage animé, caméra, post-traitement
 │   ├── configurator/            # Panneau de configuration temps réel
 │   └── sections/                # Sections de la page d'accueil
-├── hooks/                       # useFPS, useEngineAudio, useUISound, useRenderGate
+├── hooks/                       # useFPS, useRenderGate, useScrollReveal, useMagneticHover, ...
 ├── lib/
 │   ├── i18n/                    # Dictionnaires FR/EN et provider de langue
 │   ├── audio/                   # Provider audio et conception sonore synthétisée
 │   ├── intro/                   # État de la séquence d'entrée
-│   ├── three/                   # Textures procédurales (carbone, vernis)
-│   ├── configurator/            # État et types du configurateur
-│   ├── heritage-data.ts         # Données des ères Porsche
-│   └── garage-data.ts           # Données des builds communautaires
-├── scripts/smoke.mjs            # Test de fumée production (Playwright)
+│   ├── debug/                   # Panneau de debug interne
+│   ├── capture/                 # Provider de capture d'écran du studio
+│   ├── three/                   # Configs de flotte, textures procédurales, nuage de particules
+│   └── configurator/            # État et types du configurateur (peintures, jantes, étriers)
+├── scripts/                     # Pipeline d'assets (Node, hors build Next.js)
+│   ├── optimize-models.mjs      # Compression Draco + hash des modèles .glb
+│   ├── capture-fleet-images.mjs # Génère les silhouettes .webp de la flotte
+│   ├── capture-aero-hero.mjs    # Capture la scène héro de la soufflerie
+│   └── extract-particle-points.mjs # Génère le nuage de points depuis le mesh GT3 RS
 ├── public/
-│   ├── models/                  # Emplacement réservé aux futurs modèles .glb
-│   └── audio/                   # Emplacement réservé aux futurs échantillons
-└── utils/                       # Fonctions utilitaires (cn)
+│   ├── models/                  # Flotte Porsche au format .glb (7 véhicules)
+│   ├── particles/                # Nuage de points binaire (assemblage de particules)
+│   ├── silhouettes/              # Silhouettes .webp pré-rendues
+│   └── draco/                    # Décodeur Draco local
+├── screenshots/                  # Captures utilisées dans ce README
+└── utils/                        # Fonctions utilitaires (cn)
 ```
 
 ## Démarrage
@@ -104,51 +137,61 @@ L'application est servie sur [http://localhost:3000](http://localhost:3000).
 
 ## Scripts disponibles
 
-| Commande               | Description                                         |
-| ---------------------- | --------------------------------------------------- |
-| `npm run dev`          | Serveur de développement                            |
-| `npm run build`        | Build de production                                 |
-| `npm run start`        | Sert le build de production                         |
-| `npm run typecheck`    | Vérification TypeScript stricte                     |
-| `npm run lint`         | Analyse ESLint                                      |
-| `npm run format`       | Formatage Prettier                                  |
-| `npm run format:check` | Vérifie le formatage sans modifier                  |
-| `npm run test:smoke`   | Test de fumée navigateur sur le build de production |
+| Commande                    | Description                                               |
+| --------------------------- | --------------------------------------------------------- |
+| `npm run dev`               | Serveur de développement (Turbopack)                      |
+| `npm run build`             | Build de production                                       |
+| `npm run start`             | Sert le build de production                               |
+| `npm run typecheck`         | Vérification TypeScript stricte                           |
+| `npm run lint`              | Analyse ESLint                                            |
+| `npm run format`            | Formatage Prettier                                        |
+| `npm run format:check`      | Vérifie le formatage sans modifier                        |
+| `npm run optimize:models`   | Compresse et hash les modèles `.glb` sources              |
+| `npm run capture:fleet`     | Régénère les silhouettes `.webp` de la flotte             |
+| `npm run capture:aero`      | Recapture la scène héro de la section soufflerie          |
+| `npm run extract:particles` | Régénère le nuage de points de l'assemblage de particules |
 
-## Modules
+## Parcours du site
 
-### 01 · Studio de personnalisation (`/configurator`)
+### Accueil (`/`)
 
-Un véhicule multi-parties entièrement procédural, construit avec des primitives R3F
-(aucun `.glb` requis à ce stade), réagissant en temps réel :
+Huit modules qui s'enchaînent au défilement, chacun piloté par son propre
+`ScrollTrigger` :
 
-- **Peinture et finition** : teintes métallisées, mates et Paint to Sample. Le matériau
-  interpole en continu vers la cible, la finition se métamorphose au lieu de sauter.
-- **Aéro et carrosserie** : aileron, splitter avant et carrosserie élargie. L'élargissement
-  s'anime sur l'échelle de la coque, les roues restant à l'écart de cette mise à l'échelle.
-- **Jantes et freinage** : plusieurs dessins de jantes, étriers colorés (PCCB jaune, Guards
-  Red, noir), avec une impulsion lumineuse émissive à chaque changement.
-- **Habitacle** : le pavillon vitré s'efface pour laisser inspecter la cabine, choix
-  cuir ou Alcantara, arceau cage optionnel.
-- **Chorégraphie de caméra** : chaque onglet redirige un ressort amorti (raideur et
-  amortissement réglés pour un glissé lourd) plutôt qu'une coupe. Un léger parallaxe suit
-  le pointeur en permanence.
+1. **Hero** : la GT3 RS 2023 en scène cinématique, régime moteur et force G en direct.
+2. **Kinetic Statement** : typographie éditoriale géante en `mix-blend-difference`.
+3. **Configurator Teaser** : une 911 classique tourne lentement, invitation vers le Studio.
+4. **Lap Telemetry** : un tracé de la Nordschleife se dessine au scroll, vitesse et freinage en direct.
+5. **Aero Flow** : soufflerie stylisée, lignes de flux, traînée Cx et appui aérodynamique.
+6. **Silhouette Evolution** : sept silhouettes Porsche, du 917K à la GT3 RS, se morphent l'une dans l'autre.
+7. **Particle Assembly** : un nuage de ~41 000 points se disperse puis se reforme en GT3 RS Lava Orange, jantes Satin Black et étriers Guards Red.
+8. **Studio Outro** : écran de sortie, lien direct vers le Studio.
 
-### 02 · Laboratoire sonore (`/#soundbox`)
+### Studio (`/configurator`)
 
-Un compte-tours interactif de 0 à 9 000 tr/min. Aucune sonorité pré-enregistrée : le
-moteur est entièrement synthétisé via l'API Web Audio (oscillateurs désaccordés et bruit
-filtré), avec un visualiseur de fréquences en temps réel et trois lignes d'échappement.
+Le cœur technique du projet : une GT3 RS `.glb` réelle, personnalisable en temps réel.
 
-### 03 · Héritage (`/heritage`)
+- **Peinture et finition** : 45 teintes (série, métallisées, satinées, mates, Paint to
+  Sample), regroupées comme chez un vrai configurateur constructeur. Le matériau
+  interpole en continu vers la cible plutôt que de sauter.
+- **Aéro** : aileron amovible, animé sur sa propre charnière.
+- **Jantes et freinage** : quatre finitions de jante (Silver, Satin Black, Weissach Gold,
+  Titanium) et six couleurs d'étrier (PCCB, Guards Red, noir, bleu, argent, blanc).
+- **Caméra** : trois angles pré-réglés (extérieur, arrière, jantes), ressort amorti plutôt
+  que coupe sèche, léger parallaxe au pointeur.
+- **Comparateur avant/après** : capture l'état courant en image figée pour comparer un
+  changement avec le look précédent.
+- **Visualiseur plein écran** : orbite libre autour du build en cours.
+- **Export HD** : capture le canvas WebGL en PNG haute résolution, au-delà de la
+  définition d'affichage.
+- **Multi-véhicules** : bascule entre les sept modèles de la flotte (356 à Mission R en
+  passant par la 917K, la 918 Spyder et la GT3 RS) via `CarSwitcher`.
 
-Une frise chronologique à défilement horizontal pilotée par GSAP ScrollTrigger, retraçant
-sept décennies d'ingénierie flat-6, de la 356 originelle à la 911 GT3 RS moderne.
+### Héritage (`/heritage`)
 
-### 04 · Garage communautaire (`/garage`)
-
-Une grille de configurations partagées par la communauté, avec déclencheurs de rendu 4K
-et codes de configuration copiables en un clic.
+Une frise chronologique pilotée par GSAP ScrollTrigger, retraçant sept décennies
+d'ingénierie flat-6, de la 356 originelle (1948) à la 911 GT3 RS 992 moderne, avec
+fiche technique (puissance, vitesse max, refroidissement) pour chaque ère.
 
 ## Direction artistique
 
@@ -161,6 +204,8 @@ et codes de configuration copiables en un clic.
 - **Grain et lignes de balayage** : une turbulence SVG animée et un léger scanline
   recouvrent toute la page pour casser l'aspect « écran plat numérique ».
 - **Iconographie** : `lucide-react` exclusivement, aucune émoji.
+- **Favicon** : un chevron Apex minimaliste au-dessus d'une ligne de trajectoire, en
+  écho à la scission `//` du logotype, lisible jusqu'à 16 px.
 
 ## Couche cinématographique WebGL
 
@@ -186,7 +231,7 @@ peinture voit. La scène fabrique donc son propre environnement : des bandes ém
 de 256 px, sans aucun téléchargement. Ce sont ces bandes qui produisent la traînée lumineuse
 caractéristique le long du flanc.
 
-S'y ajoutent, dans `lib/three/textures.ts`, deux cartes générées au chargement dans un canvas
+S'y ajoutent, dans `lib/three/textures.ts`, des cartes générées au chargement dans un canvas
 hors écran plutôt que téléchargées :
 
 - une **carte de normales carbone**, tissage sergé 2x2, appliquée aux pièces aéro ;
@@ -194,9 +239,7 @@ hors écran plutôt que téléchargées :
   d'orange d'une vraie laque et empêche la carrosserie de ressembler à du plastique moulé.
 
 Les finitions mates reçoivent un vernis diffus, les finitions brillantes un vernis mouillé,
-et la transition entre les deux est interpolée image par image. Les roues possèdent une
-véritable inertie de rotation : changer de jante ou d'étrier les lance et les laisse
-s'arrêter par amortissement angulaire.
+et la transition entre les deux est interpolée image par image.
 
 ### Force G de la caméra
 
@@ -209,8 +252,9 @@ au neutre à mesure que le ressort se stabilise.
 
 Le préchargeur affiche un compteur au dixième de pourcent, une grille technique dont les
 cellules s'allument comme une matrice de capteurs, et les étapes de mise en route. Il
-attend réellement `document.fonts.ready` avant d'atteindre 100 %, la barre plafonnant à
-92 % tant que les polices ne sont pas décodées.
+attend réellement `document.fonts.ready` avant d'atteindre 100 %, la barre plafonnant tant
+que les polices ne sont pas décodées. Sur `/`, le modèle GT3 RS et le nuage de particules
+sont préchargés en tâche de fond pendant cette séquence.
 
 L'entrée est volontairement un clic. C'est le geste que les navigateurs exigent pour
 débloquer l'audio, ce qui permet de faire du démarrage moteur le tout premier son de
@@ -228,8 +272,7 @@ grossiers (tactile).
 `lib/audio/soundDesign.ts` synthétise toutes les réponses tactiles à la volée, sans aucun
 fichier audio dans le bundle. Un clic métallique est construit sur des partiels
 inharmoniques au-dessus d'un souffle filtré, car c'est l'inharmonicité qui fait entendre du
-métal plutôt que du bois. L'engagement lourd (`shift`) superpose un frottement mécanique et
-un coup sourd amorti. Le démarrage enchaîne quelques impulsions de démarreur avant la
+métal plutôt que du bois. Le démarrage enchaîne quelques impulsions de démarreur avant la
 descente résonante en sous-graves. Un compresseur en sortie évite que des sons empilés ne
 saturent.
 
@@ -242,6 +285,12 @@ saturent.
 - **Résolution adaptative** : `PerformanceMonitor` abaisse le plafond de `dpr` quand la
   cadence faiblit et le relève quand elle revient, ce qui préserve la fluidité plutôt que la
   définition.
+- **Modèles optimisés** : la flotte `.glb` passe par `glTF-Transform` + Draco
+  (`npm run optimize:models`), et chaque fichier est versionné par un hash de contenu dans
+  son nom pour un cache HTTP immuable.
+- **Chargement différé** : les sections lourdes en JS sous la ligne de flottaison (`AeroFlow`,
+  `SilhouetteEvolution`, `ParticleAssembly`, `StudioOutro`) sont scindées via `next/dynamic`,
+  sans perte de SSR.
 - **Une seule boucle rAF pour le défilement** : GSAP pilote Lenis, au lieu de deux boucles
   concurrentes. C'est la source habituelle de saccades sur les animations liées au scroll,
   supprimée par construction.
@@ -252,10 +301,9 @@ saturent.
 
 ## Internationalisation
 
-Le projet est conçu multilingue dès l'origine (`lib/i18n`). Le français est la langue par
-défaut ; l'anglais est déjà disponible via le sélecteur de langue dans la navigation.
-Ajouter une langue consiste à étendre `dictionaries.ts` avec un nouveau bloc de
-traductions typées.
+Le projet est multilingue dès l'origine (`lib/i18n`). Le français est la langue par défaut ;
+l'anglais est disponible via le sélecteur de langue dans la navigation. Ajouter une langue
+consiste à étendre `dictionaries.ts` avec un nouveau bloc de traductions typées.
 
 ## Intégration et déploiement continus
 
@@ -264,9 +312,6 @@ traductions typées.
 1. **Qualité** : `typecheck`, `lint`, `format:check`.
 2. **Build** : build de production Next.js, avec cache `.next/cache` réutilisé entre les
    exécutions, puis dépôt de l'artefact.
-3. **Test de fumée** : lance le serveur de production et pilote un Chromium sans interface
-   sur chaque route, en échouant si une page renvoie une erreur, journalise une erreur
-   console, ou rend sans son canvas WebGL.
 
 **`deploy.yml`** déploie sur Vercel à chaque push sur `main`. Le job se met en veille
 proprement si le secret `VERCEL_TOKEN` est absent, ce qui laisse les forks fonctionnels.
@@ -277,11 +322,9 @@ outillage) pour limiter le bruit de revue.
 
 ## Feuille de route
 
-- Remplacement des géométries procédurales par des modèles `.glb` haute fidélité
-  (`public/models/`).
-- Échantillons audio spatialisés via Howler.js pour les retours d'interface.
-- Export de rendus 4K réels depuis le canvas du configurateur.
-- Persistance et partage de configurations via code court.
+- Échantillons audio spatialisés pour des retours d'interface plus riches.
+- Persistance et partage de configurations Studio via un code court.
+- Élargissement de la flotte personnalisable au-delà de la GT3 RS.
 
 ## Mentions
 

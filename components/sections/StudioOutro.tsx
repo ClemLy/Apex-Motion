@@ -20,7 +20,10 @@ export function StudioOutro() {
   const ctaRef = useMagneticHover<HTMLAnchorElement>();
 
   return (
-    <section aria-label={dict.a11y.sections.outro} className="relative flex flex-col items-center gap-8 px-6 py-32 text-center sm:px-10 sm:py-40">
+    <section
+      aria-label={dict.a11y.sections.outro}
+      className="relative flex flex-col items-center gap-8 px-6 py-32 text-center sm:px-10 sm:py-40"
+    >
       <div ref={revealRef} className="flex flex-col items-center gap-6">
         <span className="text-[11px] uppercase tracking-[0.35em] text-neutral-500">
           {dict.outro.kicker}

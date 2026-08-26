@@ -11,7 +11,7 @@ export const PARTICLE_POINTS = {
   url: "/particles/gt3rs-points.026b0620.bin",
   count: 40946,
   bounds: {
-    min: [-1.014, -0.084, -2.360],
+    min: [-1.014, -0.084, -2.36],
     max: [1.015, 1.319, 2.209],
   },
 } as const;

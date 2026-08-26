@@ -113,7 +113,12 @@ export function SilhouetteEvolution() {
               ease: "power2.in",
               onComplete: () => {
                 el.textContent = label;
-                gsap.to(el, { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" });
+                gsap.to(el, {
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.2,
+                  ease: "power2.out",
+                });
               },
             });
           }
@@ -143,7 +148,11 @@ export function SilhouetteEvolution() {
   if (FRAMES.length < 2) return null;
 
   return (
-    <section ref={rootRef} aria-label={dict.a11y.sections.silhouette} className="relative min-h-[260vh] bg-[#020202] md:min-h-[480vh]">
+    <section
+      ref={rootRef}
+      aria-label={dict.a11y.sections.silhouette}
+      className="relative min-h-[260vh] bg-[#020202] md:min-h-[480vh]"
+    >
       <div className="sticky top-0 flex h-screen flex-col justify-center gap-10 overflow-hidden px-6 py-28 sm:px-10">
         <SectionLabel
           kicker={dict.silhouette.kicker}

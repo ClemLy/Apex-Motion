@@ -204,7 +204,10 @@ export function Hero() {
           </div>
         </div>
 
-        <div ref={scrollHintRef} className="hero-fade flex items-center gap-2 pt-2 text-[11px] uppercase tracking-[0.35em] text-neutral-500">
+        <div
+          ref={scrollHintRef}
+          className="hero-fade flex items-center gap-2 pt-2 text-[11px] uppercase tracking-[0.35em] text-neutral-500"
+        >
           <MoveDown className="h-3 w-3" aria-hidden />
           {dict.hud.scroll}
         </div>

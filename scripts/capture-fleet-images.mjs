@@ -70,11 +70,16 @@ async function main() {
     const base64 = dataUrl.replace(/^data:image\/png;base64,/, "");
     const pngBuffer = Buffer.from(base64, "base64");
     const webpBuffer = await sharp(pngBuffer).webp({ quality: 85 }).toBuffer();
-    const hash = createHash("sha256").update(webpBuffer).digest("hex").slice(0, 8);
+    const hash = createHash("sha256")
+      .update(webpBuffer)
+      .digest("hex")
+      .slice(0, 8);
     const filename = `${id}.${hash}.webp`;
     await writeFile(path.join(OUTPUT_DIR, filename), webpBuffer);
     manifestEntries.push({ id, filename });
-    console.log(`${filename} (${(webpBuffer.length / 1024).toFixed(0)}kb, was ${(pngBuffer.length / 1024).toFixed(0)}kb PNG)`);
+    console.log(
+      `${filename} (${(webpBuffer.length / 1024).toFixed(0)}kb, was ${(pngBuffer.length / 1024).toFixed(0)}kb PNG)`,
+    );
   }
 
   await browser.close();

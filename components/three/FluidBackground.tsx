@@ -277,7 +277,11 @@ export function FluidBackground() {
   }, []);
 
   return (
-    <div ref={wrapperRef} aria-hidden className="pointer-events-none fixed inset-0 -z-10">
+    <div
+      ref={wrapperRef}
+      aria-hidden
+      className="pointer-events-none fixed inset-0 -z-10"
+    >
       <Canvas
         dpr={1}
         gl={{ antialias: false, alpha: false }}

@@ -220,7 +220,11 @@ export function ParticleAssembly() {
   }, [reducedMotion]);
 
   return (
-    <section ref={rootRef} aria-label={dict.a11y.sections.particles} className="relative min-h-[240vh] bg-[#020202] md:min-h-[420vh]">
+    <section
+      ref={rootRef}
+      aria-label={dict.a11y.sections.particles}
+      className="relative min-h-[240vh] bg-[#020202] md:min-h-[420vh]"
+    >
       <div className="sticky top-0 h-screen overflow-hidden">
         <div className="absolute left-6 top-28 z-20 sm:left-10">
           <span

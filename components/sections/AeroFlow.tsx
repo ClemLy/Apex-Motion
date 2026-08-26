@@ -187,7 +187,11 @@ export function AeroFlow() {
   }, [reducedMotion, lines]);
 
   return (
-    <section ref={rootRef} aria-label={dict.a11y.sections.aero} className="relative min-h-[200vh] bg-[#020202] md:min-h-[300vh]">
+    <section
+      ref={rootRef}
+      aria-label={dict.a11y.sections.aero}
+      className="relative min-h-[200vh] bg-[#020202] md:min-h-[300vh]"
+    >
       <div className="sticky top-0 flex h-screen flex-col justify-center gap-10 overflow-hidden px-6 py-28 sm:px-10">
         <SectionLabel
           kicker={dict.aero.kicker}
