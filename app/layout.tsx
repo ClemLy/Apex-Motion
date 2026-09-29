@@ -12,7 +12,15 @@ import { CustomCursor } from "@/components/ui/CustomCursor";
 import { FluidBackground } from "@/components/three/FluidBackground";
 import { IntroProvider } from "@/lib/intro/IntroProvider";
 import { DebugProvider } from "@/lib/debug/DebugProvider";
-import { AUTHOR_NAME, AUTHOR_URL, SITE_NAME, SITE_URL } from "@/lib/site";
+import {
+  AUTHOR_ALTERNATE_NAMES,
+  AUTHOR_ID,
+  AUTHOR_NAME,
+  AUTHOR_SAME_AS,
+  AUTHOR_URL,
+  SITE_NAME,
+  SITE_URL,
+} from "@/lib/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -67,15 +75,33 @@ export const metadata: Metadata = {
   },
 };
 
+const authorLd = {
+  "@type": "Person",
+  "@id": AUTHOR_ID,
+  name: AUTHOR_NAME,
+  alternateName: AUTHOR_ALTERNATE_NAMES,
+  url: AUTHOR_URL,
+  sameAs: AUTHOR_SAME_AS,
+  jobTitle: "Développeur web full-stack",
+  nationality: { "@type": "Country", name: "France" },
+};
+
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: SITE_NAME,
-  url: SITE_URL,
-  description: DESCRIPTION,
-  inLanguage: ["fr", "en", "de"],
-  author: { "@type": "Person", name: AUTHOR_NAME, url: AUTHOR_URL },
-  creator: { "@type": "Person", name: AUTHOR_NAME, url: AUTHOR_URL },
+  "@graph": [
+    authorLd,
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      name: SITE_NAME,
+      url: SITE_URL,
+      description: DESCRIPTION,
+      inLanguage: ["fr", "en", "de"],
+      author: { "@id": AUTHOR_ID },
+      creator: { "@id": AUTHOR_ID },
+      copyrightHolder: { "@id": AUTHOR_ID },
+    },
+  ],
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

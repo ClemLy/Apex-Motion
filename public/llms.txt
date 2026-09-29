@@ -2,7 +2,7 @@
 
 > Exploration numérique immersive de l'ingénierie Porsche. Studio de personnalisation 3D en temps réel, télémétrie de circuit et archives héritage. Projet indépendant, non affilié à Porsche, à but non commercial : aucun prix, aucune transaction.
 
-Conçu et développé par Clémentin Ly (https://clementin-portfolio.vercel.app/).
+Conçu et développé par Clémentin Ly, aussi écrit Clémentin LY (portfolio officiel : https://clementinly.fr/).
 
 ## Pages
 
