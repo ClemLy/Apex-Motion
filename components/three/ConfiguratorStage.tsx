@@ -99,10 +99,14 @@ function CompareSlider({ image }: { image: string }) {
         aria-valuemax={100}
         aria-valuenow={Math.round(position)}
         aria-orientation="horizontal"
-        className="absolute inset-y-0 w-px cursor-ew-resize bg-white/70"
+        // touch-none so a finger drag moves the divider instead of being
+        // claimed by the browser as a page scroll; the transparent ::before
+        // widens the 1px line into a thumb-sized hit area.
+        className="absolute inset-y-0 w-px cursor-ew-resize touch-none bg-white/70 before:absolute before:inset-y-0 before:-left-6 before:w-12 before:content-['']"
         style={{ left: `${position}%` }}
-        onPointerDown={() => {
+        onPointerDown={(e) => {
           dragging.current = true;
+          e.currentTarget.setPointerCapture(e.pointerId);
         }}
         onKeyDown={(e) => {
           if (e.key === "ArrowLeft") {
@@ -130,7 +134,7 @@ function CompareSlider({ image }: { image: string }) {
         onClick={exitCompare}
         aria-label={dict.configurator.compare.exit}
         data-cursor={dict.configurator.compare.exit}
-        className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-neutral-300 transition-colors hover:border-white/40 hover:text-neutral-50"
+        className="absolute right-4 bottom-12 flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-black/50 text-neutral-300 backdrop-blur-sm transition-colors hover:border-white/40 hover:text-neutral-50 sm:top-4 sm:bottom-auto sm:h-8 sm:w-8"
       >
         <X className="h-4 w-4" aria-hidden />
       </button>

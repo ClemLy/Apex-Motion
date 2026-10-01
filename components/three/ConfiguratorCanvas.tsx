@@ -18,6 +18,7 @@ import { getCarConfig } from "@/lib/three/carConfigs";
 import { CaptureHandler } from "./CaptureHandler";
 import { DebugTriangleReporter } from "./DebugTriangleReporter";
 import { FrameLimiter } from "./FrameLimiter";
+import { PortraitFraming } from "./PortraitFraming";
 import type { GltfCarHandle } from "./GltfCar";
 
 /** Camera parallax reacts to pointer position every render, so this stays higher than the purely-ambient canvases — still well under an uncapped 120Hz+ display. */
@@ -80,6 +81,9 @@ export function ConfiguratorCanvas() {
         <fog attach="fog" args={["#020202", 11, 26]} />
 
         <FrameLimiter fps={TARGET_FPS} />
+        {/* CameraRig owns the camera; this only keeps the fog in step with
+            its portrait pull-back. */}
+        <PortraitFraming moveCamera={false} />
 
         <PerformanceMonitor
           onDecline={() => setDprMax(1)}

@@ -78,20 +78,24 @@ export function HeritageFleet() {
     <section
       ref={wrapperRef}
       aria-label={dict.a11y.sections.heritageFleet}
-      className="relative h-screen overflow-hidden bg-[#020202]"
+      className="relative h-[100svh] overflow-hidden bg-[#020202]"
     >
       <div className="absolute inset-0">
-        <HeroCanvas car={car} />
+        {/* Pulled back further than the other showcases on a phone: this
+            section is about seeing each car whole, not a dramatic crop. */}
+        <HeroCanvas car={car} portraitMaxScale={2} />
       </div>
 
-      <div className="pointer-events-none relative flex h-full flex-col justify-between p-6 sm:p-10">
+      <div className="pointer-events-none relative flex h-full flex-col justify-between px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-24 sm:p-10 sm:pt-28 short:pb-5 short:pt-16">
         <SectionLabel
           kicker={dict.heritage.fleet.kicker}
           title={dict.heritage.fleet.title}
           subtitle={dict.heritage.fleet.subtitle}
         />
 
-        <div className="flex items-end justify-between gap-6">
+        {/* Progress pips sit above the name on phones, so a long name like
+            "718 Cayman GT4" gets the full width instead of wrapping. */}
+        <div className="flex flex-col-reverse items-start gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
           <AnimatePresence mode="wait">
             <motion.div
               key={car.id}
@@ -103,13 +107,13 @@ export function HeritageFleet() {
               <span className="font-mono text-xs uppercase tracking-[0.3em] text-neutral-500">
                 {car.years}
               </span>
-              <h3 className="text-4xl font-semibold uppercase tracking-tighter text-neutral-50 sm:text-6xl">
+              <h3 className="text-4xl font-semibold uppercase tracking-tighter text-neutral-50 sm:text-6xl short:text-4xl">
                 {car.name}
               </h3>
             </motion.div>
           </AnimatePresence>
 
-          <div className="flex gap-1.5 pb-2">
+          <div className="flex gap-1.5 sm:pb-2">
             {CARS.map((c, index) => (
               <span
                 key={c.id}

@@ -60,6 +60,7 @@ export const dictionaries = {
       title: "Séquence de démarrage",
       enter: "Démarrer",
       hint: "Cliquez n'importe où (ou appuyez sur Espace) pour entrer",
+      hintTouch: "Touchez l'écran pour entrer",
       stages: [
         "Initialisation du système",
         "Compilation des nuanceurs",
@@ -139,6 +140,7 @@ export const dictionaries = {
         kicker: "Vue libre",
         close: "Fermer",
         hint: "Glisser pour orbiter, molette pour zoomer",
+        hintTouch: "Glisser pour orbiter, pincer pour zoomer",
       },
       resetLabel: "Réinitialiser",
       loadingModel: "Chargement du modèle 3D",
@@ -298,6 +300,7 @@ export const dictionaries = {
       title: "Start-up sequence",
       enter: "Ignition",
       hint: "Click anywhere (or press Space) to enter",
+      hintTouch: "Tap anywhere to enter",
       stages: [
         "System initialisation",
         "Compiling shaders",
@@ -377,6 +380,7 @@ export const dictionaries = {
         kicker: "Free view",
         close: "Close",
         hint: "Drag to orbit, scroll to zoom",
+        hintTouch: "Drag to orbit, pinch to zoom",
       },
       resetLabel: "Reset",
       loadingModel: "Loading 3D model",
@@ -535,6 +539,7 @@ export const dictionaries = {
       title: "Startsequenz",
       enter: "Starten",
       hint: "Klicken Sie irgendwo (oder drücken Sie die Leertaste), um einzutreten",
+      hintTouch: "Tippen Sie irgendwo, um einzutreten",
       stages: [
         "Systeminitialisierung",
         "Shader werden kompiliert",
@@ -614,6 +619,7 @@ export const dictionaries = {
         kicker: "Freie Ansicht",
         close: "Schließen",
         hint: "Ziehen zum Umkreisen, Scrollen zum Zoomen",
+        hintTouch: "Ziehen zum Umkreisen, Zwei-Finger-Zoom",
       },
       resetLabel: "Zurücksetzen",
       loadingModel: "3D-Modell wird geladen",

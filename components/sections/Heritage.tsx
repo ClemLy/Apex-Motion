@@ -20,17 +20,22 @@ export function Heritage() {
     const track = trackRef.current;
     const wrapper = wrapperRef.current;
 
+    // Measured lazily (function-based values + invalidateOnRefresh) so a
+    // phone rotating between portrait and landscape re-derives the travel
+    // from the new card widths instead of keeping the first measurement.
+    const scrollDistance = () =>
+      Math.max(0, track.scrollWidth - document.documentElement.clientWidth);
+
     const ctx = gsap.context(() => {
-      const scrollDistance = track.scrollWidth - window.innerWidth;
-      if (scrollDistance <= 0) return;
+      if (scrollDistance() <= 0) return;
 
       gsap.to(track, {
-        x: -scrollDistance,
+        x: () => -scrollDistance(),
         ease: "none",
         scrollTrigger: {
           trigger: wrapper,
           start: "top top",
-          end: () => `+=${scrollDistance}`,
+          end: () => `+=${scrollDistance()}`,
           scrub: 1,
           pin: true,
           invalidateOnRefresh: true,
@@ -43,7 +48,7 @@ export function Heritage() {
 
   return (
     <section id="heritage" ref={wrapperRef} className="relative">
-      <div className="flex h-screen flex-col justify-center gap-10 overflow-hidden py-16">
+      <div className="flex h-[100svh] flex-col justify-center gap-8 overflow-hidden pb-10 pt-24 sm:gap-10 sm:py-16 short:gap-4 short:pb-4 short:pt-16">
         <SectionLabel
           as="h1"
           kicker={dict.heritage.kicker}
@@ -61,7 +66,7 @@ export function Heritage() {
             <article
               key={era.id}
               data-cursor={era.model}
-              className="group relative flex h-[46vh] w-[78vw] flex-none flex-col justify-end overflow-hidden rounded-3xl border border-white/10 p-8 transition-colors duration-500 hover:border-white/25 sm:w-[38vw] lg:w-[28vw]"
+              className="group relative flex h-[42svh] min-h-[19rem] w-[80vw] max-w-sm flex-none flex-col justify-end overflow-hidden rounded-3xl border border-white/10 p-6 transition-colors duration-500 hover:border-white/25 sm:w-[38vw] sm:max-w-none sm:p-8 lg:w-[28vw] short:h-[54svh] short:min-h-0 short:w-[36vw] short:p-5"
               style={{
                 backgroundImage:
                   "radial-gradient(circle at 30% 20%, rgba(255,255,255,0.08), transparent 60%), linear-gradient(160deg, #111213 0%, #030303 70%)",
@@ -81,13 +86,13 @@ export function Heritage() {
               <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-neutral-500">
                 {era.years}
               </span>
-              <h3 className="mt-2 text-3xl font-semibold uppercase tracking-tighter text-neutral-50">
+              <h3 className="mt-2 text-3xl font-semibold uppercase tracking-tighter text-neutral-50 short:text-2xl">
                 {era.model}
               </h3>
-              <p className="mt-3 max-w-xs text-xs leading-relaxed text-neutral-400">
+              <p className="mt-3 max-w-xs text-xs leading-relaxed text-neutral-400 short:hidden">
                 {era.tagline[locale]}
               </p>
-              <div className="mt-5 flex gap-6 border-t border-white/10 pt-4 font-mono text-[11px] text-neutral-400">
+              <div className="mt-5 flex gap-6 border-t border-white/10 pt-4 font-mono text-[11px] text-neutral-400 short:mt-3 short:pt-3">
                 <span>{era.power}</span>
                 <span>{era.topSpeed}</span>
               </div>

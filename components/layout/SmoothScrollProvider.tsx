@@ -7,6 +7,11 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useIntro } from "@/lib/intro/IntroProvider";
 
 gsap.registerPlugin(ScrollTrigger);
+// Mobile browsers resize the viewport every time the address bar slides in
+// or out mid-scroll; re-measuring every pin on each of those makes pinned
+// sections visibly jump. The pinned frames are sized in svh (stable under
+// that toolbar), so the extra refreshes buy nothing.
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 /**
  * Smooth scroll.

@@ -310,8 +310,14 @@ export function Preloader() {
                 <span className="relative">{dict.preloader.enter}</span>
                 <span className="relative h-1 w-1 rounded-full bg-emerald-400" />
               </button>
-              <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-neutral-500">
-                {dict.preloader.hint}
+              <span className="text-center font-mono text-[11px] uppercase tracking-[0.25em] text-neutral-500">
+                {/* Swapped in CSS, not JS, so server and client markup match. */}
+                <span className="pointer-fine:hidden">
+                  {dict.preloader.hintTouch}
+                </span>
+                <span className="hidden pointer-fine:inline">
+                  {dict.preloader.hint}
+                </span>
               </span>
             </>
           )}

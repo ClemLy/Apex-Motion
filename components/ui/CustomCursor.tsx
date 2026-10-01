@@ -35,8 +35,10 @@ export function CustomCursor() {
   }, [playSound]);
 
   useEffect(() => {
-    // Pointer-coarse devices (touch) get no custom cursor at all.
-    if (window.matchMedia("(pointer: coarse)").matches) return;
+    // Only a precise primary pointer (mouse/trackpad) gets the custom
+    // cursor — same query as the wrapper's `pointer-fine:block` below, so a
+    // touch tablet or a phone held sideways never shows a frozen ring.
+    if (!window.matchMedia("(pointer: fine)").matches) return;
 
     const ring = ringRef.current;
     const dot = dotRef.current;
@@ -177,7 +179,7 @@ export function CustomCursor() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-0 z-[100] hidden md:block"
+      className="pointer-events-none fixed inset-0 z-[100] hidden pointer-fine:block"
     >
       {/* Invisible filter def — feDisplacementMap is what actually bends the
           content behind the lens; feTurbulence just supplies its warp map. */}

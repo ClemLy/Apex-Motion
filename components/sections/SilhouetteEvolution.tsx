@@ -153,18 +153,18 @@ export function SilhouetteEvolution() {
       aria-label={dict.a11y.sections.silhouette}
       className="relative min-h-[260vh] bg-[#020202] md:min-h-[480vh]"
     >
-      <div className="sticky top-0 flex h-screen flex-col justify-center gap-10 overflow-hidden px-6 py-28 sm:px-10">
+      <div className="sticky top-0 flex h-[100svh] flex-col justify-center gap-8 overflow-hidden px-6 pb-10 pt-24 sm:gap-10 sm:px-10 sm:py-28 short:flex-row short:items-center short:gap-8 short:pb-4 short:pt-16">
         <SectionLabel
           kicker={dict.silhouette.kicker}
           title={dict.silhouette.title}
           titleAccent={dict.silhouette.titleAccent}
           subtitle={dict.silhouette.subtitle}
-          className="relative z-10"
+          className="relative z-10 short:w-[38%] short:shrink-0"
         />
 
-        <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-6">
+        <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-4 sm:gap-6">
           <div
-            className="relative w-full max-w-5xl overflow-hidden"
+            className="relative w-[150%] max-w-none shrink-0 overflow-hidden sm:w-full sm:max-w-5xl short:w-full"
             style={{ aspectRatio: "1400 / 420" }}
           >
             {FRAMES.map((frame, i) => (
@@ -195,7 +195,7 @@ export function SilhouetteEvolution() {
 
           <span
             ref={nameRef}
-            className="font-mono text-2xl tracking-[0.2em] text-neutral-400"
+            className="whitespace-nowrap font-mono text-base tracking-[0.15em] text-neutral-400 sm:text-2xl sm:tracking-[0.2em] short:text-lg"
           >
             {FRAMES[0].name} · {FRAMES[0].years}
           </span>

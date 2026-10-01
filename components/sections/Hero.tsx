@@ -111,19 +111,21 @@ export function Hero() {
       ref={rootRef}
       id="home"
       aria-label={dict.a11y.sections.hero}
-      className="relative flex min-h-[100svh] w-full flex-col justify-end overflow-hidden pb-14 pt-32 lg:pb-40"
+      className="relative flex min-h-[100svh] w-full flex-col justify-end overflow-hidden pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-28 sm:pb-14 sm:pt-32 lg:pb-40 short:pb-8 short:pt-20"
     >
       <div className="absolute inset-0" data-cursor={dict.cursor.orbit}>
-        <HeroCanvas car={GT3RS_CONFIG} eager />
+        <HeroCanvas car={GT3RS_CONFIG} eager portraitLift={0.12} />
       </div>
 
-      {/* Grounds the type without hiding the car. */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#020202] via-[#020202]/25 to-[#020202]/60" />
+      {/* Grounds the type without hiding the car. On a phone the copy covers
+          most of the screen's height, so the solid base climbs higher there
+          to keep the paragraph and stats legible over the bodywork. */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#020202] from-30% via-[#020202]/55 via-55% to-[#020202]/50 sm:from-0% sm:via-[#020202]/25 sm:via-50% sm:to-[#020202]/60" />
 
-      <div className="hero-parallax relative z-10 flex flex-col gap-8 px-6 sm:px-10">
+      <div className="hero-parallax relative z-10 flex flex-col gap-6 px-6 sm:gap-8 sm:px-10 short:gap-4">
         <div className="hero-fade flex items-center gap-4">
           <span className="h-px w-10 bg-white/25" />
-          <span className="text-[11px] uppercase tracking-[0.4em] text-neutral-400">
+          <span className="text-[11px] uppercase tracking-[0.3em] text-neutral-400 sm:tracking-[0.4em]">
             {dict.hero.kicker}
           </span>
         </div>
@@ -133,7 +135,7 @@ export function Hero() {
           Leading stays loose enough that the reveal mask never clips the
           accent on capitals such as the E of EVOLUTION.
         */}
-        <h1 className="flex flex-col text-[15vw] font-semibold uppercase leading-[0.92] tracking-[-0.055em] text-white mix-blend-difference sm:text-[13vw]">
+        <h1 className="flex flex-col text-[15vw] font-semibold uppercase leading-[0.92] tracking-[-0.055em] text-white mix-blend-difference sm:text-[13vw] short:text-[17svh]">
           <span className="block overflow-hidden">
             <span className="hero-line block origin-left">
               {dict.hero.title1}
@@ -148,13 +150,15 @@ export function Hero() {
 
         <div className="hero-rule h-px w-full origin-left bg-white/12" />
 
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-          <p className="hero-fade max-w-sm text-sm leading-relaxed text-neutral-400">
+        <div className="flex flex-col gap-6 sm:gap-8 lg:flex-row lg:items-end lg:justify-between short:flex-row short:flex-wrap short:items-end short:justify-between short:gap-x-8 short:gap-y-4">
+          <p className="hero-fade max-w-sm text-sm leading-relaxed text-neutral-400 short:text-xs">
             {dict.hero.subtitle}
           </p>
 
-          {/* Telemetry strip, race-dashboard style. */}
-          <div className="hero-fade grid grid-cols-2 gap-x-10 gap-y-5 sm:grid-cols-4">
+          {/* Telemetry strip, race-dashboard style. Dropped on a sideways
+              phone: decorative, and it's what would push the CTAs below
+              a ~400px-tall fold. */}
+          <div className="hero-fade grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-4 sm:gap-x-10 sm:gap-y-5 short:hidden">
             {[
               {
                 label: dict.hero.telemetry.rpm,
@@ -170,7 +174,7 @@ export function Hero() {
               },
             ].map((item) => (
               <div key={item.label} className="flex flex-col gap-1.5">
-                <span className="text-[11px] uppercase tracking-[0.3em] text-neutral-500">
+                <span className="text-[11px] uppercase tracking-[0.2em] text-neutral-500 sm:tracking-[0.3em]">
                   {item.label}
                 </span>
                 <span className="font-mono text-lg tabular-nums leading-none text-neutral-100">
@@ -206,7 +210,7 @@ export function Hero() {
 
         <div
           ref={scrollHintRef}
-          className="hero-fade flex items-center gap-2 pt-2 text-[11px] uppercase tracking-[0.35em] text-neutral-500"
+          className="hero-fade flex items-center gap-2 pt-2 text-[11px] uppercase tracking-[0.35em] text-neutral-500 short:hidden"
         >
           <MoveDown className="h-3 w-3" aria-hidden />
           {dict.hud.scroll}

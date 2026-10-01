@@ -55,13 +55,17 @@ function StatCard({
       ref={ref}
       onPointerMove={onPointerMove}
       onPointerLeave={onPointerLeave}
-      className="flex flex-col gap-2 rounded-2xl border border-white/10 p-6 transition-transform duration-200 ease-out will-change-transform sm:p-8"
+      className="flex flex-col gap-2 rounded-2xl border border-white/10 p-5 transition-transform duration-200 ease-out will-change-transform sm:p-8"
     >
-      <span className="font-mono text-5xl leading-none tabular-nums text-neutral-50 sm:text-6xl">
+      <span className="whitespace-nowrap font-mono text-4xl leading-none tabular-nums text-neutral-50 sm:text-6xl">
         {value}
-        {unit && <span className="ml-1 text-lg text-neutral-500">{unit}</span>}
+        {unit && (
+          <span className="ml-1 text-sm text-neutral-500 sm:text-lg">
+            {unit}
+          </span>
+        )}
       </span>
-      <span className="text-[11px] uppercase tracking-[0.25em] text-neutral-500">
+      <span className="text-[11px] uppercase tracking-[0.2em] text-neutral-500 sm:tracking-[0.25em]">
         {label}
       </span>
     </div>
@@ -75,7 +79,7 @@ export function HeritageStats() {
   return (
     <section
       aria-label={dict.a11y.sections.heritageStats}
-      className="relative flex flex-col gap-16 px-6 py-24 sm:px-10"
+      className="relative flex flex-col gap-16 px-6 py-20 sm:px-10 sm:py-24"
     >
       <div className="mx-auto flex max-w-2xl flex-col gap-5">
         <span className="text-[11px] uppercase tracking-[0.35em] text-neutral-500">

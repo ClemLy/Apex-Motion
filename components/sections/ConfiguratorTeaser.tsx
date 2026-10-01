@@ -16,7 +16,7 @@ export function ConfiguratorTeaser() {
     <section
       id="configurator"
       aria-label={dict.a11y.sections.configuratorTeaser}
-      className="relative flex flex-col gap-10 px-6 py-28 sm:px-10"
+      className="relative flex flex-col gap-10 px-6 py-24 sm:px-10 sm:py-28 short:gap-6 short:py-16"
     >
       <SectionLabel
         kicker={dict.configurator.kicker}
@@ -28,18 +28,19 @@ export function ConfiguratorTeaser() {
       <Link
         ref={revealRef}
         href="/configurator"
-        className="group relative block h-[70vh] w-full overflow-hidden rounded-3xl border border-white/10"
+        className="group relative block h-[62svh] w-full overflow-hidden rounded-3xl border border-white/10 sm:h-[70vh] short:h-[78svh]"
       >
         <div className="absolute inset-0">
           <HeroCanvas
             car={TURBO_930_CONFIG}
             decorative
+            portraitLift={0.1}
             loadingCtaLabel={dict.hero.cta}
           />
         </div>
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#030303] via-transparent to-transparent" />
-        <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">
-          <span className="text-xs uppercase tracking-[0.25em] text-neutral-300">
+        <div className="absolute bottom-5 left-5 right-5 flex flex-col items-start gap-3 sm:bottom-6 sm:left-6 sm:right-6 sm:flex-row sm:items-center sm:justify-between">
+          <span className="text-[11px] uppercase tracking-[0.25em] text-neutral-300 sm:text-xs">
             {dict.configurator.tabs.paint} / {dict.configurator.tabs.aero} /{" "}
             {dict.configurator.tabs.wheels}
           </span>

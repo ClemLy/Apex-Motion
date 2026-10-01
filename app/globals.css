@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+/*
+ * Short landscape viewports — a phone held sideways is 800+ px wide (so every
+ * width breakpoint treats it as a desktop) but under 450 px tall, which the
+ * full-screen pinned sections can't fit as authored. `short:` lets each
+ * section compact or go side-by-side for exactly that case.
+ */
+@custom-variant short (@media (max-height: 540px) and (orientation: landscape));
+
 :root {
   --background: #020202;
   --foreground: #f5f5f5;
@@ -12,10 +20,33 @@
   --font-mono: var(--font-geist-mono);
 }
 
+html {
+  /* Stops iOS inflating text on rotation. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-feature-settings: "ss01" 1;
+  /* The grey flash iOS/Android paint over a tapped element — every control
+     here already has its own pressed state. */
+  -webkit-tap-highlight-color: transparent;
+  /* viewport-fit=cover (app/layout.tsx) lets the page reach under a
+     landscape phone's notch; keep the content itself clear of it. */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Removes the double-tap-to-zoom delay on controls without disabling
+   pinch-zoom for the page. */
+a,
+button,
+[role="button"],
+label,
+summary {
+  touch-action: manipulation;
 }
 
 /* Keyboard-only focus ring — mouse/touch activation never triggers

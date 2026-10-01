@@ -56,7 +56,7 @@ export function SectionLabel({
     <div
       ref={reveal ? revealRef : undefined}
       className={cn(
-        "flex flex-col gap-4",
+        "flex flex-col gap-4 short:gap-2",
         align === "center" && "items-center text-center",
         className,
       )}
@@ -67,7 +67,7 @@ export function SectionLabel({
       <Heading
         ref={headingRef}
         data-text={title}
-        className="glitch-title text-4xl font-semibold uppercase leading-[0.95] tracking-tighter text-neutral-50 sm:text-6xl"
+        className="glitch-title text-4xl font-semibold uppercase leading-[0.95] tracking-tighter text-neutral-50 sm:text-6xl short:text-4xl"
       >
         {title}
         {titleAccent ? (
@@ -75,7 +75,7 @@ export function SectionLabel({
         ) : null}
       </Heading>
       {subtitle ? (
-        <p className="max-w-xl text-sm leading-relaxed text-neutral-400">
+        <p className="max-w-xl text-sm leading-relaxed text-neutral-400 short:text-xs">
           {subtitle}
         </p>
       ) : null}

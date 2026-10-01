@@ -120,15 +120,19 @@ export function LapTelemetry() {
       aria-label={dict.a11y.sections.telemetry}
       className="relative min-h-[150vh] md:min-h-[250vh]"
     >
-      <div className="sticky top-0 flex h-screen flex-col justify-center gap-10 overflow-hidden px-6 py-16 sm:px-10">
+      <div className="sticky top-0 flex h-[100svh] flex-col justify-center gap-8 overflow-hidden px-6 pb-10 pt-24 sm:gap-10 sm:px-10 sm:py-16 short:flex-row short:items-center short:gap-8 short:pb-4 short:pt-16">
         <SectionLabel
+          className="short:w-[38%] short:shrink-0"
           kicker={dict.telemetry.kicker}
           title={dict.telemetry.title}
           titleAccent={dict.telemetry.titleAccent}
           subtitle={dict.telemetry.subtitle}
         />
 
-        <div aria-hidden className="relative mx-auto w-full max-w-4xl">
+        <div
+          aria-hidden
+          className="relative mx-auto w-full max-w-4xl short:mx-0 short:max-w-none short:flex-1"
+        >
           <svg viewBox="0 0 1200 600" className="w-full">
             <path
               d={TRACK_PATH}
@@ -152,23 +156,25 @@ export function LapTelemetry() {
             />
           </svg>
 
-          <GlassPanel className="absolute top-0 right-0 flex flex-col gap-3 p-5">
-            <span className="text-right text-[11px] uppercase tracking-[0.25em] text-neutral-500">
+          {/* A compact strip under the track on phones (floating over it
+              would hide half the circuit), the corner readout from md up. */}
+          <GlassPanel className="mt-5 flex flex-wrap items-end justify-between gap-x-6 gap-y-3 p-4 md:absolute md:top-0 md:right-0 md:mt-0 md:flex-col md:flex-nowrap md:items-stretch md:justify-start md:gap-3 md:p-5">
+            <span className="w-full text-[11px] uppercase tracking-[0.25em] text-neutral-500 md:text-right">
               {dict.telemetry.trackName}
             </span>
 
-            <div className="flex flex-col items-end gap-1">
+            <div className="flex flex-col items-start gap-1 md:items-end">
               <span className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">
                 {dict.telemetry.stats.speed}
               </span>
-              <span className="font-mono text-3xl tabular-nums text-neutral-50">
+              <span className="font-mono text-2xl tabular-nums text-neutral-50 md:text-3xl">
                 <span ref={speedRef}>92</span>
                 <span className="ml-1 text-xs text-neutral-500">km/h</span>
               </span>
             </div>
 
             <div className="flex gap-6">
-              <div className="flex flex-col items-end gap-1">
+              <div className="flex flex-col items-start gap-1 md:items-end">
                 <span className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">
                   {dict.telemetry.stats.gForce}
                 </span>
@@ -176,7 +182,7 @@ export function LapTelemetry() {
                   <span ref={gForceRef}>0.3</span> G
                 </span>
               </div>
-              <div className="flex flex-col items-end gap-1">
+              <div className="flex flex-col items-start gap-1 md:items-end">
                 <span className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">
                   {dict.telemetry.stats.brake}
                 </span>
@@ -186,7 +192,7 @@ export function LapTelemetry() {
               </div>
             </div>
 
-            <span className="text-right text-[11px] uppercase tracking-[0.2em] text-neutral-500">
+            <span className="text-[11px] uppercase tracking-[0.2em] text-neutral-500 md:text-right">
               {dict.telemetry.sectorLabel} <span ref={sectorRef}>1</span>
             </span>
           </GlassPanel>

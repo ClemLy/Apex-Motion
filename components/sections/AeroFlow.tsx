@@ -192,18 +192,18 @@ export function AeroFlow() {
       aria-label={dict.a11y.sections.aero}
       className="relative min-h-[200vh] bg-[#020202] md:min-h-[300vh]"
     >
-      <div className="sticky top-0 flex h-screen flex-col justify-center gap-10 overflow-hidden px-6 py-28 sm:px-10">
+      <div className="sticky top-0 flex h-[100svh] flex-col justify-center gap-8 overflow-hidden px-6 pb-10 pt-24 sm:gap-10 sm:px-10 sm:py-28 short:flex-row short:items-center short:gap-8 short:pb-4 short:pt-16">
         <SectionLabel
           kicker={dict.aero.kicker}
           title={dict.aero.title}
           titleAccent={dict.aero.titleAccent}
           subtitle={dict.aero.subtitle}
-          className="relative z-10"
+          className="relative z-10 short:w-[38%] short:shrink-0"
         />
 
-        <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-8">
+        <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-6 sm:gap-8 short:gap-4">
           <div
-            className="relative w-full max-w-5xl"
+            className="relative w-[150%] max-w-none shrink-0 sm:w-full sm:max-w-5xl short:w-full"
             style={{ aspectRatio: "1400 / 420" }}
           >
             <svg
@@ -264,7 +264,7 @@ export function AeroFlow() {
               <span className="text-[11px] uppercase tracking-[0.25em] text-neutral-500">
                 {dict.aero.cxLabel}
               </span>
-              <span className="text-3xl tabular-nums text-neutral-50">
+              <span className="text-3xl tabular-nums text-neutral-50 short:text-2xl">
                 <span ref={cxRef}>0.32</span>
               </span>
             </div>
@@ -272,7 +272,7 @@ export function AeroFlow() {
               <span className="text-[11px] uppercase tracking-[0.25em] text-neutral-500">
                 {dict.aero.downforceLabel}
               </span>
-              <span className="text-3xl tabular-nums text-neutral-50">
+              <span className="text-3xl tabular-nums text-neutral-50 short:text-2xl">
                 <span ref={downforceRef}>152</span>
                 <span className="ml-1 text-xs text-neutral-500">kg</span>
               </span>

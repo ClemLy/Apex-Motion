@@ -131,15 +131,15 @@ export function Navbar() {
           />
         )}
       </AnimatePresence>
-      <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-4">
-        <nav className="pointer-events-auto mt-6 flex w-full max-w-4xl flex-col gap-2">
-          <div className="flex items-center justify-between gap-4 rounded-full border border-white/10 bg-neutral-950/70 px-6 py-3 backdrop-blur-2xl">
+      <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center pt-[env(safe-area-inset-top)] pl-[max(0.75rem,env(safe-area-inset-left))] pr-[max(0.75rem,env(safe-area-inset-right))] sm:pl-[max(1rem,env(safe-area-inset-left))] sm:pr-[max(1rem,env(safe-area-inset-right))]">
+        <nav className="pointer-events-auto mt-3 flex w-full max-w-4xl flex-col gap-2 sm:mt-6 short:mt-2">
+          <div className="flex items-center justify-between gap-2 rounded-full border border-white/10 bg-neutral-950/70 py-2 pl-5 pr-2 backdrop-blur-2xl sm:gap-4 sm:py-3 sm:pl-6 sm:pr-3 short:py-1.5">
             <Link
               ref={logoMagneticRef}
               href="/"
               onClick={handleLogoClick}
               data-cursor={dict.cursor.view}
-              className="whitespace-nowrap text-sm font-semibold uppercase tracking-[0.2em] text-neutral-100"
+              className="whitespace-nowrap py-2 text-xs font-semibold uppercase tracking-[0.16em] text-neutral-100 sm:text-sm sm:tracking-[0.2em]"
             >
               APEX <span className="text-neutral-500">{"//"}</span> MOTION
             </Link>
@@ -180,14 +180,14 @@ export function Navbar() {
               })}
             </ul>
 
-            <div className="flex items-center gap-4">
-              <div className="hidden items-center gap-1.5 text-[11px] uppercase tracking-[0.2em] text-neutral-500 sm:flex">
+            <div className="flex items-center gap-1 sm:gap-3">
+              <div className="hidden items-center gap-1.5 text-[11px] uppercase tracking-[0.2em] text-neutral-500 md:flex">
                 <Activity className="h-3 w-3 text-emerald-400" aria-hidden />
                 <span className="font-mono tabular-nums">{fps} fps</span>
               </div>
 
               {debugEnabled && (
-                <div className="hidden items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-neutral-500 sm:flex">
+                <div className="hidden items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-neutral-500 md:flex">
                   <span className="font-mono tabular-nums">
                     {triangles.toLocaleString()} tris
                   </span>
@@ -223,7 +223,7 @@ export function Navbar() {
                 data-cursor={locales[
                   (locales.indexOf(locale) + 1) % locales.length
                 ].toUpperCase()}
-                className="flex h-10 w-10 items-center justify-center text-[11px] uppercase tracking-[0.2em] text-neutral-400 transition-colors hover:text-neutral-50"
+                className="flex h-10 w-10 items-center short:h-8 short:w-8 justify-center text-[11px] uppercase tracking-[0.2em] text-neutral-400 transition-colors hover:text-neutral-50"
                 aria-label={dict.nav.changeLanguage}
               >
                 {locale}
@@ -236,7 +236,7 @@ export function Navbar() {
                 aria-pressed={enabled}
                 data-cursor={dict.cursor.audio}
                 className={cn(
-                  "flex h-10 w-10 items-center justify-center rounded-full border border-white/10 transition-colors duration-300",
+                  "flex h-10 w-10 items-center short:h-8 short:w-8 justify-center rounded-full border border-white/10 transition-colors duration-300",
                   enabled
                     ? "bg-neutral-50 text-neutral-950"
                     : "text-neutral-400 hover:text-neutral-50",
@@ -259,7 +259,7 @@ export function Navbar() {
                 aria-expanded={mobileOpen}
                 aria-controls="mobile-nav-panel"
                 aria-label={mobileOpen ? dict.nav.menuClose : dict.nav.menuOpen}
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-neutral-300 transition-colors duration-300 hover:border-white/25 hover:text-neutral-50 md:hidden"
+                className="flex h-10 w-10 items-center short:h-8 short:w-8 justify-center rounded-full border border-white/10 text-neutral-300 transition-colors duration-300 hover:border-white/25 hover:text-neutral-50 md:hidden"
               >
                 {mobileOpen ? (
                   <X className="h-4 w-4" aria-hidden />

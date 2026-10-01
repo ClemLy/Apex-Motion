@@ -17,7 +17,7 @@ export function Footer() {
   const pathname = usePathname();
 
   return (
-    <footer className="border-t border-white/10 px-6 pb-10 pt-12">
+    <footer className="border-t border-white/10 px-6 pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-12 sm:px-10">
       <div className="mx-auto max-w-6xl flex flex-col gap-10">
         <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
           <span className="text-sm font-semibold uppercase tracking-[0.2em] text-neutral-100">
@@ -25,7 +25,7 @@ export function Footer() {
           </span>
 
           <nav aria-label={dict.footer.navLabel}>
-            <ul className="flex flex-wrap gap-x-8 gap-y-3">
+            <ul className="-my-2 flex flex-wrap gap-x-8">
               {links.map((link) => {
                 const active = pathname === link.href;
                 return (
@@ -33,7 +33,7 @@ export function Footer() {
                     <Link
                       href={link.href}
                       className={cn(
-                        "text-[11px] uppercase tracking-[0.2em] transition-colors duration-300",
+                        "inline-block py-2 text-[11px] uppercase tracking-[0.2em] transition-colors duration-300",
                         active
                           ? "text-neutral-100"
                           : "text-neutral-500 hover:text-neutral-100",

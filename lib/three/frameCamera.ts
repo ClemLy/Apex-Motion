@@ -20,6 +20,7 @@ export function frameObject(
   referenceTarget: [number, number, number],
   fovDegrees: number,
   padding = 1.35,
+  aspect = 1,
 ): FramedCamera {
   const box = new THREE.Box3().setFromObject(object);
   const sphere = box.getBoundingSphere(new THREE.Sphere());
@@ -28,7 +29,12 @@ export function frameObject(
     .sub(new THREE.Vector3(...referenceTarget))
     .normalize();
 
-  const fovRadians = (fovDegrees * Math.PI) / 180;
+  // Fit against whichever field of view is narrower — on a portrait screen
+  // that's the horizontal one, and fitting only the vertical FOV would crop
+  // the car's nose and tail off the sides.
+  const vFov = (fovDegrees * Math.PI) / 180;
+  const hFov = 2 * Math.atan(Math.tan(vFov / 2) * aspect);
+  const fovRadians = Math.min(vFov, hFov);
   const distance = (sphere.radius / Math.sin(fovRadians / 2)) * padding;
 
   const position = sphere.center.clone().addScaledVector(direction, distance);
@@ -37,4 +43,21 @@ export function frameObject(
     position: [position.x, position.y, position.z],
     target: [sphere.center.x, sphere.center.y, sphere.center.z],
   };
+}
+
+/**
+ * How much farther than its authored preset a camera should sit for a given
+ * viewport aspect. Presets are tuned for landscape screens; on a narrower
+ * (portrait) canvas the horizontal field of view shrinks with the aspect, so
+ * the same distance crops the car's nose and tail. Pulling back by the aspect
+ * ratio restores the horizontal coverage, capped so a very tall phone screen
+ * doesn't shrink the car to a speck.
+ */
+export function portraitDistanceScale(
+  aspect: number,
+  referenceAspect = 1.2,
+  maxScale = 1.6,
+): number {
+  if (!Number.isFinite(aspect) || aspect <= 0) return 1;
+  return THREE.MathUtils.clamp(referenceAspect / aspect, 1, maxScale);
 }

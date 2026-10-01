@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -34,6 +34,16 @@ const geistMono = Geist_Mono({
 
 const DESCRIPTION =
   "Exploration numérique immersive de l'ingénierie Porsche : studio de personnalisation 3D en temps réel, télémétrie de circuit et archives héritage. Aucun prix, aucune transaction.";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  // Lets the page paint under the notch / home indicator; anything pinned
+  // to an edge pads itself with env(safe-area-inset-*) instead.
+  viewportFit: "cover",
+  themeColor: "#020202",
+  colorScheme: "dark",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

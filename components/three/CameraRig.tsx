@@ -6,6 +6,7 @@ import * as THREE from "three";
 import { useConfigurator } from "@/lib/configurator/store";
 import type { CarConfig } from "@/lib/three/carConfigs";
 import { stepSpring } from "@/lib/three/springs";
+import { portraitDistanceScale } from "@/lib/three/frameCamera";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 /**
@@ -54,7 +55,7 @@ export function CameraRig({ car }: { car: CarConfig }) {
   const roll = useRef(0);
   const fovOffset = useRef(0);
 
-  useFrame(({ camera, pointer }, delta) => {
+  useFrame(({ camera, pointer, size }, delta) => {
     // While a before/after comparison is up, the frozen "before" image was
     // rendered from wherever the camera sat at capture time — any further
     // drift (pointer parallax, G-force spring) would desync it from the live
@@ -66,8 +67,15 @@ export function CameraRig({ car }: { car: CarConfig }) {
     const dt = Math.min(delta, 1 / 30);
     const preset = car.cameraPresets[state.focus];
 
-    goalPosition.current.set(...preset.position);
     goalTarget.current.set(...preset.target);
+    // Same angle, pulled back on portrait canvases so the whole car stays
+    // in frame on a phone instead of being cropped to its middle.
+    const distanceScale = portraitDistanceScale(size.width / size.height);
+    goalPosition.current
+      .set(...preset.position)
+      .sub(goalTarget.current)
+      .multiplyScalar(distanceScale)
+      .add(goalTarget.current);
 
     // Pointer parallax, orbiting slightly around the focus point — a known
     // vestibular trigger, so it's the first thing reduced motion drops.

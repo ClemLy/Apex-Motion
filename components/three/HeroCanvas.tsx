@@ -10,6 +10,7 @@ import { CinematicEffects } from "./CinematicEffects";
 import { FrameLimiter } from "./FrameLimiter";
 import { ModelLoadOverlay } from "./ModelLoadOverlay";
 import { ReadySignal } from "./ReadySignal";
+import { PortraitFraming } from "./PortraitFraming";
 import { useRenderGate } from "@/hooks/useRenderGate";
 import { DebugTriangleReporter } from "./DebugTriangleReporter";
 import { paintOptions } from "@/lib/configurator/types";
@@ -56,6 +57,8 @@ export function HeroCanvas({
   eager = false,
   decorative = false,
   loadingCtaLabel,
+  portraitLift = 0,
+  portraitMaxScale,
 }: {
   car: CarConfig;
   /** Pass true only for the instance guaranteed to be the first thing on screen. */
@@ -68,6 +71,11 @@ export function HeroCanvas({
    * homepage's studio teaser needs this; every other caller keeps the
    * default compact readout. */
   loadingCtaLabel?: string;
+  /** Raises the car in frame on portrait screens (fraction of canvas height),
+   * for callers that stack copy over the bottom of the canvas. */
+  portraitLift?: number;
+  /** Caps the portrait pull-back — see portraitDistanceScale. */
+  portraitMaxScale?: number;
 }) {
   const { ref, active, mounted } = useRenderGate<HTMLDivElement>({ eager });
   const { dict } = useLanguage();
@@ -116,6 +124,7 @@ export function HeroCanvas({
           <fog attach="fog" args={["#020202", 9, 22]} />
 
           <FrameLimiter fps={TARGET_FPS} />
+          <PortraitFraming liftY={portraitLift} maxScale={portraitMaxScale} />
 
           <PerformanceMonitor
             onDecline={() => setDprMax(1)}

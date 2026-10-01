@@ -78,6 +78,9 @@ AGENTS.md
 .cursor/
 .windsurf/
 .aider*
+.agents/
+skills/
+/skills-lock.json
 
 # assets sources (large raw 3D/audio source files, keep only optimized builds)
 /public/models/_source/

@@ -139,7 +139,7 @@ export function ConfiguratorPanel() {
   if (state.visualizerOpen) return null;
 
   return (
-    <GlassPanel className="flex w-full max-w-md flex-col gap-5 p-6">
+    <GlassPanel className="flex w-full max-w-md flex-col gap-5 p-5 sm:p-6">
       <CarSwitcher carId={state.carId} onSelect={setCar} />
 
       <div className="border-t border-white/10 pt-4">
@@ -196,7 +196,7 @@ export function ConfiguratorPanel() {
               {activeTab === "paint" && (
                 <div
                   data-lenis-prevent
-                  className="flex max-h-[52vh] flex-col gap-5 overflow-y-auto pr-1 lg:max-h-[46vh]"
+                  className="flex flex-col gap-5 lg:max-h-[46vh] lg:overflow-y-auto lg:pr-1"
                 >
                   <span className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">
                     {dict.configurator.paint.title}
@@ -314,7 +314,7 @@ export function ConfiguratorPanel() {
                               setCaliperColor(c);
                             }}
                             className={cn(
-                              "h-8 w-8 rounded-full border-2 transition-transform duration-300 hover:scale-110",
+                              "h-10 w-10 rounded-full border-2 transition-transform duration-300 hover:scale-110 sm:h-8 sm:w-8",
                               state.caliperColor === c
                                 ? "border-neutral-50"
                                 : "border-white/15",

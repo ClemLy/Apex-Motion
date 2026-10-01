@@ -32,6 +32,8 @@ import { getCarConfig, type CarConfig } from "@/lib/three/carConfigs";
 import { frameObject } from "@/lib/three/frameCamera";
 
 const VISUALIZER_FOV = 32;
+/** Linear fog near/far at the landscape framing distance. */
+const VISUALIZER_FOG: [number, number] = [11, 26];
 
 /** OrbitControls invalidates on its own during an active drag, so this only
  * throttles the otherwise-continuous idle render loop between interactions. */
@@ -51,23 +53,49 @@ function AutoFrame({
   onFramed: (target: [number, number, number], distance: number) => void;
 }) {
   const { scene } = useGLTF(car.url);
-  const { camera } = useThree();
+  const { camera, size, get } = useThree();
+  const aspect = size.height > 0 ? size.width / size.height : 1;
 
   useLayoutEffect(() => {
+    const preset = car.cameraPresets.exterior;
     const { position, target } = frameObject(
       scene,
-      car.cameraPresets.exterior.position,
-      car.cameraPresets.exterior.target,
+      preset.position,
+      preset.target,
       VISUALIZER_FOV,
+      undefined,
+      aspect,
     );
     camera.position.set(...position);
     camera.lookAt(...target);
     const distance = new THREE.Vector3(...position).distanceTo(
       new THREE.Vector3(...target),
     );
+
+    // A portrait screen fits the car against the narrower horizontal FOV,
+    // which pulls the camera well back — push the fog (tuned for the
+    // landscape distance) back by the same ratio so the car doesn't sink
+    // into it.
+    const landscape = frameObject(
+      scene,
+      preset.position,
+      preset.target,
+      VISUALIZER_FOV,
+      undefined,
+      Math.max(aspect, 1),
+    );
+    const landscapeDistance = new THREE.Vector3(
+      ...landscape.position,
+    ).distanceTo(new THREE.Vector3(...landscape.target));
+    const fog = get().scene.fog;
+    if (fog instanceof THREE.Fog && landscapeDistance > 0) {
+      const ratio = distance / landscapeDistance;
+      fog.near = VISUALIZER_FOG[0] * ratio;
+      fog.far = VISUALIZER_FOG[1] * ratio;
+    }
     onFramed(target, distance);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scene, car, camera]);
+  }, [scene, car, camera, aspect, get]);
 
   return null;
 }
@@ -125,7 +153,7 @@ export function VisualizerCanvas() {
 
   return (
     <div
-      className="fixed inset-0 z-40 bg-[#020202]"
+      className="fixed inset-0 z-[55] bg-[#020202]"
       role="dialog"
       aria-modal="true"
       aria-label={car.name}
@@ -140,7 +168,7 @@ export function VisualizerCanvas() {
         frameloop="demand"
       >
         <color attach="background" args={["#020202"]} />
-        <fog attach="fog" args={["#020202", 11, 26]} />
+        <fog attach="fog" args={["#020202", ...VISUALIZER_FOG]} />
 
         <FrameLimiter fps={TARGET_FPS} />
 
@@ -216,8 +244,14 @@ export function VisualizerCanvas() {
         </div>
       </div>
 
-      <p className="pointer-events-none absolute inset-x-0 bottom-8 text-center text-[11px] uppercase tracking-[0.25em] text-neutral-500">
-        {dict.configurator.visualizer.hint}
+      <p className="pointer-events-none absolute inset-x-0 bottom-[max(2rem,env(safe-area-inset-bottom))] px-6 text-center text-[11px] uppercase tracking-[0.25em] text-neutral-500">
+        {/* Swapped in CSS, not JS, so server and client markup match. */}
+        <span className="pointer-fine:hidden">
+          {dict.configurator.visualizer.hintTouch}
+        </span>
+        <span className="hidden pointer-fine:inline">
+          {dict.configurator.visualizer.hint}
+        </span>
       </p>
     </div>
   );

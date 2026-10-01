@@ -16,6 +16,7 @@ import * as THREE from "three";
 import { ParticleCar } from "@/components/three/ParticleCar";
 import { GltfCar } from "@/components/three/GltfCar";
 import { FrameLimiter } from "@/components/three/FrameLimiter";
+import { PortraitFraming } from "@/components/three/PortraitFraming";
 import { useRenderGate } from "@/hooks/useRenderGate";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
@@ -225,8 +226,8 @@ export function ParticleAssembly() {
       aria-label={dict.a11y.sections.particles}
       className="relative min-h-[240vh] bg-[#020202] md:min-h-[420vh]"
     >
-      <div className="sticky top-0 h-screen overflow-hidden">
-        <div className="absolute left-6 top-28 z-20 sm:left-10">
+      <div className="sticky top-0 h-[100svh] overflow-hidden">
+        <div className="absolute left-6 top-24 z-20 sm:left-10 sm:top-28 short:top-16">
           <span
             ref={kickerRef}
             className="text-[11px] uppercase tracking-[0.35em] text-neutral-500"
@@ -253,6 +254,7 @@ export function ParticleAssembly() {
                 frameloop={active ? "demand" : "never"}
               >
                 <FrameLimiter fps={TARGET_FPS} />
+                <PortraitFraming liftY={0.16} />
                 <PerformanceMonitor
                   onDecline={() => setDprMax(1)}
                   onIncline={() => setDprMax(1.5)}
@@ -286,24 +288,24 @@ export function ParticleAssembly() {
           style={{ opacity: 0 }}
         />
 
-        <div className="pointer-events-none absolute inset-x-0 bottom-14 z-20 flex flex-col items-center gap-5 px-6 text-center sm:bottom-20">
+        <div className="pointer-events-none absolute inset-x-0 bottom-[max(2.5rem,env(safe-area-inset-bottom))] z-20 flex flex-col items-center gap-3 px-6 text-center sm:bottom-20 sm:gap-5 short:bottom-6 short:gap-2">
           <span
             ref={line1Ref}
-            className="block text-[13vw] font-semibold uppercase leading-[0.95] tracking-tighter text-neutral-50 sm:text-7xl"
+            className="block text-[13vw] font-semibold uppercase leading-[0.95] tracking-tighter text-neutral-50 sm:text-7xl short:text-5xl"
             style={{ opacity: reducedMotion ? 1 : 0 }}
           >
             {dict.particleAssembly.title}
           </span>
           <span
             ref={line2Ref}
-            className="block text-[13vw] font-semibold uppercase leading-[0.95] tracking-tighter text-neutral-300 sm:text-7xl"
+            className="block text-[13vw] font-semibold uppercase leading-[0.95] tracking-tighter text-neutral-300 sm:text-7xl short:text-5xl"
             style={{ opacity: reducedMotion ? 1 : 0 }}
           >
             {dict.particleAssembly.titleAccent}
           </span>
           <p
             ref={bodyRef}
-            className="max-w-xl text-sm leading-relaxed text-neutral-400 sm:text-base"
+            className="max-w-xl text-sm leading-relaxed text-neutral-400 sm:text-base short:text-xs"
             style={{ opacity: reducedMotion ? 1 : 0 }}
           >
             {dict.particleAssembly.subtitle}
